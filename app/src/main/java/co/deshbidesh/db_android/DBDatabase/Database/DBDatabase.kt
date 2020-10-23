@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import co.deshbidesh.db_android.DBDatabase.DAO.DBNoteDAO
-import co.deshbidesh.db_android.DBDatabase.DatabaseConverter.DBDateConverter
+import co.deshbidesh.db_android.DBDatabase.Database.DatabaseConverter.DBDateConverter
 import co.deshbidesh.db_android.DBNoteFeature.Model.DBNote
 import co.deshbidesh.db_android.R
 

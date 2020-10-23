@@ -3,7 +3,7 @@ package co.deshbidesh.db_android.DBNoteFeature.Model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import co.deshbidesh.db_android.DBDatabase.DatabaseConverter.DBNoteLanguageConverter
+import co.deshbidesh.db_android.DBDatabase.Database.DatabaseConverter.DBNoteLanguageConverter
 import java.util.*
 
 
