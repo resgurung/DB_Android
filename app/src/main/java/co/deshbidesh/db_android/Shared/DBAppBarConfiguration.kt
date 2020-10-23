@@ -8,9 +8,10 @@ object DBAppBarConfiguration {
     fun configuration(): AppBarConfiguration {
 
         return AppBarConfiguration(setOf(
-//            R.id.homeFragment,
-//            R.id.calendarFragment,
-//            R.id.dictionaryFragment
+            R.id.homeFragment,
+            R.id.calendarFragment,
+            R.id.dictionaryFragment,
+            R.id.settingsFragment
         ))
     }
 }

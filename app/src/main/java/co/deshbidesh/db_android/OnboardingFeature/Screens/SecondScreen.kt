@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import co.deshbidesh.db_android.R
+import kotlinx.android.synthetic.main.fragment_second_screen.view.*
 
 
 class SecondScreen : Fragment() {
@@ -14,8 +16,17 @@ class SecondScreen : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_second_screen, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_second_screen, container, false)
+
+        val viewPager = activity?.findViewById<ViewPager2>(R.id.onboarding_view_pager)
+
+        view.second_scene_next_button.setOnClickListener {
+
+            viewPager?.currentItem = 2
+        }
+
+        return view
     }
 
 }
