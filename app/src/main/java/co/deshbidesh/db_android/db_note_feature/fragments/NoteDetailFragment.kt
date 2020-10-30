@@ -19,6 +19,8 @@ import co.deshbidesh.db_android.shared.DBBaseFragment
 
 class NoteDetailFragment : DBBaseFragment() {
 
+    override var bottomNavigationViewVisibility = View.GONE
+
     private val args by navArgs<NoteDetailFragmentArgs>()
 
     private lateinit var viewModel: DBNoteViewModel

@@ -66,7 +66,9 @@
             app:destination="@id/homeFragment" />
         <action
             android:id="@+id/action_noteListFragment_to_noteDetailFragment"
-            app:destination="@id/noteDetailFragment" />
+            app:destination="@id/noteDetailFragment"
+            app:popUpTo="@id/noteDetailFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_noteListFragment_to_noteAddFragment"
             app:destination="@id/noteAddFragment" />

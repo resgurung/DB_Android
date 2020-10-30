@@ -24,6 +24,8 @@ import java.util.*
 
 class NoteEditFragment : DBBaseFragment() {
 
+    override var bottomNavigationViewVisibility = View.GONE
+
     private val args by navArgs<NoteEditFragmentArgs>()
 
     private lateinit var viewModel: DBNoteViewModel

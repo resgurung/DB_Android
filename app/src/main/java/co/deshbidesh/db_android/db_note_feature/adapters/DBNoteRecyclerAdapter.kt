@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import co.deshbidesh.db_android.R
+import co.deshbidesh.db_android.db_note_feature.fragments.NoteListFragmentDirections
 import co.deshbidesh.db_android.db_note_feature.models.DBNote
 import kotlinx.android.synthetic.main.layout_note_list_item.view.*
 
@@ -47,9 +48,9 @@ class DBNoteRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 holder.itemView.note_list_row_layout.setOnClickListener { view ->
 
-                    //val action = NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment(noteItems[position])
+                    val action = NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment(noteItems[position])
 
-                    //view.findNavController().navigate(action)
+                    view.findNavController().navigate(action)
                 }
             }
         }
