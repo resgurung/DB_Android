@@ -24,7 +24,7 @@ import java.util.*
 
 class NoteEditFragment : DBBaseFragment() {
 
-    //private val args by navArgs<NoteEditFragmentArgs>()
+    private val args by navArgs<NoteEditFragmentArgs>()
 
     private lateinit var viewModel: DBNoteViewModel
 
@@ -52,15 +52,15 @@ class NoteEditFragment : DBBaseFragment() {
             requireActivity().onBackPressed()
         }
 
-        titleTV = view.findViewById<EditText>(R.id.note_edit_title_edittext)
+        titleTV = view.findViewById(R.id.note_edit_title_edittext)
 
-        contentTV = view.findViewById<EditText>(R.id.note_edit_content_edittext)
+        contentTV = view.findViewById(R.id.note_edit_content_edittext)
 
         val saveButton = view.findViewById<Button>(R.id.note_edit_save_button)
 
-        //titleTV.setText(args.noteEdit.title)
+        titleTV.setText(args.noteEdit.title)
 
-        //contentTV.setText(args.noteEdit.content)
+        contentTV.setText(args.noteEdit.content)
 
         viewModel = ViewModelProvider(this).get(DBNoteViewModel::class.java)
 
@@ -86,18 +86,18 @@ class NoteEditFragment : DBBaseFragment() {
 
                 if (textChanged) {
 
-//                    val note = DBNote(args.noteEdit.id,
-//                        title,
-//                        generateDescription(contentTV.text.toString()),
-//                        contentTV.text.toString(),
-//                        args.noteEdit.createdDate, Date(),
-//                        args.noteEdit.languageType)
+                    val note = DBNote(args.noteEdit.id,
+                        title,
+                        generateDescription(contentTV.text.toString()),
+                        contentTV.text.toString(),
+                        args.noteEdit.createdDate, Date(),
+                        args.noteEdit.languageType)
 
- //                   viewModel.updateNote(note)
+                    viewModel.updateNote(note)
 
                     showToast("Note updated")
 
-                    //findNavController().navigate(R.id.action_noteEditFragment_to_noteListFragment)
+                    findNavController().navigate(R.id.action_noteEditFragment_to_noteListFragment)
                 }
                 else {
 

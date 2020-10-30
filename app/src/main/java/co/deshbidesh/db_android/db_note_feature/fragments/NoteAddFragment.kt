@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.db_note_feature.models.DBNote
 import co.deshbidesh.db_android.db_note_feature.models.DBNoteLanguage
@@ -86,7 +87,7 @@ class NoteAddFragment : DBBaseFragment() {
 
             showToast("Successfully created a Note")
 
-            //findNavController().navigate(R.id.action_noteAddFragment_to_noteListFragment)
+            findNavController().navigate(R.id.action_noteAddFragment_to_noteListFragment)
 
         }
     }

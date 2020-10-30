@@ -51,7 +51,7 @@ class NoteListFragment : DBBaseFragment() {
 
         fab.setOnClickListener {
 
-            //findNavController().navigate(R.id.action_noteListFragment_to_noteAddFragment)
+            findNavController().navigate(R.id.action_noteListFragment_to_noteAddFragment)
         }
 
         adapter = DBNoteRecyclerAdapter()
@@ -64,9 +64,9 @@ class NoteListFragment : DBBaseFragment() {
         noteRecycleView.addItemDecoration(equalSpaceDecoration)
 
         // layout for potrait and landscape
-        val grid_column_count = resources.getInteger(R.integer.grid_column_count)
+        val gridColumnCount = resources.getInteger(R.integer.grid_column_count)
 
-        noteRecycleView.layoutManager = GridLayoutManager(context, grid_column_count)
+        noteRecycleView.layoutManager = GridLayoutManager(context, gridColumnCount)
 
         noteRecycleView.adapter = adapter
 

@@ -84,6 +84,9 @@
         <action
             android:id="@+id/action_noteDetailFragment_to_noteEditFragment"
             app:destination="@id/noteEditFragment" />
+        <argument
+            android:name="noteDetail"
+            app:argType="co.deshbidesh.db_android.db_note_feature.models.DBNote" />
     </fragment>
     <fragment
         android:id="@+id/noteAddFragment"
@@ -99,12 +102,15 @@
     <fragment
         android:id="@+id/noteEditFragment"
         android:name="co.deshbidesh.db_android.db_note_feature.fragments.NoteEditFragment"
-        android:label="fragment_note_editt"
+        android:label="fragment_note_edit"
         tools:layout="@layout/fragment_note_edit">
         <action
             android:id="@+id/action_noteEditFragment_to_noteListFragment"
             app:destination="@id/noteListFragment"
             app:popUpTo="@id/noteEditFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="noteEdit"
+            app:argType="co.deshbidesh.db_android.db_note_feature.models.DBNote" />
     </fragment>
 </navigation>

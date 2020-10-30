@@ -38,7 +38,7 @@ class HomeFragment : DBBaseFragment() {
 
         noteButton.setOnClickListener {
 
-            //findNavController().navigate(R.id.action_dictionaryFragment_to_noteListFragment)
+            findNavController().navigate(R.id.action_homeFragment_to_noteListFragment)
         }
 
         navController = NavHostFragment.findNavController(this);

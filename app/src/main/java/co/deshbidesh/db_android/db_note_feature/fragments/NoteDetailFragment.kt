@@ -19,7 +19,7 @@ import co.deshbidesh.db_android.shared.DBBaseFragment
 
 class NoteDetailFragment : DBBaseFragment() {
 
-    //private val args by navArgs<NoteDetailFragmentArgs>()
+    private val args by navArgs<NoteDetailFragmentArgs>()
 
     private lateinit var viewModel: DBNoteViewModel
 
@@ -55,22 +55,23 @@ class NoteDetailFragment : DBBaseFragment() {
 
         editButton.setOnClickListener {
 
-            //val action = NoteDetailFragmentDirections.actionNoteDetailFragmentToNoteEditFragment(args.noteDetail)
-            //findNavController().navigate(action)
+            val action = NoteDetailFragmentDirections.actionNoteDetailFragmentToNoteEditFragment(args.noteDetail)
+
+            findNavController().navigate(action)
         }
 
         deleteButton.setOnClickListener {
 
-            //viewModel.deleteNote(args.noteDetail)
+            viewModel.deleteNote(args.noteDetail)
 
             showToast("Note deleted")
 
-            //findNavController().navigate(R.id.action_noteDetailFragment_to_noteListFragment)
+            findNavController().navigate(R.id.action_noteDetailFragment_to_noteListFragment)
         }
 
-        //titleTV.text = args.noteDetail.title
+        titleTV.text = args.noteDetail.title
 
-        //contentTV.text = args.noteDetail.content
+        contentTV.text = args.noteDetail.content
     }
 
     private fun showToast(message: String) {
