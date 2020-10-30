@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="co.deshbidesh.db_android.OnboardingFeature.SplashFragment"
+        android:name="co.deshbidesh.db_android.db_onboarding_feature.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboardingViewPager"
-        android:name="co.deshbidesh.db_android.OnboardingFeature.OnboardingViewPager"
+        android:name="co.deshbidesh.db_android.db_onboarding_feature.OnboardingViewPager"
         android:label="fragment_onboarding_view_pager"
         tools:layout="@layout/fragment_onboarding_view_pager" >
         <action
@@ -34,22 +34,22 @@
     </fragment>
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="co.deshbidesh.db_android.DBCalendarFeature.CalendarFragment"
+        android:name="co.deshbidesh.db_android.db_calendar_feature.CalendarFragment"
         android:label="Calendar"
         tools:layout="@layout/fragment_calendar" />
     <fragment
         android:id="@+id/dictionaryFragment"
-        android:name="co.deshbidesh.db_android.DBDictionaryFeature.DictionaryFragment"
+        android:name="co.deshbidesh.db_android.db_dictionary_feature.DictionaryFragment"
         android:label="Dictionary"
         tools:layout="@layout/fragment_dictionary" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="co.deshbidesh.db_android.DBHomeFeature.HomeFragment"
+        android:name="co.deshbidesh.db_android.db_home_feature.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="co.deshbidesh.db_android.DBSettingsFeature.SettingsFragment"
+        android:name="co.deshbidesh.db_android.db_settings_feature.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>
