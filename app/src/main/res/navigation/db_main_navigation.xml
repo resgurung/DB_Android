@@ -81,7 +81,7 @@
         <action
             android:id="@+id/action_noteDetailFragment_to_noteListFragment"
             app:destination="@id/noteListFragment"
-            app:popUpTo="@id/noteDetailFragment"
+            app:popUpTo="@id/noteListFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_noteDetailFragment_to_noteEditFragment"
@@ -98,7 +98,7 @@
         <action
             android:id="@+id/action_noteAddFragment_to_noteListFragment"
             app:destination="@id/noteListFragment"
-            app:popUpTo="@id/noteAddFragment"
+            app:popUpTo="@id/noteListFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -109,7 +109,7 @@
         <action
             android:id="@+id/action_noteEditFragment_to_noteListFragment"
             app:destination="@id/noteListFragment"
-            app:popUpTo="@id/noteEditFragment"
+            app:popUpTo="@id/noteListFragment"
             app:popUpToInclusive="true" />
         <argument
             android:name="noteEdit"
