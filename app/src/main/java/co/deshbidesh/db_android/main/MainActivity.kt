@@ -1,4 +1,4 @@
-package co.deshbidesh.db_android.AppMain
+package co.deshbidesh.db_android.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

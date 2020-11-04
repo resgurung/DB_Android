@@ -16,15 +16,15 @@ data class DBNote (
     @PrimaryKey(autoGenerate = true)
     val id:             Int,
 
-    val title:          String,
+    var title:          String,
 
-    val description:    String,
+    var description:    String,
 
-    val content:        String,
+    var content:        String,
 
     val createdDate:    Date?,
 
-    val updatedDate:    Date?,
+    var updatedDate:    Date?,
 
     val languageType:   DBNoteLanguage
 ): Parcelable

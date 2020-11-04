@@ -10,6 +10,10 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+    buildFeatures {
+        dataBinding true
+    }
+    
     defaultConfig {
         applicationId "co.deshbidesh.db_android"
         minSdkVersion 26
@@ -18,6 +22,14 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+                arg("room.incremental", "true")
+                arg("room.expandProjection", "true")
+            }
+        }
     }
 
     buildTypes {
@@ -85,7 +97,7 @@ dependencies {
 
 
     //  -- Room components --
-    def room_version = "2.2.5"
+    def room_version = "2.3.0-alpha03"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     // optional - Kotlin Extensions and Coroutines support for Room
@@ -100,6 +112,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    // -- Paging --
+    def paging_version = "3.0.0-alpha07"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     // Testing
     testImplementation 'junit:junit:4.+'

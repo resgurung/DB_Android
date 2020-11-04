@@ -3,7 +3,7 @@ package co.deshbidesh.db_android.shared
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import co.deshbidesh.db_android.AppMain.MainActivity
+import co.deshbidesh.db_android.main.MainActivity
 
 
 abstract class DBBaseFragment: Fragment() {
