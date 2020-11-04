@@ -2,6 +2,7 @@ package co.deshbidesh.db_android.shared
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import co.deshbidesh.db_android.main.MainActivity
 
@@ -25,5 +26,10 @@ abstract class DBBaseFragment: Fragment() {
 
             (activity as MainActivity).setBottomNavigationVisibility(bottomNavigationViewVisibility)
         }
+    }
+
+    fun showToast(message: String) {
+
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 }

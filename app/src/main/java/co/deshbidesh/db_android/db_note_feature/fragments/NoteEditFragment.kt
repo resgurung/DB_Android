@@ -15,9 +15,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import co.deshbidesh.db_android.R
+import co.deshbidesh.db_android.databinding.FragmentNoteEditBinding
+import co.deshbidesh.db_android.db_database.database.DBDatabase
+import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
+import co.deshbidesh.db_android.db_note_feature.factories.DBNoteEditViewModelFactory
 import co.deshbidesh.db_android.db_note_feature.models.DBNote
+import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteEditViewModel
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
+import co.deshbidesh.db_android.shared.DBHelper
 import co.deshbidesh.db_android.shared.hideKeyboard
 import java.util.*
 
@@ -28,146 +34,62 @@ class NoteEditFragment : DBBaseFragment() {
 
     private val args by navArgs<NoteEditFragmentArgs>()
 
-    private lateinit var viewModel: DBNoteViewModel
+    private lateinit var noteEditViewModel: DBNoteEditViewModel
 
-    private lateinit var titleTV: EditText
-
-    private lateinit var contentTV: EditText
-
-    private var textChanged: Boolean = false
+    private lateinit var noteEditViewModelFactory: DBNoteEditViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_note_edit, container, false)
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentNoteEditBinding.inflate(inflater, container, false)
 
-        val toolbar = view.findViewById<Toolbar>(R.id.note_edit_toolbar)
+        noteEditViewModelFactory = DBNoteEditViewModelFactory(
+            DBNoteRepository(
+                DBDatabase.getDatabase(requireContext()).noteDAO()),
+            args.noteEdit, DBHelper()
+        )
 
-        toolbar.setNavigationOnClickListener {
+        noteEditViewModel = ViewModelProvider(this, noteEditViewModelFactory).get(DBNoteEditViewModel::class.java)
+
+        binding.noteEditToolbar.setNavigationOnClickListener {
 
             requireActivity().onBackPressed()
         }
 
-        titleTV = view.findViewById(R.id.note_edit_title_edittext)
+        binding.noteEditSaveButton.setOnClickListener {
 
-        contentTV = view.findViewById(R.id.note_edit_content_edittext)
+            noteEditViewModel.title = binding.noteEditTitleEdittext.text.toString()
 
-        val saveButton = view.findViewById<Button>(R.id.note_edit_save_button)
+            noteEditViewModel.content = binding.noteEditContentEdittext.text.toString()
 
-        titleTV.setText(args.noteEdit.title)
+            if (!noteEditViewModel.isTextEmpty()) {
 
-        contentTV.setText(args.noteEdit.content)
+                if (!noteEditViewModel.isSame()) {
 
-        viewModel = ViewModelProvider(this).get(DBNoteViewModel::class.java)
+                    noteEditViewModel.updateNote()
 
-        titleTV.doAfterTextChanged {
-
-            textChanged = true
-        }
-
-        contentTV.doAfterTextChanged {
-
-            textChanged = true
-        }
-
-        saveButton.setOnClickListener {
-
-            hideKeyboard()
-
-            val title: String = titleTV.text.toString()
-
-            val content: String = contentTV.text.toString()
-
-            if (!textfieldEmpty(title, content)) {
-
-                if (textChanged) {
-
-                    val note = DBNote(args.noteEdit.id,
-                        title,
-                        generateDescription(contentTV.text.toString()),
-                        contentTV.text.toString(),
-                        args.noteEdit.createdDate, Date(),
-                        args.noteEdit.languageType)
-
-                    viewModel.updateNote(note)
+                    hideKeyboard()
 
                     showToast("Note updated")
 
                     findNavController().navigate(R.id.action_noteEditFragment_to_noteListFragment)
+
+                } else {
+
+                    showToast("Please edit one of the field")
                 }
-                else {
-
-                    showToast("Nothing changed")
-                }
-            }
-        }
-    }
-
-    private fun textfieldEmpty(title: String, content: String): Boolean {
-
-        var msg: String = ""
-
-        var msgEmpty: Boolean = false
-
-        if (TextUtils.isEmpty(title)) {
-
-            msg += "Title"
-
-            msgEmpty = true
-        }
-
-        if (TextUtils.isEmpty(content)) {
-
-            if (msg == "") {
-
-                msg += "Note"
-
             } else {
 
-                msg = "$msg and Note"
-            }
-
-            msgEmpty = true
-        }
-
-        if (msgEmpty) {
-
-            showToast("$msg cannot be Empty.")
-        }
-
-
-        return msgEmpty
-    }
-
-    private fun generateDescription(content: String): String {
-
-        var stringArray: List<String> = content.split(" ")
-
-        var description: String = ""
-
-        if (stringArray.count() > 15) {
-
-            description = stringArray.take(15).joinToString(separator = " ") {it ->
-                "$it"
-            }
-        } else {
-
-            description = stringArray.joinToString(separator = " ") {it ->
-                "$it"
+                showToast("Fields cannot be empty")
             }
         }
-        return  description
+
+        binding.noteEditTitleEdittext.setText(noteEditViewModel.getNote().title)
+
+        binding.noteEditContentEdittext.setText(noteEditViewModel.getNote().content)
+
+        return binding.root
     }
-
-    private fun showToast(message: String) {
-
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-    }
-
 }

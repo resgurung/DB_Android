@@ -13,6 +13,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import co.deshbidesh.db_android.R
+import co.deshbidesh.db_android.databinding.FragmentNoteDetailBinding
+import co.deshbidesh.db_android.db_database.database.DBDatabase
+import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
+import co.deshbidesh.db_android.db_note_feature.factories.DBNoteDetailViewModelFactory
+import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteDetailViewModel
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
 
@@ -23,62 +28,53 @@ class NoteDetailFragment : DBBaseFragment() {
 
     private val args by navArgs<NoteDetailFragmentArgs>()
 
-    private lateinit var viewModel: DBNoteViewModel
+    private lateinit var noteDetailViewModel: DBNoteDetailViewModel
+
+    private lateinit var noteDetailViewModelFactory: DBNoteDetailViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_note_detail, container, false)
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentNoteDetailBinding.inflate(inflater, container, false)
 
-        val toolbar = view.findViewById<Toolbar>(R.id.note_detail_toolbar)
+        context ?: return binding.root
 
-        //val titleToolBar = view.findViewById<TextView>(R.id.note_detail_toolbar_title)
+        noteDetailViewModelFactory = DBNoteDetailViewModelFactory(
+            DBNoteRepository(
+                DBDatabase.getDatabase(requireContext()).noteDAO()
+            ),args.noteDetail)
 
-        toolbar.setNavigationOnClickListener {
+        noteDetailViewModel = ViewModelProvider(this, noteDetailViewModelFactory).get(DBNoteDetailViewModel::class.java)
+
+        binding.noteDetailToolbar.setNavigationOnClickListener {
 
             requireActivity().onBackPressed()
         }
 
-        val titleTV = view.findViewById<TextView>(R.id.note_detail_title)
+        binding.noteDetailEditButton.setOnClickListener {
 
-        val contentTV = view.findViewById<TextView>(R.id.note_detail_content)
-
-        val editButton = view.findViewById<Button>(R.id.note_detail_edit_button)
-
-        val deleteButton = view.findViewById<Button>(R.id.note_detail_delete_button)
-
-        viewModel = ViewModelProvider(this).get(DBNoteViewModel::class.java)
-
-        editButton.setOnClickListener {
-
-            val action = NoteDetailFragmentDirections.actionNoteDetailFragmentToNoteEditFragment(args.noteDetail)
+            val action = NoteDetailFragmentDirections.actionNoteDetailFragmentToNoteEditFragment(noteDetailViewModel.getNote())
 
             findNavController().navigate(action)
         }
 
-        deleteButton.setOnClickListener {
+        binding.noteDetailDeleteButton.setOnClickListener {
 
-            viewModel.deleteNote(args.noteDetail)
+            // delete here
+            noteDetailViewModel.deleteNote()
 
             showToast("Note deleted")
 
             findNavController().navigate(R.id.action_noteDetailFragment_to_noteListFragment)
         }
 
-        titleTV.text = args.noteDetail.title
+        binding.noteDetailTitle.text = noteDetailViewModel.getNote().title
 
-        contentTV.text = args.noteDetail.content
-    }
+        binding.noteDetailContent.text = noteDetailViewModel.getNote().content
 
-    private fun showToast(message: String) {
-
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        return binding.root
     }
 
 }
