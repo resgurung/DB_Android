@@ -73,10 +73,7 @@ class NoteListFragment : DBBaseFragment() {
 
             listViewModel.getPagedList.collectLatest { it ->
 
-                it.let { it ->
-
-                    adapter.submitData(it)
-                }
+                adapter.submitData(it)
             }
         }
 

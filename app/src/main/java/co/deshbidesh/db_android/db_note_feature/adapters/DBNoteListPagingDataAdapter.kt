@@ -57,8 +57,6 @@ class DBNoteListPagingDataAdapter: PagingDataAdapter<DBNote, DBNoteListPagingDat
                         view.findNavController().navigate(action)
                     }
                 }
-
-
             }
         }
     }

@@ -1,15 +1,9 @@
 package co.deshbidesh.db_android.db_note_feature.fragments
 
 import android.os.Bundle
-import android.text.TextUtils
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import co.deshbidesh.db_android.R
@@ -17,14 +11,10 @@ import co.deshbidesh.db_android.databinding.FragmentNoteAddBinding
 import co.deshbidesh.db_android.db_database.database.DBDatabase
 import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.factories.DBNoteAddViewModelFactory
-import co.deshbidesh.db_android.db_note_feature.models.DBNote
-import co.deshbidesh.db_android.db_note_feature.models.DBNoteLanguage
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteAddViewModel
-import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
 import co.deshbidesh.db_android.shared.DBHelper
 import co.deshbidesh.db_android.shared.hideKeyboard
-import java.util.*
 
 
 class NoteAddFragment : DBBaseFragment() {

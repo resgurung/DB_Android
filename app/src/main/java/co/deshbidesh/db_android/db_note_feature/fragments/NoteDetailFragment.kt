@@ -1,14 +1,9 @@
 package co.deshbidesh.db_android.db_note_feature.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,7 +13,6 @@ import co.deshbidesh.db_android.db_database.database.DBDatabase
 import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.factories.DBNoteDetailViewModelFactory
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteDetailViewModel
-import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
 
 
