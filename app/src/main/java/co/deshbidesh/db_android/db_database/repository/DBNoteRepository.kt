@@ -1,13 +1,29 @@
 package co.deshbidesh.db_android.db_database.repository
 
-import androidx.lifecycle.LiveData
+
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import co.deshbidesh.db_android.db_database.dao.DBNoteDAO
 import co.deshbidesh.db_android.db_note_feature.models.DBNote
+import kotlinx.coroutines.flow.Flow
+
 
 class DBNoteRepository(private val dao: DBNoteDAO) {
 
-    val readAllNotes: PagingSource<Int, DBNote> = dao.getPagedNotes()
+    fun getPagedNotes(): Flow<PagingData<DBNote>> {
+
+        return Pager(
+
+            PagingConfig(
+                pageSize = 14,
+                enablePlaceholders = false,
+                maxSize = 50
+            ),
+            pagingSourceFactory = { dao.getPagedNotes() }
+        ).flow
+    }
 
     suspend fun addNote(note: DBNote) {
 

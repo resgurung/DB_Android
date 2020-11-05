@@ -18,6 +18,7 @@ import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteListViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
 import co.deshbidesh.db_android.shared.decorators.EqualSpaceItemDecorator
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 
@@ -71,11 +72,13 @@ class NoteListFragment : DBBaseFragment() {
 
         lifecycleScope.launch {
 
-            listViewModel.getPagedList.collectLatest { it ->
+            listViewModel.getPagedList.distinctUntilChanged().collectLatest { it ->
 
-                adapter.submitData(it)
+                it.let {
+
+                    adapter.submitData(it)
+                }
             }
         }
-
     }
 }

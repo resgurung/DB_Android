@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         DBDatabase.getDatabase(application)
     }
 
-
     fun setBottomNavigationVisibility(visibility: Int) {
 
         bottomNavigationView.visibility = visibility
