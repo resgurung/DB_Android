@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import co.deshbidesh.db_android.R
+import co.deshbidesh.db_android.db_database.database.DBDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -23,13 +24,10 @@ class MainActivity : AppCompatActivity() {
         navController = Navigation.findNavController(this@MainActivity, R.id.main_fragment_container)
 
         bottomNavigationView.setupWithNavController(navController)
+
+        DBDatabase.getDatabase(application)
     }
 
-    // navigation arrow from detail back to main
-    override fun onSupportNavigateUp(): Boolean {
-
-        return navController.navigateUp() || super.onSupportNavigateUp()
-    }
 
     fun setBottomNavigationVisibility(visibility: Int) {
 
