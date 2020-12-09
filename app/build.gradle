@@ -1,11 +1,19 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+}
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+    buildFeatures {
+        dataBinding true
+    }
+    
     defaultConfig {
         applicationId "co.deshbidesh.db_android"
         minSdkVersion 26
@@ -14,6 +22,14 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+                arg("room.incremental", "true")
+                arg("room.expandProjection", "true")
+            }
+        }
     }
 
     buildTypes {
@@ -22,15 +38,98 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    // Configure only for each module that uses Java 8
+    // language features (either in its source code or
+    // through dependencies).
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    // For Kotlin projects
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.1.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.core:core-ktx:1.3.2'
+
+    // App compat
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+
+    // Material
+    implementation 'com.google.android.material:material:1.2.1'
+
+    // Constraint layout
+    def constraintlayout_version = "2.0.4"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+
+    // Legacy
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    // Preference
+    implementation 'androidx.preference:preference-ktx:1.1.1'
+
+    // -- Navigation Component --
+    def nav_version = "2.3.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    // Navigation feature module Support
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+
+
+    // View pager 2
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+
+    // Recycle view & card view
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.cardview:cardview:1.0.0"
+
+    // Glide :- Image caching
+    def glide_version = "4.11.0"
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    // Skip this if you don't want to use integration libraries or configure Glide.
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+
+
+    //  -- Room components --
+    def room_version = "2.3.0-alpha03"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+
+
+    // -- Lifecycle components --
+    def lifecycle_version = "2.2.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    // VidewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    // -- Paging --
+    def paging_version = "3.0.0-alpha07"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
+    // Testing
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // room - Test helpers
+    testImplementation "androidx.room:room-testing:$room_version"
+
+    // Testing Navigation
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+
+    // optional - Test helpers for LiveData
+    def arch_version = "2.1.0"
+    testImplementation "androidx.arch.core:core-testing:$arch_version"
 
 }

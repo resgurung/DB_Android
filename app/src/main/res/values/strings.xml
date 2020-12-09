@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">DB_Android</string>
+    <string name="app_name">DeshBidesh</string>
+    <string name="DatabaseName">DeshBidesh_DB</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save_button">Save</string>
+
 </resources>
