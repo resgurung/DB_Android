@@ -16,7 +16,7 @@ abstract class DBDatabase: RoomDatabase() {
 
     abstract fun noteDAO(): DBNoteDAO
 
-    companion object {
+    companion object { // singleton in java
 
         @Volatile
         private var INSTANCE: DBDatabase? = null
