@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".db_document_scanner_feature.ui.DBDocScanActivity">
+    tools:context=".db_document_scanner_feature.ui.activity.DBDocScanActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

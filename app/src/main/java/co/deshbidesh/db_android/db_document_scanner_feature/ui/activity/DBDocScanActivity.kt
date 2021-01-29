@@ -1,4 +1,4 @@
-package co.deshbidesh.db_android.db_document_scanner_feature.ui
+package co.deshbidesh.db_android.db_document_scanner_feature.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
