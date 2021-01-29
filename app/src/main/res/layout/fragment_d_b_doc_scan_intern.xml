@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".db_document_scanner_feature.ui.DBDocScanInternFragment">
+    tools:context=".db_document_scanner_feature.ui.fragment.DBDocScanInternFragment">
 
 
 </FrameLayout>
