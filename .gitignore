@@ -90,6 +90,4 @@ lint/tmp/
 # mac ds_store
 .DS_Store
 
-# opencv lib
-/opencv450/
 
