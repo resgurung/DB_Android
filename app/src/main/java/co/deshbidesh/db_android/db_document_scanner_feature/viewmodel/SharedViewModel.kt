@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.robin.cameraxtutorial.camerax.ar.ArOverlayView
-import com.robin.cameraxtutorial.documentscanner.OpenCVNativeHelper
+import co.deshbidesh.db_android.db_document_scanner_feature.overlays.ArOverlayView
+import co.deshbidesh.db_android.db_document_scanner_feature.processor.OpenCVNativeHelper
 
 class SharedViewModel: ViewModel() {
 

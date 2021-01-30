@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import co.deshbidesh.db_android.R
+import org.opencv.android.OpenCVLoader
 
 
 class DBDocScanCameraFragment : Fragment() {

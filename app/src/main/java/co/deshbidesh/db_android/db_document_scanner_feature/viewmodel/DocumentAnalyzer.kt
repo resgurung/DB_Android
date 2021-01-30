@@ -10,24 +10,20 @@ import android.util.Log
 import android.util.Size
 import androidx.camera.core.ImageProxy
 import androidx.lifecycle.ViewModel
-import com.robin.cameraxtutorial.camerax.ar.ArObject
-import com.robin.cameraxtutorial.camerax.ar.ArObjectTracker
-import com.robin.cameraxtutorial.documentscanner.OpenCVNativeHelper
-import com.robin.cameraxtutorial.extensions.yuvToRgba
-import com.robin.cameraxtutorial.helper.EdgePoint
+import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
+import co.deshbidesh.db_android.db_document_scanner_feature.overlays.ArObject
+import co.deshbidesh.db_android.db_document_scanner_feature.overlays.ArObjectTracker
+import co.deshbidesh.db_android.db_document_scanner_feature.processor.OpenCVNativeHelper
+import co.deshbidesh.db_android.shared.extensions.yuvToRgba
 import org.opencv.core.Core
 import org.opencv.core.MatOfPoint2f
 import java.lang.Exception
 import java.util.concurrent.atomic.AtomicBoolean
 
 
-/** Helper type alias used for analysis use case callbacks */
-
-typealias MatOfPointListener = (matofPoint2f: MatOfPoint2f) -> Unit
 
 class DocumentAnalyzer(
-    private val opencvHelper: OpenCVNativeHelper,
-   // listener: MatOfPointListener
+    private val opencvHelper: OpenCVNativeHelper
     ): ViewModel(), ThreadedImageAnalyzer {
 
     companion object {

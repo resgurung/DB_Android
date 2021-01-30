@@ -2,7 +2,7 @@ package com.robin.cameraxtutorial.camerax.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.robin.cameraxtutorial.documentscanner.OpenCVNativeHelper
+import co.deshbidesh.db_android.db_document_scanner_feature.processor.OpenCVNativeHelper
 
 class DocumentAnalyzerViewModelFactory(private val helper: OpenCVNativeHelper): ViewModelProvider.Factory {
 

@@ -1,12 +1,11 @@
-package com.robin.cameraxtutorial.documentscanner
+package co.deshbidesh.db_android.db_document_scanner_feature.processor
 
 import android.graphics.Bitmap
-import android.graphics.PointF
 import android.media.Image
 import android.util.Log
-import com.robin.cameraxtutorial.helper.DBImageUtils
-import com.robin.cameraxtutorial.helper.DBMathUtils
-import com.robin.cameraxtutorial.helper.EdgePoint
+import co.deshbidesh.db_android.db_document_scanner_feature.doc_scan_utils.DBImageUtils
+import co.deshbidesh.db_android.db_document_scanner_feature.doc_scan_utils.DBMathUtils
+import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import java.util.*
