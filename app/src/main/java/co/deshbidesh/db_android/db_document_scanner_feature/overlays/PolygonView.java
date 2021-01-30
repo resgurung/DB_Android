@@ -1,4 +1,4 @@
-package co.deshbidesh.db_android.db_document_scanner_feature.processor;
+package co.deshbidesh.db_android.db_document_scanner_feature.overlays;
 
 import android.content.Context;
 import android.graphics.Canvas;

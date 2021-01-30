@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/cropImage"
+        android:title="Crop"/>
+    <item
+        android:id="@+id/rotste"
+        android:title="Rotate"/>
+    <item
+        android:id="@+id/blackAndWhiteSetting"
+        android:title="B/W Setting"/>
+</menu>

@@ -6,15 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import co.deshbidesh.db_android.R
+import co.deshbidesh.db_android.databinding.FragmentDBDocScanInternBinding
 
 class DBDocScanInternFragment : Fragment() {
+
+    private var _binding: FragmentDBDocScanInternBinding? = null
+
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_d_b_doc_scan_intern, container, false)
+
+        _binding = FragmentDBDocScanInternBinding.inflate(layoutInflater)
+
+        return binding.root
     }
 
 }

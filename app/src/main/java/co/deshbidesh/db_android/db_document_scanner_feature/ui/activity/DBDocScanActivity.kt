@@ -5,8 +5,10 @@ import android.os.Bundle
 import co.deshbidesh.db_android.R
 
 class DBDocScanActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_d_b_doc_scan)
     }
 }
