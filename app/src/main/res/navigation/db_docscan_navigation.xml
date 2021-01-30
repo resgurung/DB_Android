@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/db_docscan_navigation"
+    app:startDestination="@id/dbDocScanCameraFragment">
+
+    <fragment
+        android:id="@+id/dbDocScanInternFragment"
+        android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanInternFragment"
+        android:label="fragment_d_b_doc_scan_intern"
+        tools:layout="@layout/fragment_d_b_doc_scan_intern" >
+        <action
+            android:id="@+id/action_dbDocScanInternFragment_to_DBDocScanResultFragment"
+            app:destination="@id/DBDocScanResultFragment" />
+        <action
+            android:id="@+id/action_dbDocScanInternFragment_to_dbDocScanCameraFragment"
+            app:destination="@id/dbDocScanCameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dbScannerDialogFragment"
+        android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.dialogfragment.ScannerDialogFragment"
+        android:label="ScannerDialogFragment" />
+    <fragment
+        android:id="@+id/dbDocScanCameraFragment"
+        android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanCameraFragment"
+        android:label="fragment_d_b_doc_scan_camera"
+        tools:layout="@layout/fragment_d_b_doc_scan_camera" >
+        <action
+            android:id="@+id/action_dbDocScanCameraFragment_to_dbDocScanInternFragment"
+            app:destination="@id/dbDocScanInternFragment" />
+        <action
+            android:id="@+id/action_dbDocScanCameraFragment_to_DBDocScanResultFragment"
+            app:destination="@id/DBDocScanResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/DBDocScanResultFragment"
+        android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanResultFragment"
+        android:label="fragment_d_b_doc_scan_result"
+        tools:layout="@layout/fragment_d_b_doc_scan_result" >
+        <action
+            android:id="@+id/action_DBDocScanResultFragment_to_dbDocScanCameraFragment"
+            app:destination="@id/dbDocScanCameraFragment" />
+    </fragment>
+</navigation>
