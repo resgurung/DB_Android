@@ -31,7 +31,7 @@ object DBPreferenceHelper {
 
     var firstRun: Boolean
         // custom getter to get a preference of a desired type, with a predefined default value
-        get() = preferences.getBoolean(IS_FIRST_RUN_PREF.first, IS_FIRST_RUN_PREF.second)
+        get() = getStoredBoolean(IS_FIRST_RUN_PREF.first, IS_FIRST_RUN_PREF.second)//preferences.getBoolean(IS_FIRST_RUN_PREF.first, IS_FIRST_RUN_PREF.second)
 
         // custom setter to save a preference back to preferences file
         set(value) = preferences.edit {

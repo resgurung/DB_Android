@@ -1,6 +1,7 @@
 package co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment
 
 import android.annotation.SuppressLint
+import co.deshbidesh.db_android.R
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentResolver
@@ -29,9 +30,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.BuildConfig
-import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentDBDocScanCameraBinding
 import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 import co.deshbidesh.db_android.db_document_scanner_feature.overlays.*
@@ -40,7 +42,7 @@ import co.deshbidesh.db_android.shared.extensions.hasPermission
 import co.deshbidesh.db_android.shared.extensions.imageToBitmap
 import co.deshbidesh.db_android.shared.utility.DBPermissionConstant
 import com.robin.cameraxtutorial.camerax.viewmodel.DocumentAnalyzer
-import com.robin.cameraxtutorial.camerax.viewmodel.DocumentAnalyzerViewModelFactory
+import co.deshbidesh.db_android.db_document_scanner_feature.factories.DocumentAnalyzerViewModelFactory
 import com.robin.cameraxtutorial.camerax.viewmodel.SharedViewModel
 import com.robin.cameraxtutorial.camerax.viewmodel.ThreadedImageAnalyzer
 import kotlinx.coroutines.CoroutineScope
@@ -211,24 +213,7 @@ class DBDocScanCameraFragment : Fragment() {
 
         binding.cameraCaptureButton.setOnClickListener { view ->
 
-            saveImageToMemory {
-
-                if (it) {
-                    activity?.runOnUiThread {
-
-
-                        //view.findNavController().navigate(androidx.camera.core.R.id.action_AFragment_to_BFragment)
-                    }
-                } else {
-
-                    AlertDialog.Builder(context)
-                        .setMessage("The camera is not responding. Please try again later.")
-                        .setPositiveButton(android.R.string.ok) { _, _ ->
-                            activity?.finish()
-                        }
-                        .create()
-                }
-            }
+            saveImageToMemory()
         }
 
         binding.openGalleryButton.setOnClickListener {
@@ -290,13 +275,11 @@ class DBDocScanCameraFragment : Fragment() {
 
                         activity?.runOnUiThread {
 
-                            //this@DBDocScanCameraFragment.findNavController().navigate(androidx.camera.core.R.id.action_AFragment_to_InternFragment)
+                            navigateToIntern()
                         }
                     }
                 }
             }
-
-
         }else {
 
             println("debug: wrong requestcode: $requestCode")
@@ -353,30 +336,21 @@ class DBDocScanCameraFragment : Fragment() {
 
                 Log.e("CameraFragment", "$e")
 
-                AlertDialog.Builder(context)
-                    .setMessage("The camera is not responding. Please try again later.")
-                    .setPositiveButton(android.R.string.ok) { _, _ ->
-                        activity?.finish()
-                    }
-                    .create()
+                showAlert("The camera is not responding. Please try again later.")
             }
         }, ContextCompat.getMainExecutor(context))
     }
 
-    private fun saveImageToMemory(listener: (Boolean) -> Unit) {
+    private fun saveImageToMemory() {
 
         imageCapture?.takePicture(executor,
             object : ImageCapture.OnImageCapturedCallback() {
 
                 override fun onError(exception: ImageCaptureException) {
 
-                    val msg = "Photo capture failed: ${exception.message}"
-
                     binding.preview.post {
 
-                        Toast.makeText(context,
-                            msg,
-                            Toast.LENGTH_SHORT).show()
+                        showAlert("Photo capture failed: ${exception.message}")
                     }
 
                 }
@@ -384,43 +358,66 @@ class DBDocScanCameraFragment : Fragment() {
                 @SuppressLint("UnsafeExperimentalUsageError")
                 override fun onCaptureSuccess(image: ImageProxy) {
 
-                    var bitmapImage: Bitmap? = null
-
                     image.image?.let { currImage ->
 
                         edgePoints?.let { points ->
 
-                            bitmapImage = if (points.isNotEmpty()) {
+                            val scannedImage = sharedViewModel.opencvHelper.getScannedBitmap(currImage, points)
 
-                                Log.d(TAG, "Contour Points: $edgePoints")
+                            if (scannedImage != null) {
 
-                                sharedViewModel.opencvHelper.getScannedBitmap(currImage, points)
+                                sharedViewModel.addData(scannedImage)
+
+                                navigateToResult()
 
                             } else {
 
-                                currImage.imageToBitmap()
+                                val bitmapImage = currImage.imageToBitmap()
+
+                                sharedViewModel.addData(bitmapImage)
+
+                                navigateToIntern()
                             }
                         } ?: run {
 
-                            bitmapImage = currImage.imageToBitmap()
+                            val bitmapImage = currImage.imageToBitmap()
 
+                            sharedViewModel.addData(bitmapImage)
+
+                            navigateToIntern()
                         }
 
-                        bitmapImage?.let {
+                    } ?: run {
 
-                            sharedViewModel.addData(it)
-
-                            listener(true)
-
-                        } ?: run {
-
-                            Log.e(TAG, "Something wrong")
-
-                            listener(false)
-                        }
+                        showAlert("The camera is not responding. Please try again later.")
                     }
                 }
             })
+    }
+
+    private fun navigateToResult() {
+
+        activity?.runOnUiThread {
+
+            findNavController().navigate(R.id.action_dbDocScanCameraFragment_to_DBDocScanResultFragment)
+        }
+    }
+
+    private fun navigateToIntern() {
+
+        activity?.run {
+
+            findNavController().navigate(R.id.action_dbDocScanCameraFragment_to_dbDocScanInternFragment)
+        }
+    }
+
+    private fun showAlert(message: String) {
+        AlertDialog.Builder(context)
+            .setMessage(message)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                activity?.finish()
+            }
+            .create()
     }
 
     private fun onCreateAnalyzerConfigBuilder(): ImageAnalysis {

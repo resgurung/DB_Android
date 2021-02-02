@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentDBDocScanResultBinding
 import co.deshbidesh.db_android.db_document_scanner_feature.model.DBImageThresholdType
@@ -78,7 +79,7 @@ class DBDocScanResultFragment : Fragment(), ScannerDialogFragment.ScannerDialogF
         binding.doneButton.setOnClickListener {
 
             // save to notes here
-            //it.findNavController().navigate(R.id.action_BFragment_to_AFragment)
+            findNavController().navigate(R.id.action_DBDocScanResultFragment_to_mainActivity)
         }
 
         binding.blackAndWhite.setOnClickListener {

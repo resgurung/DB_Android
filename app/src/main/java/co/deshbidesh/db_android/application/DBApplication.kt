@@ -10,6 +10,8 @@ class DBApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
+        DBPreferenceHelper.init(this)
+
         DBDocScanConstant.setInitialPreferences()
     }
 }
