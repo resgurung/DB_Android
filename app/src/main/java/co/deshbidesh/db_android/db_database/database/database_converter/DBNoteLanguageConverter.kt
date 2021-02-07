@@ -1,4 +1,4 @@
-package co.deshbidesh.db_android.db_database.database.DatabaseConverter
+package co.deshbidesh.db_android.db_database.database.database_converter
 
 
 import androidx.room.TypeConverter

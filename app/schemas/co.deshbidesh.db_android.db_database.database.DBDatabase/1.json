@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "47a4eb62c3273d013ceed375da36fb19",
+    "identityHash": "17d8bf07069c59a06445523ca4536be7",
     "entities": [
       {
         "tableName": "db_notes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `content` TEXT NOT NULL, `createdDate` INTEGER, `updatedDate` INTEGER, `languageType` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `content` TEXT NOT NULL, `imageIds` TEXT, `createdDate` INTEGER, `updatedDate` INTEGER, `languageType` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -31,6 +31,12 @@
             "columnName": "content",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "imageIds",
+            "columnName": "imageIds",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "createdDate",
@@ -59,12 +65,45 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "db_images",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `img_path` TEXT NOT NULL DEFAULT ' ', `note_id` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "imgPath",
+            "columnName": "img_path",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "' '"
+          },
+          {
+            "fieldPath": "noteId",
+            "columnName": "note_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '47a4eb62c3273d013ceed375da36fb19')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '17d8bf07069c59a06445523ca4536be7')"
     ]
   }
 }

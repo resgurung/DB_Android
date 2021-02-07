@@ -10,7 +10,7 @@ import java.util.*
 interface DBNoteDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addNote(note: DBNote)
+    suspend fun addNote(note: DBNote): Long
 
     @Update
     suspend fun updateNote(note: DBNote)
@@ -20,6 +20,9 @@ interface DBNoteDAO {
 
     @Query("DELETE from db_notes")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM db_notes WHERE id= :id" )
+    suspend fun singleNote(id: Long): DBNote
 
     @Query("SELECT * FROM db_notes ORDER BY createdDate DESC")
     fun getPagedNotes(): PagingSource<Int, DBNote>

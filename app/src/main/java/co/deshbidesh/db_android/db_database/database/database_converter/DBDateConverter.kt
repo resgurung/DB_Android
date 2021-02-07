@@ -1,4 +1,4 @@
-package co.deshbidesh.db_android.db_database.database.DatabaseConverter
+package co.deshbidesh.db_android.db_database.database.database_converter
 
 import androidx.room.TypeConverter
 import java.util.*
@@ -12,6 +12,6 @@ class DBDateConverter {
 
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
-        return date?.time?.toLong()
+        return date?.time
     }
 }

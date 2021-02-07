@@ -36,8 +36,7 @@ class NoteEditFragment : DBBaseFragment() {
         val binding = FragmentNoteEditBinding.inflate(inflater, container, false)
 
         noteEditViewModelFactory = DBNoteEditViewModelFactory(
-            DBNoteRepository(
-                DBDatabase.getDatabase(requireContext()).noteDAO()),
+            DBNoteRepository(DBDatabase.getDatabase(requireContext()).noteDAO()),
             args.noteEdit, DBHelper()
         )
 
