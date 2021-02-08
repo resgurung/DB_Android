@@ -3,19 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/db_docscan_navigation"
-    app:startDestination="@id/DBDocScanCameraFragment">
+    app:startDestination="@id/DBDocScanSelectionFragment">
 
+    <fragment
+        android:id="@+id/DBDocScanSelectionFragment"
+        android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanSelectionFragment"
+        android:label="DBDocScanSelectionFragment"
+        tools:layout="@layout/fragment_d_b_doc_scan_selection">
+        <action
+            android:id="@+id/action_scan_selectionFragment_to_cameraFragment"
+            app:destination="@id/DBDocScanCameraFragment" />
+        <action
+            android:id="@+id/action_scan_selectionFragment_to_internFragment"
+            app:destination="@id/DBDocScanInternFragment" />
+    </fragment>
     <fragment
         android:id="@+id/DBDocScanCameraFragment"
         android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanCameraFragment"
         android:label="fragment_d_b_doc_scan_camera"
         tools:layout="@layout/fragment_d_b_doc_scan_camera" >
-        <action
-            android:id="@+id/action_dbDocScanCameraFragment_to_dbDocScanInternFragment"
-            app:destination="@id/DBDocScanInternFragment" />
+
         <action
             android:id="@+id/action_dbDocScanCameraFragment_to_DBDocScanResultFragment"
             app:destination="@id/DBDocScanResultFragment" />
+        <action
+            android:id="@+id/action_scan_cameraFragment_to_internFragment"
+            app:destination="@id/DBDocScanInternFragment" />
     </fragment>
 
     <fragment
@@ -26,24 +39,24 @@
         <action
             android:id="@+id/action_dbDocScanInternFragment_to_DBDocScanResultFragment"
             app:destination="@id/DBDocScanResultFragment" />
-        <action
-            android:id="@+id/action_dbDocScanInternFragment_to_dbDocScanCameraFragment"
-            app:destination="@id/DBDocScanCameraFragment" />
+        <argument
+            android:name="uriHolder"
+            app:argType="co.deshbidesh.db_android.db_document_scanner_feature.model.DBDocScanURI"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
     <fragment
         android:id="@+id/DBScannerDialogFragment"
         android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.dialogfragment.ScannerDialogFragment"
-        android:label="ScannerDialogFragment" />
+        android:label="ScannerDialogFragment"
+        tools:layout="@layout/fragment_scanner_dialog"/>
 
     <fragment
         android:id="@+id/DBDocScanResultFragment"
         android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanResultFragment"
         android:label="fragment_d_b_doc_scan_result"
         tools:layout="@layout/fragment_d_b_doc_scan_result" >
-        <action
-            android:id="@+id/action_DBDocScanResultFragment_to_dbDocScanCameraFragment"
-            app:destination="@id/DBDocScanCameraFragment" />
         <action
             android:id="@+id/action_DBDocScanResultFragment_to_mainActivity"
             app:destination="@id/mainActivity" />

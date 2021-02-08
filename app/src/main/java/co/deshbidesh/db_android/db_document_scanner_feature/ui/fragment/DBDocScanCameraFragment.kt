@@ -2,10 +2,8 @@ package co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment
 
 import android.annotation.SuppressLint
 import co.deshbidesh.db_android.R
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentResolver
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -19,8 +17,6 @@ import android.view.LayoutInflater
 import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -30,17 +26,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.BuildConfig
 import co.deshbidesh.db_android.databinding.FragmentDBDocScanCameraBinding
 import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 import co.deshbidesh.db_android.db_document_scanner_feature.overlays.*
-import co.deshbidesh.db_android.shared.extensions.askPermission
-import co.deshbidesh.db_android.shared.extensions.hasPermission
 import co.deshbidesh.db_android.shared.extensions.imageToBitmap
-import co.deshbidesh.db_android.shared.utility.DBPermissionConstant
 import com.robin.cameraxtutorial.camerax.viewmodel.DocumentAnalyzer
 import co.deshbidesh.db_android.db_document_scanner_feature.factories.DocumentAnalyzerViewModelFactory
 import com.robin.cameraxtutorial.camerax.viewmodel.SharedViewModel
@@ -87,7 +78,6 @@ class DBDocScanCameraFragment : Fragment() {
                 MediaStore.Images.Media.getBitmap(resolver, uri)
             }
         }
-
     }
 
     private val loader = object: BaseLoaderCallback(context) {
@@ -176,7 +166,6 @@ class DBDocScanCameraFragment : Fragment() {
 
             val boundingBoxArOverlay = BoundingBoxArOverlay(currContext, BuildConfig.DEBUG)
 
-
             arOverlayView.observe(viewLifecycleOwner) {
 
                 it.doOnLayout { view ->
@@ -192,43 +181,16 @@ class DBDocScanCameraFragment : Fragment() {
             }
         }
 
-        val cameraPermissions = arrayOf(DBPermissionConstant.CameraPermission)
-
-        if (activity?.hasPermission(*cameraPermissions) == true) {
-
-            if (!OpenCVLoader.initDebug()) {
-
-                Log.e(TAG, "Failed to load OpenCV lib")
-
-            } else {
-
-                loader.onManagerConnected(LoaderCallbackInterface.SUCCESS)
-            }
-
-        } else {
-
-            activity?.askPermission(*cameraPermissions, requestCode = DBPermissionConstant.cameraPermissionCode)
-
-        }
-
-        binding.cameraCaptureButton.setOnClickListener { view ->
+        binding.cameraCaptureButton.setOnClickListener {
 
             saveImageToMemory()
         }
+    }
 
-        binding.openGalleryButton.setOnClickListener {
+    override fun onResume() {
+        super.onResume()
 
-            val externalStoragePermissions = arrayOf(DBPermissionConstant.ReadExternalStorage)
-
-            if (activity?.hasPermission(*externalStoragePermissions) == true) {
-
-                openMediaGallery(DBPermissionConstant.readExternalStoragePermissionCode)
-            }
-            else {
-
-                activity?.askPermission(*externalStoragePermissions, requestCode = DBPermissionConstant.readExternalStoragePermissionCode)
-            }
-        }
+        loadOpenCVLibrary()
     }
 
     override fun onDestroyView() {
@@ -246,56 +208,17 @@ class DBDocScanCameraFragment : Fragment() {
         _binding = null
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    private fun loadOpenCVLibrary() {
 
-        if (requestCode == DBPermissionConstant.readExternalStoragePermissionCode && resultCode == Activity.RESULT_OK) {
+        if (!OpenCVLoader.initDebug()) {
 
-            Log.d(TAG, "data 9 $data")
+            Log.e(TAG, "Failed to load OpenCV lib")
 
-            val uri: Uri? = data?.data
+        } else {
 
-            uri?.let { currUri ->
-
-                Coroutines.uriToBitmap(currUri, requireContext().contentResolver) { bitmap ->
-
-                    bitmap?.let { unwrappedBitmap ->
-
-                        val scaledBitmap = scaleBitmap(unwrappedBitmap)
-
-                        if (scaledBitmap != null) {
-
-                            sharedViewModel.addData(scaledBitmap)
-
-                        } else {
-
-                            sharedViewModel.addData(unwrappedBitmap)
-                        }
-
-                        activity?.runOnUiThread {
-
-                            navigateToIntern()
-                        }
-                    }
-                }
-            }
-        }else {
-
-            println("debug: wrong requestcode: $requestCode")
+            loader.onManagerConnected(LoaderCallbackInterface.SUCCESS)
         }
-
     }
-
-    private fun openMediaGallery(requestCode: Int) {
-
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-
-        intent.type = "image/*"
-
-        startActivityForResult(intent, requestCode)
-    }
-
 
     @SuppressLint("UnsafeExperimentalUsageError")
     private fun startCamera() = binding.preview.post {
@@ -368,7 +291,7 @@ class DBDocScanCameraFragment : Fragment() {
 
                                 sharedViewModel.addData(scannedImage)
 
-                                navigateToResult()
+                                navigate(R.id.action_dbDocScanCameraFragment_to_DBDocScanResultFragment)
 
                             } else {
 
@@ -376,7 +299,7 @@ class DBDocScanCameraFragment : Fragment() {
 
                                 sharedViewModel.addData(bitmapImage)
 
-                                navigateToIntern()
+                                navigate(R.id.action_scan_cameraFragment_to_internFragment)
                             }
                         } ?: run {
 
@@ -384,7 +307,7 @@ class DBDocScanCameraFragment : Fragment() {
 
                             sharedViewModel.addData(bitmapImage)
 
-                            navigateToIntern()
+                            navigate(R.id.action_scan_cameraFragment_to_internFragment)
                         }
 
                     } ?: run {
@@ -395,19 +318,10 @@ class DBDocScanCameraFragment : Fragment() {
             })
     }
 
-    private fun navigateToResult() {
-
-        activity?.runOnUiThread {
-
-            findNavController().navigate(R.id.action_dbDocScanCameraFragment_to_DBDocScanResultFragment)
-        }
-    }
-
-    private fun navigateToIntern() {
+    private fun navigate(id: Int) {
 
         activity?.run {
-
-            findNavController().navigate(R.id.action_dbDocScanCameraFragment_to_dbDocScanInternFragment)
+            findNavController().navigate(id)
         }
     }
 
@@ -447,33 +361,4 @@ class DBDocScanCameraFragment : Fragment() {
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
             .build()
     }
-
-    private fun scaleBitmap(bm: Bitmap): Bitmap? {
-
-        val maxHeight = 2024
-        val maxWidth = 2024
-        var bm = bm
-        var width = bm.width
-        var height = bm.height
-        Log.v("Pictures", "Width and height are $width--$height")
-        if (width > height) {
-            // landscape
-            val ratio = width.toFloat() / maxWidth
-            width = maxWidth
-            height = (height / ratio).toInt()
-        } else if (height > width) {
-            // portrait
-            val ratio = height.toFloat() / maxHeight
-            height = maxHeight
-            width = (width / ratio).toInt()
-        } else {
-            // square
-            height = maxHeight
-            width = maxWidth
-        }
-        Log.v("Pictures", "after scaling Width and height are $width--$height")
-        bm = Bitmap.createScaledBitmap(bm, width, height, true)
-        return bm
-    }
-
 }

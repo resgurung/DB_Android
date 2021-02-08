@@ -38,17 +38,6 @@
             android:visibility="visible">
 
             <ImageButton
-                android:id="@+id/open_gallery_button"
-                android:layout_width="@dimen/round_button_small"
-                android:layout_height="@dimen/round_button_small"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/ic_gallery"
-                android:layout_gravity="center_vertical|start"
-                android:visibility="visible"
-                android:contentDescription="open_gallary_button_alt" />
-
-
-            <ImageButton
                 android:id="@+id/camera_capture_button"
                 android:layout_width="@dimen/round_button_medium"
                 android:layout_height="@dimen/round_button_medium"

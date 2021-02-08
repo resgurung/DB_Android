@@ -12,11 +12,14 @@ import java.util.*
 import kotlin.math.abs
 import kotlin.math.ceil
 
+
 class OpenCVNativeHelper {
 
     companion object {
 
         const val TAG = "OpenCVNativeHelper"
+
+        private const val DILATE_ERODE_SIZE = 3
 
         private const val AREA_LOWER_THRESHOLD = 0.20
         private const val AREA_UPPER_THRESHOLD = 0.99
@@ -41,10 +44,12 @@ class OpenCVNativeHelper {
 
         val rectangle = MatOfPoint2f()
 
-        rectangle.fromArray(points[0].toOpenCVPoint(),
-                points[1].toOpenCVPoint(),
-                points[2].toOpenCVPoint(),
-                points[3].toOpenCVPoint())
+        rectangle.fromArray(
+            points[0].toOpenCVPoint(),
+            points[1].toOpenCVPoint(),
+            points[2].toOpenCVPoint(),
+            points[3].toOpenCVPoint()
+        )
 
         var dstMat = perspective.transform(DBImageUtils.jpegToMat(image), rectangle)
 
@@ -61,6 +66,32 @@ class OpenCVNativeHelper {
 
         return pt.transform(mat, rect)
     }
+
+    fun getScannedBitmap(
+        bitmap: Bitmap?,
+        x1: Float,
+        y1: Float,
+        x2: Float,
+        y2: Float,
+        x3: Float,
+        y3: Float,
+        x4: Float,
+        y4: Float
+    ): Bitmap? {
+        val perspective = PerspectiveTransformation()
+        val rectangle = MatOfPoint2f()
+        rectangle.fromArray(
+            Point(x1.toDouble(), y1.toDouble()), Point(
+                x2.toDouble(), y2.toDouble()
+            ), Point(x3.toDouble(), y3.toDouble()), Point(
+                x4.toDouble(),
+                y4.toDouble()
+            )
+        )
+        val dstMat = perspective.transform(DBImageUtils.bitmapToMat(bitmap), rectangle)
+        return DBImageUtils.matToBitmap(dstMat)
+    }
+
 
     private val areaDescendingComparator: Comparator<MatOfPoint2f?> = Comparator<MatOfPoint2f?> { o1, o2 ->
         val area1 = Imgproc.contourArea(o1)
@@ -95,32 +126,32 @@ class OpenCVNativeHelper {
     fun drawLinesOnMat(srcMat: Mat, points: MutableList<Point>): Mat {
 
         Imgproc.line(
-                srcMat,
-                points[0],
-                points[1],
-                scalar,
-                thickness
+            srcMat,
+            points[0],
+            points[1],
+            scalar,
+            thickness
         )
         Imgproc.line(
-                srcMat,
-                points[1],
-                points[2],
-                scalar,
-                thickness
+            srcMat,
+            points[1],
+            points[2],
+            scalar,
+            thickness
         )
         Imgproc.line(
-                srcMat,
-                points[2],
-                points[3],
-                scalar,
-                thickness
+            srcMat,
+            points[2],
+            points[3],
+            scalar,
+            thickness
         )
         Imgproc.line(
-                srcMat,
-                points[3],
-                points[0],
-                scalar,
-                thickness
+            srcMat,
+            points[3],
+            points[0],
+            scalar,
+            thickness
         )
 
         return srcMat
@@ -135,7 +166,10 @@ class OpenCVNativeHelper {
 
         Log.d(TAG, "Ratio: $ratio")
 
-        val downscaledSize = Size((srcMat.width() * ratio).toDouble(), (srcMat.height() * ratio).toDouble())
+        val downscaledSize = Size(
+            (srcMat.width() * ratio).toDouble(),
+            (srcMat.height() * ratio).toDouble()
+        )
 
         var downscaled = Mat(downscaledSize, srcMat.type())
 
@@ -146,6 +180,8 @@ class OpenCVNativeHelper {
         downscaled= runGaussianBlur(downscaled)
 
         downscaled = runCannyEdge(downscaled)
+
+        downscaled = runDilation(downscaled)
 
         val rectangles = runFindContours(downscaled)
 
@@ -194,11 +230,38 @@ class OpenCVNativeHelper {
         return destMat
     }
 
+    fun runMorphological(srcMat: Mat): Mat {
+
+        val element = Imgproc.getStructuringElement(
+            Imgproc.MORPH_RECT, Size(
+                (2 * DILATE_ERODE_SIZE + 1).toDouble(),
+                (2 * DILATE_ERODE_SIZE + 1).toDouble()
+            )
+        )
+
+        var destMat = Mat()
+
+
+        Imgproc.erode(destMat, destMat, element)
+
+        Imgproc.dilate(srcMat, destMat, element)
+
+
+
+        //Imgproc.dilate(srcMat, destMat, Mat.ones(Size(5.0, 5.0), 0))
+
+        //Imgproc.erode(destMat, destMat, Mat.ones(Size(5.0, 5.0), 0))
+
+        return destMat
+    }
+
     fun runGreyScaleBitmap(bitmap: Bitmap): Bitmap {
 
         var tmpMat = DBImageUtils.bitmapToMat(bitmap)
 
         tmpMat = runGreyScale(tmpMat)
+
+        tmpMat = runMorphological(tmpMat)
 
         val tmpBitmap = DBImageUtils.matToBitmap(tmpMat)
 
@@ -234,15 +297,15 @@ class OpenCVNativeHelper {
     private fun runAdaptiveThreshold(srcMat: Mat, blockSize: Int, meanoffset: Double): Mat {
 
         var destMat = Mat()
-//        Imgproc.adaptiveThreshold(srcMat, destMat, 255.0, Imgproc.ADAPTIVE_THRESH_MEAN_C,
-//                Imgproc.THRESH_BINARY, 15, 40.0)
 
-        Imgproc.adaptiveThreshold(srcMat,
-                destMat,
-                255.0,
-                Imgproc.ADAPTIVE_THRESH_MEAN_C,//Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,
-                Imgproc.THRESH_BINARY,
-                blockSize, meanoffset)
+        Imgproc.adaptiveThreshold(
+            srcMat,
+            destMat,
+            255.0,
+            Imgproc.ADAPTIVE_THRESH_MEAN_C,//Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,//
+            Imgproc.THRESH_BINARY,
+            blockSize, meanoffset
+        )
 
         return destMat
     }
@@ -266,11 +329,13 @@ class OpenCVNativeHelper {
 
         var dstMat = Mat()
 
-        Imgproc.threshold(srcMat,
-                dstMat,
-                min, // threshold value, ignored when using cv2.THRESH_OTSU
-                max, // maximum value assigned to pixel values exceeding the threshold
-                Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU) // thresholding type
+        Imgproc.threshold(
+            srcMat,
+            dstMat,
+            min, // threshold value, ignored when using cv2.THRESH_OTSU
+            max, // maximum value assigned to pixel values exceeding the threshold
+            Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU
+        ) // thresholding type
 
         return dstMat
 
@@ -310,6 +375,16 @@ class OpenCVNativeHelper {
         return cannyMat
     }
 
+    // Dilate Canny output to remove potential holes between edge segments.
+    private fun runDilation(srcMat: Mat): Mat {
+
+        val tmpMat = Mat()
+
+        Imgproc.dilate(srcMat, tmpMat, Mat.ones(Size(3.0, 3.0), 0))
+
+        return tmpMat
+    }
+
     private fun runFindContours(srcMat: Mat): List<MatOfPoint2f> {
 
         val srcArea = srcMat.rows() * srcMat.cols()
@@ -321,11 +396,11 @@ class OpenCVNativeHelper {
         val hierarchy = Mat()
 
         Imgproc.findContours(
-                srcMat,
-                contours,
-                hierarchy,
-                Imgproc.RETR_EXTERNAL,
-                Imgproc.CHAIN_APPROX_SIMPLE
+            srcMat,
+            contours,
+            hierarchy,
+            Imgproc.RETR_EXTERNAL,
+            Imgproc.CHAIN_APPROX_SIMPLE
         )
 
         //sort contours by their size to find the biggest one, that's the bubble-sheet
@@ -356,15 +431,101 @@ class OpenCVNativeHelper {
 
         return rectangles
     }
+
+    /** Used by intern fragment for processing single bitmap image */
+    private fun getPointsFor(src: Mat): MutableList<MatOfPoint2f> {
+
+        // Blur the image to filter out the noise.
+        val blurred = Mat()
+        Imgproc.medianBlur(src, blurred, 9)
+
+        // Set up images to use.
+        val gray0 = Mat(blurred.size(), CvType.CV_8U)
+        val gray = Mat()
+
+        // For Core.mixChannels.
+        val contours: List<MatOfPoint> = ArrayList()
+        val rectangles: MutableList<MatOfPoint2f> = ArrayList()
+
+        val sources: MutableList<Mat> = ArrayList()
+        sources.add(blurred)
+        val destinations: MutableList<Mat> = ArrayList()
+        destinations.add(gray0)
+
+        // To filter rectangles by their areas.
+        val srcArea: Int = src.rows() * src.cols()
+
+        // Find squares in every color plane of the image.
+        for (c in 0..2) {
+            val ch = intArrayOf(c, 0)
+            val fromTo = MatOfInt(*ch)
+            Core.mixChannels(sources, destinations, fromTo)
+
+            // Try several threshold levels.
+            for (l in 0 until 2) {
+                if (l == 0) {
+                    // HACK: Use Canny instead of zero threshold level.
+                    // Canny helps to catch squares with gradient shading.
+                    // NOTE: No kernel size parameters on Java API.
+                    Imgproc.Canny(gray0, gray, 10.0, 20.0)
+
+                    // Dilate Canny output to remove potential holes between edge segments.
+                    Imgproc.dilate(gray, gray, Mat.ones(Size(3.0, 3.0), 0))
+                } else {
+                    val threshold = (l + 1) * 255 / 2
+                    Imgproc.threshold(
+                        gray0,
+                        gray,
+                        threshold.toDouble(),
+                        255.0,
+                        Imgproc.THRESH_BINARY
+                    )
+                }
+
+                // Find contours and store them all as a list.
+                Imgproc.findContours(
+                    gray,
+                    contours,
+                    Mat(),
+                    Imgproc.RETR_LIST,
+                    Imgproc.CHAIN_APPROX_SIMPLE
+                )
+                for (contour in contours) {
+                    val contourFloat = DBMathUtils.toMatOfPointFloat(contour)
+                    val arcLen = Imgproc.arcLength(contourFloat, true) * 0.02
+
+                    // Approximate polygonal curves.
+                    val approx = MatOfPoint2f()
+                    Imgproc.approxPolyDP(contourFloat, approx, arcLen, true)
+                    if (isQuadrilateral(approx, srcArea)) {
+                        rectangles.add(approx)
+                    }
+                }
+            }
+        }
+
+        return rectangles
+    }
+
+    /** Used by intern fragment for processing single bitmap image */
+    fun processImageForPoints(bitmap: Bitmap?): MatOfPoint2f? {
+
+        val src = DBImageUtils.bitmapToMat(bitmap)
+
+        // Downscale image for better performance.
+        val ratio = DOWNSCALE_IMAGE_SIZE / src.width().coerceAtLeast(src.height())
+        val downscaledSize = Size(
+            (src.width() * ratio).toDouble(),
+            (src.height() * ratio).toDouble()
+        )
+        val downscaled = Mat(downscaledSize, src.type())
+        Imgproc.resize(src, downscaled, downscaledSize)
+        val rectangles: List<MatOfPoint2f> = getPointsFor(downscaled)
+        if (rectangles.isEmpty()) {
+            return null
+        }
+        Collections.sort(rectangles, areaDescendingComparator)
+        val largestRectangle = rectangles[0]
+        return DBMathUtils.scaleRectangle(largestRectangle, (1f / ratio).toDouble())
+    }
 }
-/*
-Src Mat: 720x1280
-D/OpenCVNativeHelper: Ratio: 0.3125
-D/OpenCVNativeHelper: DownscaledSize: 225x400
-D/OpenCVNativeHelper: Area: 18201.5
-D/OpenCVNativeHelper: Lower: 18000.0
-D/OpenCVNativeHelper: Upper: 89100.0
-D/OpenCVNativeHelper: Is Quad: true
-D/OpenCVNativeHelper: Area: 18201.5
-D/OpenCVNativeHelper: Lower: 18000.0
- */

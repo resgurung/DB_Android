@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".db_document_scanner_feature.ui.fragment.DBDocScanSelectionFragment">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true">
+
+            <Button
+                android:id="@+id/doc_scan_selection_fragment_camera_button"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/circle"
+                android:drawableTop="@android:drawable/ic_menu_camera"
+                android:paddingTop="20dp"
+                android:text="Camera"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/doc_scan_selection_fragment_gallery_button"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/circle"
+                android:drawableTop="@android:drawable/ic_menu_gallery"
+                android:paddingTop="20dp"
+                android:text="Gallery"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

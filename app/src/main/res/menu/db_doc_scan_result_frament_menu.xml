@@ -5,7 +5,7 @@
         android:id="@+id/cropImage"
         android:title="Crop"/>
     <item
-        android:id="@+id/rotste"
+        android:id="@+id/rotate"
         android:title="Rotate"/>
     <item
         android:id="@+id/blackAndWhiteSetting"

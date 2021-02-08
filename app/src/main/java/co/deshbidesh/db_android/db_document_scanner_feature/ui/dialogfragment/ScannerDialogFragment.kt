@@ -226,7 +226,7 @@ class ScannerDialogFragment : DialogFragment() {
         doubleSliderChangeListener()
     }
 
-    fun singleSliderChangeListener() {
+    private fun singleSliderChangeListener() {
 
         singleSlider?.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
 
@@ -250,7 +250,7 @@ class ScannerDialogFragment : DialogFragment() {
         })
     }
 
-    fun doubleSliderChangeListener() {
+    private fun doubleSliderChangeListener() {
 
         doubleRangeSlider?.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener{
 
