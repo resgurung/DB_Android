@@ -30,6 +30,8 @@ class NoteListFragment : DBBaseFragment() {
 
     private lateinit var listViewModelFactory: DBNoteListViewModelFactory
 
+    private var adapter: DBNoteListPagingDataAdapter? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,7 +56,7 @@ class NoteListFragment : DBBaseFragment() {
             // layout for potrait and landscape
             binding.noteListRecycleview.layoutManager = GridLayoutManager(it, resources.getInteger(R.integer.grid_column_count))
 
-            val adapter = DBNoteListPagingDataAdapter()
+            adapter = DBNoteListPagingDataAdapter()
 
             binding.noteListRecycleview.adapter = adapter
 
@@ -62,7 +64,10 @@ class NoteListFragment : DBBaseFragment() {
 
             listViewModel = ViewModelProvider(this, listViewModelFactory).get(DBNoteListViewModel::class.java)
 
-            suscribeUI(adapter)
+            adapter?.let {
+                suscribeUI(it)
+            }
+
         }
 
         return binding.root
@@ -81,4 +86,18 @@ class NoteListFragment : DBBaseFragment() {
             }
         }
     }
+
+   /* override fun onResume() {
+        super.onResume()
+
+        if (adapter == null) {
+
+            adapter = DBNoteListPagingDataAdapter()
+        }
+
+        adapter?.let {
+
+            suscribeUI(it)
+        }
+    }*/
 }

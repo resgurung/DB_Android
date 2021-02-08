@@ -46,9 +46,9 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="title"
-                    android:textColor="#000"
                     android:inputType="textPersonName"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:textColor="#000" />
 
                 <EditText
                     android:id="@+id/note_add_content_edittext"
@@ -58,7 +58,14 @@
                     android:gravity="start|top"
                     android:hint="note..."
                     android:inputType="textMultiLine"
-                    android:padding="14dp"/>
+                    android:padding="14dp" />
+
+                <Button
+                    android:id="@+id/note_image_add_button"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Upload Image" />
 
                 <Button
                     android:id="@+id/note_add_save_button"
@@ -66,6 +73,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/save_button" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/add_note_recycler_view"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="311dp" />
 
             </LinearLayout>
 

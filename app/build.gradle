@@ -131,6 +131,9 @@ dependencies {
     def paging_version = "3.0.0-alpha07"
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
+    // Json library
+    implementation 'com.google.code.gson:gson:2.8.6'
+
     // Testing
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
