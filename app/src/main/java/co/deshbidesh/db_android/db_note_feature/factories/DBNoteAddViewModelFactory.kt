@@ -22,5 +22,4 @@ class DBNoteAddViewModelFactory (
 
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-
 }

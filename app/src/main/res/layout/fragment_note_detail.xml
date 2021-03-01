@@ -57,12 +57,22 @@
                         android:id="@+id/note_detail_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="30dp"
                         android:textSize="18sp"
                         android:padding="10dp"
                         android:text= "Content.." />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/detail_note_recycler_view"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="311dp" />
+
                 </LinearLayout>
 
             </ScrollView>
+
+
 
             <LinearLayout
                 android:id="@+id/btnLL"

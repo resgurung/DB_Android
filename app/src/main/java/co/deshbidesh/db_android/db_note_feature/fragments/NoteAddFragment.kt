@@ -94,21 +94,24 @@ class NoteAddFragment : DBBaseFragment() {
 
                 if (!addViewModel.isTextEmpty()) {
 
-                    addViewModel.addNote { id -> // thread 1
+                    addViewModel.addNote { id -> // thread 1, addNote returns NoteId
 
                         if (id != null) {
 
                             prepareFilePath(uriList)
 
-                            addViewModel.addImage(destFilePath, id) { imageList -> //thread 2
+                            addViewModel.addImage(destFilePath, id) { imageList -> //thread 2, addImages returns imageIdList
 
                                 if (imageList.isNotEmpty()) {
 
-                                    addViewModel.getNote(id.toLong()) { currNote -> // thread 3
+                                    addViewModel.getNote(id.toLong()) { currNote -> // thread 3, getNote again, set the imageIds
 
                                         currNote.imageIds = imageList
 
-                                        addViewModel.updateNote(currNote) { // thread 4
+                                        addViewModel.updateNote(currNote) { // thread 4, finally update Note with imageIds
+
+                                            writeImagesToExternalStorage(bitMapFileMap);
+
                                             goBack("Successful, note saved.")
                                         }
                                     }

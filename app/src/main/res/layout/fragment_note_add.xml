@@ -71,6 +71,7 @@
                     android:id="@+id/note_add_save_button"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
                     android:layout_gravity="center"
                     android:text="@string/save_button" />
 

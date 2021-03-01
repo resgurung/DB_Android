@@ -65,7 +65,7 @@ class NoteListFragment : DBBaseFragment() {
             listViewModel = ViewModelProvider(this, listViewModelFactory).get(DBNoteListViewModel::class.java)
 
             adapter?.let {
-                suscribeUI(it)
+                subscribeUI(it)
             }
 
         }
@@ -73,7 +73,7 @@ class NoteListFragment : DBBaseFragment() {
         return binding.root
     }
 
-    private fun suscribeUI(adapter: DBNoteListPagingDataAdapter) {
+    private fun subscribeUI(adapter: DBNoteListPagingDataAdapter) {
 
         lifecycleScope.launch {
 

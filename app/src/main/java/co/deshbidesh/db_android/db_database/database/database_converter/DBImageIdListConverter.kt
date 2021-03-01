@@ -6,15 +6,17 @@ import com.google.gson.reflect.TypeToken
 
 class DBImageIdListConverter {
 
-    @TypeConverter
-    fun fromStringToArrayList(value: String?): ArrayList<String>? {
-        val listType = object: TypeToken<ArrayList<String>>(){}.type
-        return Gson().fromJson(value, listType)
-    }
-
+    // Converts List to String during write operation
     @TypeConverter
     fun fromArrayListToString(list: ArrayList<String>?): String? {
         val gSon = Gson()
         return gSon.toJson(list)
+    }
+    
+    // Converts String to List read operation
+    @TypeConverter
+    fun fromStringToArrayList(value: String?): ArrayList<String>? {
+        val listType = object: TypeToken<ArrayList<String>>(){}.type
+        return Gson().fromJson(value, listType)
     }
 }
