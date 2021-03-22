@@ -8,9 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -64,6 +62,8 @@ class NoteAddFragment : DBBaseFragment() {
 
         binding = FragmentNoteAddBinding.inflate(inflater, container, false)
 
+        setHasOptionsMenu(true)
+
         return binding?.root
     }
 
@@ -71,11 +71,10 @@ class NoteAddFragment : DBBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Initialize recyclerView and set adapter
-        val noteImgRecyclerView = binding?.addNoteRecyclerView
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        noteImgRecyclerView?.layoutManager = layoutManager
         noteAddImgAdapter = DBNoteAddImageRecyclerAdapter()
-        noteImgRecyclerView?.adapter = noteAddImgAdapter
+        binding?.addNoteRecyclerView?.layoutManager = layoutManager
+        binding?.addNoteRecyclerView?.adapter = noteAddImgAdapter
 
         context.let {
 
@@ -85,6 +84,7 @@ class NoteAddFragment : DBBaseFragment() {
 
                 requireActivity().onBackPressed()
             }
+
 
             binding?.noteAddSaveButton?.setOnClickListener {
 
@@ -143,7 +143,7 @@ class NoteAddFragment : DBBaseFragment() {
 
             addViewModel = ViewModelProvider(this, addViewModelFactory).get(DBNoteAddViewModel::class.java)
 
-            binding?.noteImageAddButton?.setOnClickListener{
+            binding?.addNoteFab?.setOnClickListener{
                 if(checkPermission()){
                     pickImage()
                 }

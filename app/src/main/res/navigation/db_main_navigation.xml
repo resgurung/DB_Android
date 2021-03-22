@@ -21,6 +21,7 @@
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/onboardingViewPager"
         android:name="co.deshbidesh.db_android.db_onboarding_feature.OnboardingViewPager"
@@ -32,16 +33,19 @@
             app:popUpTo="@id/onboardingViewPager"
             app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/calendarFragment"
         android:name="co.deshbidesh.db_android.db_calendar_feature.CalendarFragment"
         android:label="Calendar"
         tools:layout="@layout/fragment_calendar" />
+
     <fragment
         android:id="@+id/dictionaryFragment"
         android:name="co.deshbidesh.db_android.db_dictionary_feature.DictionaryFragment"
         android:label="Dictionary"
         tools:layout="@layout/fragment_dictionary" />
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="co.deshbidesh.db_android.db_home_feature.HomeFragment"
@@ -51,11 +55,13 @@
             android:id="@+id/action_homeFragment_to_noteListFragment"
             app:destination="@id/noteListFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="co.deshbidesh.db_android.db_settings_feature.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
+
     <fragment
         android:id="@+id/noteListFragment"
         android:name="co.deshbidesh.db_android.db_note_feature.fragments.NoteListFragment"
@@ -73,6 +79,7 @@
             android:id="@+id/action_noteListFragment_to_noteAddFragment"
             app:destination="@id/noteAddFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/noteDetailFragment"
         android:name="co.deshbidesh.db_android.db_note_feature.fragments.NoteDetailFragment"
@@ -89,7 +96,11 @@
         <argument
             android:name="noteDetail"
             app:argType="co.deshbidesh.db_android.db_note_feature.models.DBNote" />
+        <action
+            android:id="@+id/action_noteDetailFragment_to_fullscreenImageFragment"
+            app:destination="@id/fullscreenImageFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/noteAddFragment"
         android:name="co.deshbidesh.db_android.db_note_feature.fragments.NoteAddFragment"
@@ -101,6 +112,7 @@
             app:popUpTo="@id/noteListFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/noteEditFragment"
         android:name="co.deshbidesh.db_android.db_note_feature.fragments.NoteEditFragment"
@@ -115,4 +127,15 @@
             android:name="noteEdit"
             app:argType="co.deshbidesh.db_android.db_note_feature.models.DBNote" />
     </fragment>
+
+    <fragment
+        android:id="@+id/fullscreenImageFragment"
+        android:name="co.deshbidesh.db_android.db_note_feature.fragments.FullscreenImageFragment"
+        android:label="fragment_fullscreen_image"
+        tools:layout="@layout/fragment_fullscreen_image" >
+        <argument
+            android:name="imagePath"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

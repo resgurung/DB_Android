@@ -60,26 +60,27 @@
                     android:inputType="textMultiLine"
                     android:padding="14dp" />
 
-                <Button
-                    android:id="@+id/note_image_add_button"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Upload Image" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/add_note_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="213dp"
+                    android:orientation="horizontal" />
 
                 <Button
                     android:id="@+id/note_add_save_button"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="30dp"
                     android:text="@string/save_button" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/add_note_recycler_view"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="311dp" />
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/add_note_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="69dp"
+                    android:layout_gravity="end"
+                    android:clickable="true"
+                    app:srcCompat="@drawable/add_image_vec2" />
 
             </LinearLayout>
 

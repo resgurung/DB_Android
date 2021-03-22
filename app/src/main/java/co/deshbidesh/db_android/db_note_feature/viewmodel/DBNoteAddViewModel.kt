@@ -90,6 +90,7 @@ class DBNoteAddViewModel (
         }
     }
 
+
     fun isTextEmpty(): Boolean {
 
         if (title.isEmpty() || content.isEmpty()) {

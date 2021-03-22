@@ -14,6 +14,7 @@ import co.deshbidesh.db_android.db_database.database.DBDatabase
 import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.adapters.DBNoteListPagingDataAdapter
 import co.deshbidesh.db_android.db_note_feature.factories.DBNoteListViewModelFactory
+import co.deshbidesh.db_android.db_note_feature.models.DBNote
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteListViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
 import co.deshbidesh.db_android.shared.decorators.EqualSpaceItemDecorator
@@ -22,7 +23,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 
-class NoteListFragment : DBBaseFragment() {
+class NoteListFragment : DBBaseFragment(), DBNoteListPagingDataAdapter.InterfaceDeleteNote {
 
     override var bottomNavigationViewVisibility = View.GONE
 
@@ -56,7 +57,7 @@ class NoteListFragment : DBBaseFragment() {
             // layout for potrait and landscape
             binding.noteListRecycleview.layoutManager = GridLayoutManager(it, resources.getInteger(R.integer.grid_column_count))
 
-            adapter = DBNoteListPagingDataAdapter()
+            adapter = DBNoteListPagingDataAdapter(this)
 
             binding.noteListRecycleview.adapter = adapter
 
@@ -87,17 +88,22 @@ class NoteListFragment : DBBaseFragment() {
         }
     }
 
-   /* override fun onResume() {
-        super.onResume()
+    override fun deleteNote(note: DBNote) {
 
-        if (adapter == null) {
+        listViewModel.deleteNote(note)
+    }
 
-            adapter = DBNoteListPagingDataAdapter()
-        }
+    /* override fun onResume() {
+         super.onResume()
 
-        adapter?.let {
+         if (adapter == null) {
 
-            suscribeUI(it)
-        }
-    }*/
+             adapter = DBNoteListPagingDataAdapter()
+         }
+
+         adapter?.let {
+
+             suscribeUI(it)
+         }
+     }*/
 }

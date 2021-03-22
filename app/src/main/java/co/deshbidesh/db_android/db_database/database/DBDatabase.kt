@@ -35,6 +35,7 @@ abstract class DBDatabase: RoomDatabase() {
                 return tempINSTANCE
             }
 
+
             synchronized(this) {
 
                 var instance = Room.databaseBuilder(
@@ -45,7 +46,7 @@ abstract class DBDatabase: RoomDatabase() {
 
                 INSTANCE = instance
 
-                return  instance
+                return instance
             }
         }
     }

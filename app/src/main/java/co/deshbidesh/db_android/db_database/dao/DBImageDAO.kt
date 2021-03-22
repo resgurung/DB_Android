@@ -3,7 +3,9 @@ package co.deshbidesh.db_android.db_database.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import co.deshbidesh.db_android.db_note_feature.models.DBImage
+import kotlinx.coroutines.selects.select
 
 @Dao
 interface DBImageDAO {
@@ -14,5 +16,12 @@ interface DBImageDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addImage(image: DBImage): Long
+
+    @Query("SELECT * FROM db_images WHERE id= :imageId")
+    suspend fun getSingleImageByImageId(imageId: Int): DBImage
+
+    @Query("SELECT * FROM db_images WHERE note_id= :noteId")
+    suspend fun getImageListByNoteId(noteId: Int): List<DBImage>
+
 
 }

@@ -1,5 +1,7 @@
 package co.deshbidesh.db_android.db_note_feature.adapters
 
+import android.app.AlertDialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +15,16 @@ import co.deshbidesh.db_android.db_note_feature.fragments.NoteListFragmentDirect
 import co.deshbidesh.db_android.db_note_feature.models.DBNote
 import kotlinx.android.synthetic.main.layout_note_list_item.view.*
 
-class DBNoteListPagingDataAdapter: PagingDataAdapter<DBNote, DBNoteListPagingDataAdapter.NoteItemViewHolder>(DIFF_CALLBACK) {
+class DBNoteListPagingDataAdapter(
+    private val iDeleteNote: InterfaceDeleteNote
+): PagingDataAdapter<DBNote, DBNoteListPagingDataAdapter.NoteItemViewHolder>(
+    DIFF_CALLBACK) {
+
+    interface InterfaceDeleteNote{
+        fun deleteNote(note: DBNote)
+    }
+
+    private val interfaceDeleteNote: InterfaceDeleteNote = iDeleteNote
 
     // private inner note view holder class
     class NoteItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
@@ -52,13 +63,35 @@ class DBNoteListPagingDataAdapter: PagingDataAdapter<DBNote, DBNoteListPagingDat
 
                     holder.itemView.note_list_row_layout.setOnClickListener { view ->
 
-                        val action = NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment(note)
+                        val action =
+                            NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment(
+                                note
+                            )
 
                         view.findNavController().navigate(action)
+                    }
+
+                    holder.itemView.setOnLongClickListener {
+                        showDeleteDialog(it.context, note)
+                        true
                     }
                 }
             }
         }
+    }
+
+    private fun showDeleteDialog(context: Context, note: DBNote){
+
+        AlertDialog.Builder(context)
+            .setMessage("Are you sure you want to delete the note?")
+            .setPositiveButton("Yes"){
+                    _, _ -> interfaceDeleteNote.deleteNote(note)
+            }
+
+            .setNegativeButton("Cancel"){
+                    dialog, _ ->
+                dialog.dismiss()
+            }.show()
     }
 
     companion object {
@@ -74,7 +107,6 @@ class DBNoteListPagingDataAdapter: PagingDataAdapter<DBNote, DBNoteListPagingDat
 
                 return oldItem == newItem
             }
-
         }
     }
 }
