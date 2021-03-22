@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -24,6 +25,7 @@ import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteAddViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
 import co.deshbidesh.db_android.shared.DBHelper
 import co.deshbidesh.db_android.shared.hideKeyboard
+import kotlinx.android.synthetic.main.fragment_note_add.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -31,6 +33,8 @@ import java.io.OutputStream
 
 
 class NoteAddFragment : DBBaseFragment() {
+
+    private lateinit var toolbar: Toolbar
 
     override var bottomNavigationViewVisibility = View.GONE
 
@@ -76,6 +80,22 @@ class NoteAddFragment : DBBaseFragment() {
         binding?.addNoteRecyclerView?.layoutManager = layoutManager
         binding?.addNoteRecyclerView?.adapter = noteAddImgAdapter
 
+        toolbar = binding!!.noteAddToolbar
+
+        toolbar.inflateMenu(R.menu.note_save)
+
+        toolbar.setOnMenuItemClickListener { item ->
+
+            when(item.itemId){
+
+                R.id.save_note_db -> {
+                    saveNote()
+                    true
+                }
+                else -> false
+            }
+        }
+
         context.let {
 
             binding?.noteAddToolbar?.setNavigationOnClickListener {
@@ -85,56 +105,6 @@ class NoteAddFragment : DBBaseFragment() {
                 requireActivity().onBackPressed()
             }
 
-
-            binding?.noteAddSaveButton?.setOnClickListener {
-
-                addViewModel.title = binding?.noteAddTitleEdittext?.text.toString()
-
-                addViewModel.content = binding?.noteAddContentEdittext?.text.toString()
-
-                if (!addViewModel.isTextEmpty()) {
-
-                    addViewModel.addNote { id -> // thread 1, addNote returns NoteId
-
-                        if (id != null) {
-
-                            prepareFilePath(uriList)
-
-                            addViewModel.addImage(destFilePath, id) { imageList -> //thread 2, addImages returns imageIdList
-
-                                if (imageList.isNotEmpty()) {
-
-                                    addViewModel.getNote(id.toLong()) { currNote -> // thread 3, getNote again, set the imageIds
-
-                                        currNote.imageIds = imageList
-
-                                        addViewModel.updateNote(currNote) { // thread 4, finally update Note with imageIds
-
-                                            writeImagesToExternalStorage(bitMapFileMap);
-
-                                            goBack("Successful, note saved.")
-                                        }
-                                    }
-
-                                } else {
-
-                                    goBack("msg")
-                                }
-                            }
-
-                        } else {
-
-                            goBack("Something went wrong..")
-                        }
-                    }
-
-                    hideKeyboard()
-
-                } else {
-
-                    showToast("Fields cannot be empty")
-                }
-            }
 
             addViewModelFactory = DBNoteAddViewModelFactory(
                 DBNoteRepository(DBDatabase.getDatabase(requireContext()).noteDAO()),
@@ -155,6 +125,57 @@ class NoteAddFragment : DBBaseFragment() {
         super.onDestroy()
         binding = null
     }
+
+
+    private fun saveNote(){
+        addViewModel.title = binding?.noteAddTitleEdittext?.text.toString()
+
+        addViewModel.content = binding?.noteAddContentEdittext?.text.toString()
+
+        if (!addViewModel.isTextEmpty()) {
+
+            addViewModel.addNote { id -> // thread 1, addNote returns NoteId
+
+                if (id != null) {
+
+                    prepareFilePath(uriList)
+
+                    addViewModel.addImage(destFilePath, id) { imageList -> //thread 2, addImages returns imageIdList
+
+                        if (imageList.isNotEmpty()) {
+
+                            addViewModel.getNote(id.toLong()) { currNote -> // thread 3, getNote again, set the imageIds
+
+                                currNote.imageIds = imageList
+
+                                addViewModel.updateNote(currNote) { // thread 4, finally update Note with imageIds
+
+                                    writeImagesToExternalStorage(bitMapFileMap);
+
+                                    goBack("Successful, note saved.")
+                                }
+                            }
+
+                        } else {
+
+                            goBack("msg")
+                        }
+                    }
+
+                } else {
+
+                    goBack("Something went wrong..")
+                }
+            }
+
+            hideKeyboard()
+
+        } else {
+
+            showToast("Fields cannot be empty")
+        }
+    }
+
 
     private fun goBack(msg: String) {
 

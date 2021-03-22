@@ -5,10 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        tools:context=".db_note_feature.fragments.NoteDetailFragment"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".db_note_feature.fragments.NoteDetailFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/note_add_toolbar"
@@ -20,18 +20,19 @@
             app:navigationIcon="@drawable/ic_arrow_back_ios">
 
             <TextView
+                android:id="@+id/note_add_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create"
-                android:textSize="24sp"
                 android:layout_gravity="center"
-                android:id="@+id/note_add_toolbar_title" />
+                android:text="Create"
+                android:textSize="24sp" />
 
         </androidx.appcompat.widget.Toolbar>
 
+
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="477dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,21 +45,27 @@
                     android:id="@+id/note_add_title_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
                     android:ems="10"
-                    android:hint="title"
+                    android:hint="Title"
                     android:inputType="textPersonName"
                     android:padding="10dp"
-                    android:textColor="#000" />
+                    android:textColor="#000"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/note_add_content_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
                     android:ems="10"
                     android:gravity="start|top"
-                    android:hint="note..."
+                    android:hint="Content"
                     android:inputType="textMultiLine"
-                    android:padding="14dp" />
+                    android:padding="14dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/add_note_recycler_view"
@@ -66,25 +73,27 @@
                     android:layout_height="213dp"
                     android:orientation="horizontal" />
 
-                <Button
-                    android:id="@+id/note_add_save_button"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="30dp"
-                    android:text="@string/save_button" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/add_note_fab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="69dp"
-                    android:layout_gravity="end"
-                    android:clickable="true"
-                    app:srcCompat="@drawable/add_image_vec2" />
-
             </LinearLayout>
 
         </ScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_note_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="69dp"
+            android:layout_gravity="end"
+            android:clickable="true"
+            app:layout_anchor="@id/note_add_bottom_appbar"
+            app:srcCompat="@drawable/add_image_vec2" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/note_add_bottom_appbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/colorPrimary"
+            app:fabAllignmentMode="center"
+            app:fabAttached="true" />
 
     </LinearLayout>
 
