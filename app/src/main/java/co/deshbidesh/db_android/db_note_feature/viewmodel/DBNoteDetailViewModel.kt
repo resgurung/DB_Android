@@ -42,11 +42,28 @@ class DBNoteDetailViewModel(
     }
 
 
-    fun deleteNote() {
+    fun deleteNote(listener: (note: DBNote) -> Unit) {
 
         viewModelScope.launch {
 
             noteRepository.delete(note)
+
+            listener(note)
+        }
+    }
+
+    fun deleteImages(listener: () -> Unit){
+
+        if(note.imageIds != null){
+
+            val noteId: Int = note.id
+
+            viewModelScope.launch {
+
+                imageRepository.deleteImagesByNoteId(noteId)
+
+                listener()
+            }
         }
     }
 

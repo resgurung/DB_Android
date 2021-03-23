@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -20,6 +21,10 @@ import co.deshbidesh.db_android.shared.hideKeyboard
 
 class NoteEditFragment : DBBaseFragment() {
 
+    private var binding: FragmentNoteEditBinding? = null;
+
+    private lateinit var toolbar: Toolbar
+
     override var bottomNavigationViewVisibility = View.GONE
 
     private val args by navArgs<NoteEditFragmentArgs>()
@@ -33,7 +38,13 @@ class NoteEditFragment : DBBaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding = FragmentNoteEditBinding.inflate(inflater, container, false)
+        binding = FragmentNoteEditBinding.inflate(inflater, container, false)
+
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         noteEditViewModelFactory = DBNoteEditViewModelFactory(
             DBNoteRepository(DBDatabase.getDatabase(requireContext()).noteDAO()),
@@ -42,16 +53,31 @@ class NoteEditFragment : DBBaseFragment() {
 
         noteEditViewModel = ViewModelProvider(this, noteEditViewModelFactory).get(DBNoteEditViewModel::class.java)
 
-        binding.noteEditToolbar.setNavigationOnClickListener {
+        binding?.noteEditToolbar?.setNavigationOnClickListener {
 
             requireActivity().onBackPressed()
         }
 
-        binding.noteEditSaveButton.setOnClickListener {
+        toolbar = binding!!.noteEditToolbar
+        toolbar.inflateMenu(R.menu.note_save)
+        toolbar.setOnMenuItemClickListener { item ->
 
-            noteEditViewModel.title = binding.noteEditTitleEdittext.text.toString()
+            when(item.itemId){
 
-            noteEditViewModel.content = binding.noteEditContentEdittext.text.toString()
+                R.id.save_note_db -> {
+                    upDateNote()
+                    true
+                }
+                else -> false
+            }
+        }
+
+
+        /*binding.noteEditSaveButton.setOnClickListener {
+
+            noteEditViewModel.title = binding?.noteEditTitleEdittext?.text.toString()
+
+            noteEditViewModel.content = binding?.noteEditContentEdittext?.text.toString()
 
             if (!noteEditViewModel.isTextEmpty()) {
 
@@ -73,12 +99,38 @@ class NoteEditFragment : DBBaseFragment() {
 
                 showToast("Fields cannot be empty")
             }
+        }*/
+
+        binding?.noteEditTitleEdittext?.setText(noteEditViewModel.getNote().title)
+
+        binding?.noteEditContentEdittext?.setText(noteEditViewModel.getNote().content)
+    }
+
+
+    private fun upDateNote(){
+        noteEditViewModel.title = binding?.noteEditTitleEdittext?.text.toString()
+
+        noteEditViewModel.content = binding?.noteEditContentEdittext?.text.toString()
+
+        if (!noteEditViewModel.isTextEmpty()) {
+
+            if (!noteEditViewModel.isSame()) {
+
+                noteEditViewModel.updateNote()
+
+                hideKeyboard()
+
+                showToast("Note updated")
+
+                findNavController().navigate(R.id.action_noteEditFragment_to_noteListFragment)
+
+            } else {
+
+                showToast("Please edit one of the field")
+            }
+        } else {
+
+            showToast("Fields cannot be empty")
         }
-
-        binding.noteEditTitleEdittext.setText(noteEditViewModel.getNote().title)
-
-        binding.noteEditContentEdittext.setText(noteEditViewModel.getNote().content)
-
-        return binding.root
     }
 }

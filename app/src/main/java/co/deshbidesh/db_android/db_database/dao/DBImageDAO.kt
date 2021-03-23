@@ -23,5 +23,7 @@ interface DBImageDAO {
     @Query("SELECT * FROM db_images WHERE note_id= :noteId")
     suspend fun getImageListByNoteId(noteId: Int): List<DBImage>
 
+    @Query("DELETE FROM db_images WHERE note_id= :noteId")
+    suspend fun deleteImageByNoteId(noteId: Int)
 
 }

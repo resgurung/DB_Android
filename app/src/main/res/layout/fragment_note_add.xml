@@ -4,19 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@color/background_color_light"
         tools:context=".db_note_feature.fragments.NoteDetailFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/note_add_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="@drawable/ic_arrow_back_ios">
 
             <TextView
@@ -24,15 +28,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Create"
-                android:textSize="24sp" />
+                android:text="My Note"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
 
         </androidx.appcompat.widget.Toolbar>
 
 
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="477dp">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/note_add_toolbar">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,41 +70,33 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:ems="10"
-                    android:gravity="start|top"
                     android:hint="Content"
                     android:inputType="textMultiLine"
                     android:padding="14dp"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/add_note_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="213dp"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal" />
 
             </LinearLayout>
 
         </ScrollView>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_note_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="69dp"
-            android:layout_gravity="end"
-            android:clickable="true"
-            app:layout_anchor="@id/note_add_bottom_appbar"
-            app:srcCompat="@drawable/add_image_vec2" />
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/note_add_bottom_appbar"
+            android:id="@+id/note_add_bottom_nav"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:backgroundTint="@color/colorPrimary"
-            app:fabAllignmentMode="center"
-            app:fabAttached="true" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/db_note_create_bottom_menu" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
