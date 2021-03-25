@@ -4,8 +4,11 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import co.deshbidesh.db_android.R
+import co.deshbidesh.db_android.db_note_feature.fragments.NoteAddFragmentDirections
+import co.deshbidesh.db_android.db_note_feature.fragments.NoteDetailFragmentDirections
 import kotlinx.android.synthetic.main.note_add_img_row_item.view.*
 
 class DBNoteAddImageRecyclerAdapter: RecyclerView.Adapter<DBNoteAddImageRecyclerAdapter.DBNoteAddImageViewHolder>() {
@@ -23,6 +26,11 @@ class DBNoteAddImageRecyclerAdapter: RecyclerView.Adapter<DBNoteAddImageRecycler
 
     override fun onBindViewHolder(holder: DBNoteAddImageViewHolder, position: Int) {
         holder.itemView.note_add_img_view.setImageURI(Uri.parse(imagePathList[position]))
+
+        holder.itemView.setOnClickListener {
+            val action = NoteAddFragmentDirections.actionNoteAddFragmentToFullscreenImageFragment(imagePathList[position])
+            it.findNavController().navigate(action)
+        }
     }
 
     override fun getItemCount(): Int {

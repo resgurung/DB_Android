@@ -17,6 +17,14 @@ class DBImageRepository(private val noteImageDao: DBImageDAO) {
         return noteImageDao.getImageListByNoteId(noteId)
     }
 
+    suspend fun getImageIdByPath(imagePath: String): Int{
+        return noteImageDao.getImageIdByPath(imagePath)
+    }
+
+    suspend fun deleteSingleImageById(imgId: Int) {
+        noteImageDao.deleteSingleImageById(imgId)
+    }
+
     suspend fun deleteImagesByNoteId(noteId: Int){
         noteImageDao.deleteImageByNoteId(noteId)
     }

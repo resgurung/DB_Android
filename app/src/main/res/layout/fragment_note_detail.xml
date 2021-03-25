@@ -49,7 +49,7 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <TextView
+                <EditText
                     android:id="@+id/note_detail_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                     android:textSize="30sp"
                     android:textStyle="bold"  />
 
-                <TextView
+                <EditText
                     android:id="@+id/note_detail_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,6 +82,18 @@
             </LinearLayout>
 
         </ScrollView>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/note_detail_bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/db_note_create_bottom_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

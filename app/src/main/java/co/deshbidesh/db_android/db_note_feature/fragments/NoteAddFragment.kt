@@ -99,7 +99,6 @@ class NoteAddFragment : DBBaseFragment() {
             }
         }
 
-
         bottomNavBar = binding!!.noteAddBottomNav
         bottomNavBar.setOnNavigationItemSelectedListener { item ->
 
@@ -120,6 +119,7 @@ class NoteAddFragment : DBBaseFragment() {
             }
         }
 
+        // Focus
         binding!!.noteAddContentEdittext.requestFocus()
         val inputMethodManager: InputMethodManager =
             this.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager;
@@ -142,17 +142,19 @@ class NoteAddFragment : DBBaseFragment() {
 
             addViewModel = ViewModelProvider(this, addViewModelFactory).get(DBNoteAddViewModel::class.java)
 
-            /*binding?.addNoteFab?.setOnClickListener{
-                if(checkPermission()){
-                    pickImage()
-                }
-            }*/
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        println("FilePath: $uriList")
+        noteAddImgAdapter.setData(uriList)  // re-load uri
     }
 
 

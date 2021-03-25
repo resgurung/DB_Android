@@ -6,12 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 
-@Entity(tableName = "db_images"
-    /*foreignKeys = [ForeignKey(entity = DBNote::class,
-    parentColumns = arrayOf("id"),
-    childColumns = arrayOf("note_id"),
-    onDelete = ForeignKey.CASCADE)]*/
-)
+@Entity(tableName = "db_images")
 data class DBImage(
 
     @PrimaryKey(autoGenerate = true)

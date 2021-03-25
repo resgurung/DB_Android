@@ -1,5 +1,6 @@
 package co.deshbidesh.db_android.db_note_feature.fragments
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -10,6 +11,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.shared.DBBaseFragment
@@ -32,38 +34,41 @@ class FullscreenImageFragment : DBBaseFragment() {
         // Note that some of these constants are new as of API 16 (Jelly Bean)
         // and API 19 (KitKat). It is safe to use them, as they are inlined
         // at compile-time and do nothing on earlier devices.
-        val flags =
-            View.SYSTEM_UI_FLAG_LOW_PROFILE or
+        val flags = View.SYSTEM_UI_FLAG_LOW_PROFILE or
                     View.SYSTEM_UI_FLAG_FULLSCREEN or
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
                     View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
                     View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
                     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+
         activity?.window?.decorView?.systemUiVisibility = flags
+
         (activity as? AppCompatActivity)?.supportActionBar?.hide()
     }
     private val showPart2Runnable = Runnable {
         // Delayed display of UI elements
-        fullscreenContentControls?.visibility = View.VISIBLE
+        //fullscreenContentControls?.visibility = View.VISIBLE
     }
     private var visible: Boolean = false
     private val hideRunnable = Runnable { hide() }
 
-    /**
+   /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
      * while interacting with activity UI.
      */
+    @SuppressLint("ClickableViewAccessibility")
     private val delayHideTouchListener = View.OnTouchListener { _, _ ->
         if (AUTO_HIDE) {
             delayedHide(AUTO_HIDE_DELAY_MILLIS)
         }
+
         false
     }
 
     private var doneButton: Button? = null
+    private var deleteButton: Button? = null
     private var fullscreenContent: ImageView? = null
-    private var fullscreenContentControls: View? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,8 +84,12 @@ class FullscreenImageFragment : DBBaseFragment() {
         visible = true
 
         doneButton = view.findViewById(R.id.done_button)
+
+        deleteButton = view.findViewById(R.id.delete_button)
+
+
         fullscreenContent = view.findViewById(R.id.full_screen_img_view)
-        fullscreenContentControls = view.findViewById(R.id.fullscreen_content_controls)
+        //fullscreenContentControls = view.findViewById(R.id.fullscreen_content_controls)
 
         // Set up the user interaction to manually show or hide the system UI.
         fullscreenContent?.setOnClickListener { toggle() }
@@ -92,7 +101,14 @@ class FullscreenImageFragment : DBBaseFragment() {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        doneButton?.setOnTouchListener(delayHideTouchListener)
+        //doneButton?.setOnTouchListener(delayHideTouchListener)
+
+        doneButton?.setOnClickListener {
+
+            requireActivity().onBackPressed()
+        }
+
+
     }
 
     override fun onResume() {
@@ -118,7 +134,7 @@ class FullscreenImageFragment : DBBaseFragment() {
         super.onDestroy()
         doneButton = null
         fullscreenContent = null
-        fullscreenContentControls = null
+        //fullscreenContentControls = null
     }
 
     private fun toggle() {
@@ -131,7 +147,7 @@ class FullscreenImageFragment : DBBaseFragment() {
 
     private fun hide() {
         // Hide UI first
-        fullscreenContentControls?.visibility = View.GONE
+       // fullscreenContentControls?.visibility = View.GONE
         visible = false
 
         // Schedule a runnable to remove the status and navigation bar after a delay
@@ -181,4 +197,5 @@ class FullscreenImageFragment : DBBaseFragment() {
          */
         private const val UI_ANIMATION_DELAY = 300
     }
+
 }

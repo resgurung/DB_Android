@@ -10,9 +10,9 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/editNote"
+        android:id="@+id/saveNote"
         android:title="Edit"
-        android:icon="@drawable/ic_edit"
+        android:icon="@drawable/save_note_vec"
         android:orderInCategory="2"
         app:showAsAction="always"/>
 </menu>

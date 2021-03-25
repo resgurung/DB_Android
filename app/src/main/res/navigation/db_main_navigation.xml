@@ -111,6 +111,9 @@
             app:destination="@id/noteListFragment"
             app:popUpTo="@id/noteListFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_noteAddFragment_to_fullscreenImageFragment"
+            app:destination="@id/fullscreenImageFragment" />
     </fragment>
 
     <fragment
@@ -126,6 +129,9 @@
         <argument
             android:name="noteEdit"
             app:argType="co.deshbidesh.db_android.db_note_feature.models.DBNote" />
+        <action
+            android:id="@+id/action_noteEditFragment_to_fullscreenImageFragment"
+            app:destination="@id/fullscreenImageFragment" />
     </fragment>
 
     <fragment

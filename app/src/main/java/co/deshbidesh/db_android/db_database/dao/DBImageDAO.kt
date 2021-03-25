@@ -23,6 +23,12 @@ interface DBImageDAO {
     @Query("SELECT * FROM db_images WHERE note_id= :noteId")
     suspend fun getImageListByNoteId(noteId: Int): List<DBImage>
 
+    @Query("SELECT id FROM db_images WHERE img_path= :imagePath")
+    suspend fun getImageIdByPath(imagePath: String): Int
+
+    @Query("DELETE FROM db_images WHERE id= :imgId")
+    suspend fun deleteSingleImageById(imgId: Int)
+
     @Query("DELETE FROM db_images WHERE note_id= :noteId")
     suspend fun deleteImageByNoteId(noteId: Int)
 
