@@ -10,6 +10,7 @@ import co.deshbidesh.db_android.db_note_feature.models.DBNote
 import co.deshbidesh.db_android.shared.DBHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 
 class DBNoteDetailViewModel(
     private val noteRepository: DBNoteRepository,
@@ -63,22 +64,44 @@ class DBNoteDetailViewModel(
         }
     }
 
+    fun getImageIdListByNoteId(listener: (idList: String?) -> Unit){
 
-
-    fun getImageIdByPath(imagePath: String, listener: (id: Int) -> Unit){
-
+        var imageIdList: String?
         viewModelScope.launch {
-            val imgId: Int = imageRepository.getImageIdByPath(imagePath)
+             imageIdList = noteRepository.getImageIdListByNoteId(note.id)
 
-            listener(imgId)
+             listener(imageIdList)
         }
     }
 
 
-    fun deleteSingleImageById(imgId: Int, listener: () -> Unit){
+    fun getImageIdByPath(imagePathList: ArrayList<String> , listener: (ids: ArrayList<String> ) -> Unit){
 
         viewModelScope.launch {
-            imageRepository.deleteSingleImageById(imgId)
+
+            val imgIds: ArrayList<String> = arrayListOf()
+
+            for(path in imagePathList){
+
+                val id = imageRepository.getImageIdByPath(path)
+
+                imgIds.add(id.toString())
+            }
+
+            listener(imgIds)
+        }
+    }
+
+
+    fun deleteSingleImageById(imgIds: ArrayList<String>, listener: () -> Unit){
+
+        viewModelScope.launch {
+
+            for (id in imgIds){
+
+                imageRepository.deleteSingleImageById(id.toInt())
+
+            }
 
             listener()
         }
@@ -99,7 +122,7 @@ class DBNoteDetailViewModel(
         }
     }
 
-    fun updateNote() {
+    fun updateNote(listener: () -> Unit) {
 
         note.title = title
 
@@ -107,20 +130,23 @@ class DBNoteDetailViewModel(
 
         note.description = utility.generateDescriptionFromContent(content)
 
+        println("imgUpdated2 $updatedImageIds")
+
         if(updatedImageIds.isNotEmpty()){
 
             note.imageIds = updatedImageIds
+        }else{
+            note.imageIds = null
         }
 
         viewModelScope.launch(Dispatchers.IO) {
 
             noteRepository.updateNote(note)
+            listener()
         }
     }
 
     fun addImage(paths: List<String>, listener: (list: ArrayList<String>) -> Unit) {
-
-        var previousImageList: ArrayList<String>? = note.imageIds
 
         var imageIdList: ArrayList<String> = arrayListOf()
 
@@ -140,11 +166,9 @@ class DBNoteDetailViewModel(
 
                     imageIdList.add(id.toString())
                 }
-
-                previousImageList?.addAll(imageIdList)
             }
 
-            listener(previousImageList!!)
+            listener(imageIdList)
         }
     }
 
@@ -154,6 +178,7 @@ class DBNoteDetailViewModel(
 
         return this.note.content == content && this.note.title == title
     }
+
 
     fun isTextEmpty(): Boolean {
 

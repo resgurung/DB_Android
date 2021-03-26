@@ -11,14 +11,12 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.db_note_feature.fragments.NoteDetailFragmentDirections
-import co.deshbidesh.db_android.db_note_feature.models.DBImage
-import co.deshbidesh.db_android.db_note_feature.models.DBNote
 
 class DBNoteDetailImageRecyclerAdapter(private val iDeleteImage: InterfaceDeleteImage)
     : RecyclerView.Adapter<DBNoteDetailImageRecyclerAdapter.DBNoteDetailImageViewHolder>() {
 
     interface InterfaceDeleteImage{
-        fun deleteImage(imgPath: String)
+        fun handleDeleteImage(imgPath: String)
     }
 
     private val interfaceDeleteImage: InterfaceDeleteImage = iDeleteImage
@@ -62,9 +60,9 @@ class DBNoteDetailImageRecyclerAdapter(private val iDeleteImage: InterfaceDelete
     private fun showDeleteDialog(context: Context, imgPath: String){
 
         AlertDialog.Builder(context)
-            .setMessage("Are you sure you want to delete the image?")
+            .setMessage("Are you sure you want to delete the image? Click save to complete deletion")
             .setPositiveButton("Yes"){
-                    _, _ -> interfaceDeleteImage.deleteImage(imgPath)
+                    _, _ -> interfaceDeleteImage.handleDeleteImage(imgPath)
             }
 
             .setNegativeButton("Cancel"){

@@ -48,4 +48,9 @@ class DBNoteRepository(private val dao: DBNoteDAO) {
 
         dao.deleteAll()
     }
+
+    suspend fun getImageIdListByNoteId(id: Int): String? {
+
+        return dao.getImageIdListByNoteId(id)
+    }
 }
