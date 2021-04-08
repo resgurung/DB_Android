@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,7 +65,7 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
     private var imagesToBeDeleted: ArrayList<String> = arrayListOf()
 
     // To track new images to be added to the database for the current note
-    private var uriList: ArrayList<String> = arrayListOf()
+    private var newList: ArrayList<String> = arrayListOf()
 
     // To store final path of newly added images
     private var destFilePath:ArrayList<String> =  arrayListOf()
@@ -135,14 +134,15 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
 
                 R.id.saveNote -> {
 
-                    if(imagesToBeDeleted.isNotEmpty() || uriList.isNotEmpty()) {
+                    if(imagesToBeDeleted.isNotEmpty() || newList.isNotEmpty()) {
 
-                        if(uriList.isNotEmpty()) {
+                        if(newList.isNotEmpty()) {
 
-                            prepareFilePath(uriList)
+                            prepareFilePath(newList)
 
                             noteDetailViewModel.addImage(destFilePath) { newImgIdList ->  // add new images to database
 
+                                // 4th condition
                                 if(imagesToBeDeleted.isNotEmpty()){
                                     noteDetailViewModel.getImageIdByPath(imagesToBeDeleted) { imageIds ->
 
@@ -162,17 +162,22 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
                                             }
                                         }
                                     }
+
+                                 // 3rd condition
                                 } else {
 
                                     noteDetailViewModel.updatedImageIds.addAll(newImgIdList)
                                     upDateNote()
                                 }
                             }
+
+                        // 2nd condition
                         }else{
 
                             deleteImage()
                         }
 
+                    // 1st condition
                     }else{
 
                         upDateNote()
@@ -217,7 +222,7 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
 
     }
 
-    // Delete the "whole" note
+    // Delete images from storage
     private fun deleteImagesFromStorage(list: ArrayList<String>) {
 
         for(path in list) {
@@ -230,7 +235,6 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
 
         noteDetailViewModel.getImageListByNoteId {
 
-            // Other thread
             if(it.isNotEmpty()){
                 for(img in it){
 
@@ -256,10 +260,6 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
         // UI Thread
         activity?.runOnUiThread {
 
-            //Log.d("imgList", imagePathList.toString())
-            //Log.d("imgUriList", uriList.toString())
-            //Log.d("imgOriginalList", originalList.toString())
-            //Log.d("imgIdList", noteDetailViewModel.updatedImageIds.toString())
             noteDetailImageAdapter.setData(imagePathList)
         }
     }
@@ -273,7 +273,7 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
 
         if (!noteDetailViewModel.isTextEmpty()) {
 
-            if(!noteDetailViewModel.isSame() || uriList.isNotEmpty() || imagesToBeDeleted.isNotEmpty()){
+            if(!noteDetailViewModel.isSame() || newList.isNotEmpty() || imagesToBeDeleted.isNotEmpty()){
 
                 noteDetailViewModel.updateNote(){
 
@@ -286,6 +286,7 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
             }
 
             finalizeSaveNote("Note updated")
+
             activity?.runOnUiThread {
                 findNavController().navigate(R.id.action_noteDetailFragment_to_noteListFragment)
             }
@@ -299,14 +300,15 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
 
     private fun finalizeSaveNote(message: String){
         activity?.runOnUiThread {
-            hideKeyboard()
-            showToast(message)
 
+            hideKeyboard()
+
+            showToast(message)
         }
     }
 
 
-    // Delete note upon delete icon click
+    // Delete entire note upon delete icon click
     private fun showDeleteDialog(context: Context) {
 
         AlertDialog.Builder(context)
@@ -343,11 +345,10 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
     }
 
 
+    // Delete Image on update button click
     private fun deleteImage(){
 
         noteDetailViewModel.getImageIdByPath(imagesToBeDeleted) { imageIds ->
-
-            println("imgIds $imageIds")
 
             if (imageIds.isNotEmpty()) {
 
@@ -376,12 +377,13 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
 
             imagePathList.add(data?.data.toString())   // update recycler view when image added
 
-            uriList.add(data?.data.toString())      // update list of images to be added to database
+            newList.add(data?.data.toString())      // update list of images to be added to database
 
             setImageAdapter()
         }
     }
 
+    // Handle delete image alert dialog positive button
     override fun handleDeleteImage(imgPath: String) {
 
         if(originalList.contains(imgPath)){
@@ -391,7 +393,7 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
 
         imagePathList.remove(imgPath)       // for recycler view
 
-        uriList.remove(imgPath)             // for new image added
+        newList.remove(imgPath)             // for new image added
 
         setImageAdapter()
     }
