@@ -1,10 +1,12 @@
-package com.robin.cameraxtutorial.camerax.viewmodel
+package co.deshbidesh.db_android.db_document_scanner_feature.viewmodel
 
 import android.os.Handler
 import androidx.camera.core.ImageAnalysis
 
-interface ThreadedImageAnalyzer : ImageAnalysis.Analyzer {
+
+interface DBHandler {
 
     fun getHandler(): Handler
-
 }
+
+interface ThreadedImageAnalyzer:DBHandler,  ImageAnalysis.Analyzer {}

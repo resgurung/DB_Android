@@ -40,7 +40,6 @@ class PathInterpolator(private val lostObjectCacheDurationMs: Long = 200, privat
 
             val start = currentBoundingBox?.toEdges() ?: arObject.boundingBox.toEdges()
             val end = arObject.boundingBox.toEdges()
-            Log.d("PathInterpolator","Animating from ${currentBoundingBox?.toEdges()?.toList()} to ${end.toList()}")
 
             lastArObject = arObject
             currentAnimator?.cancel()
@@ -57,13 +56,12 @@ class PathInterpolator(private val lostObjectCacheDurationMs: Long = 200, privat
     }
 
     private fun clearTracking() {
-        Log.d("PathInterpolator","Clearing bounding box")
         lastArObject = null
         setBoundingBox(null)
     }
 
     private fun setBoundingBox(edges: FloatArray?) {
-        Log.d("PathInterpolator","Set bounding box ${edges?.toList()}")
+
         currentBoundingBox = edges?.toRectF()
 
         publish(

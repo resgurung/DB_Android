@@ -11,4 +11,5 @@ class DBDocScanActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_d_b_doc_scan)
     }
+
 }

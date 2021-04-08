@@ -26,15 +26,12 @@ class PositionTranslator(
     override fun processObject(arObject: ArObject?) {
         if (arObject != null) {
 
-            Log.i(TAG,"boundingBoxStart = ${arObject.boundingBox}")
-
             // Rotate Size
             val rotatedSize = when (arObject.sourceRotationDegrees) {
                 90, 270 -> Size(arObject.sourceSize.height, arObject.sourceSize.width)
                 0, 180 -> arObject.sourceSize
                 else -> throw IllegalArgumentException("Unsupported rotation. Must be 0, 90, 180 or 270")
             }
-            Log.d(TAG,"Mapping from source ${rotatedSize.width}x${rotatedSize.height} to ${targetWidth}x$targetHeight")
 
 
             // Calculate scale
@@ -43,13 +40,10 @@ class PositionTranslator(
             val scale = scaleX.coerceAtLeast(scaleY)
             val scaleF = scale.toFloat()
             val scaledSize = Size(ceil(rotatedSize.width * scale).toInt(), ceil(rotatedSize.height * scale).toInt())
-            Log.d(TAG,"Use scale=$scale, scaledSize: ${scaledSize.width}x${scaledSize.height}")
-
 
             // Calculate offset (we need to center the overlay on the target)
             val offsetX = (targetWidth - scaledSize.width) / 2
             val offsetY = (targetHeight - scaledSize.height) / 2
-            Log.d(TAG,"Use offsetX=$offsetX, offsetY=$offsetY")
 
             // Map bounding box
             val mappedBoundingBox = RectF().apply {
@@ -65,8 +59,6 @@ class PositionTranslator(
                 mappedBoundingBox.left = centerX + (centerX - mappedBoundingBox.left)
                 mappedBoundingBox.right = centerX - (mappedBoundingBox.right - centerX)
             }
-
-            Log.d("PositionTranslator","Mapped bounding box=$mappedBoundingBox")
 
             super.processObject(
                 arObject.copy(

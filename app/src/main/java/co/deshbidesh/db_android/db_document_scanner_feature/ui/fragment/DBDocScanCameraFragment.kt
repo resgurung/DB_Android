@@ -1,18 +1,10 @@
 package co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment
 
 import android.annotation.SuppressLint
-import co.deshbidesh.db_android.R
 import android.app.AlertDialog
-import android.content.ContentResolver
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.util.Size
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Surface
 import android.view.View
@@ -21,6 +13,7 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,20 +21,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.BuildConfig
-import co.deshbidesh.db_android.databinding.FragmentDBDocScanCameraBinding
+import co.deshbidesh.db_android.R
+import co.deshbidesh.db_android.databinding.FragmentDbDocScanCameraBinding
+import co.deshbidesh.db_android.db_document_scanner_feature.factories.DocumentAnalyzerViewModelFactory
 import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 import co.deshbidesh.db_android.db_document_scanner_feature.overlays.*
-import co.deshbidesh.db_android.shared.extensions.imageToBitmap
-import com.robin.cameraxtutorial.camerax.viewmodel.DocumentAnalyzer
-import co.deshbidesh.db_android.db_document_scanner_feature.factories.DocumentAnalyzerViewModelFactory
-import com.robin.cameraxtutorial.camerax.viewmodel.SharedViewModel
-import com.robin.cameraxtutorial.camerax.viewmodel.ThreadedImageAnalyzer
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.opencv.android.BaseLoaderCallback
-import org.opencv.android.LoaderCallbackInterface
-import org.opencv.android.OpenCVLoader
+import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.DocumentAnalyzer
+import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.SharedViewModel
+import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.ThreadedImageAnalyzer
+import co.deshbidesh.db_android.shared.utility.FileUtils
+import co.deshbidesh.db_android.shared.utility.FileUtilsImpl
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -50,56 +39,14 @@ class DBDocScanCameraFragment : Fragment() {
 
     companion object{
 
-        val TAG = DBDocScanCameraFragment::class.simpleName
+        const val TAG = "DBDocScanCameraFragment"
 
         const val NUMBER_OF_TIMES_LAST_POINTS_TO_BE_USED = 4
 
         val targetResolution: Size = Size(720, 1280)
     }
 
-    object Coroutines {
-
-        fun uriToBitmap(uri: Uri, resolver: ContentResolver, work: suspend ((Bitmap?) -> Unit)) {
-
-            CoroutineScope(Dispatchers.IO).launch {
-
-                work(decodeBitmap(uri, resolver))
-            }
-        }
-
-        private fun decodeBitmap(uri: Uri, resolver: ContentResolver): Bitmap {
-
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-
-                ImageDecoder.decodeBitmap(ImageDecoder.createSource(resolver, uri))
-
-            } else {
-
-                MediaStore.Images.Media.getBitmap(resolver, uri)
-            }
-        }
-    }
-
-    private val loader = object: BaseLoaderCallback(context) {
-
-        override fun onManagerConnected(status: Int) {
-            super.onManagerConnected(status)
-
-            when (status) {
-
-                LoaderCallbackInterface.SUCCESS -> {
-
-                    startCamera()
-                }
-                else -> {
-
-                    super.onManagerConnected(status)
-                }
-            }
-        }
-    }
-
-    private var _binding: FragmentDBDocScanCameraBinding? = null
+    private var _binding: FragmentDbDocScanCameraBinding? = null
 
     private val binding get() = _binding!!
 
@@ -111,12 +58,6 @@ class DBDocScanCameraFragment : Fragment() {
         private set
 
     private var imageAnalyzer: ThreadedImageAnalyzer? = null
-        set(value) {
-            field = value
-            if (cameraRunning) {
-                startCamera()
-            }
-        }
 
     private var edgePoints: List<EdgePoint>? = null
 
@@ -133,6 +74,8 @@ class DBDocScanCameraFragment : Fragment() {
 
     private val cameraProviderFuture by lazy { context?.let { ProcessCameraProvider.getInstance(it) } }
 
+    private val fileUtils: FileUtils by lazy { FileUtilsImpl(requireActivity()) }
+
     private val executor: Executor by lazy { Executors.newSingleThreadExecutor() }
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
@@ -141,7 +84,7 @@ class DBDocScanCameraFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentDBDocScanCameraBinding.inflate(layoutInflater)
+        _binding = FragmentDbDocScanCameraBinding.inflate(layoutInflater)
 
         return binding.root
     }
@@ -156,41 +99,62 @@ class DBDocScanCameraFragment : Fragment() {
             edgePoints = points
         }
 
-        context?.let { currContext ->
+        viewModelFactory = DocumentAnalyzerViewModelFactory(sharedViewModel.opencvHelper)
 
-            viewModelFactory = DocumentAnalyzerViewModelFactory(sharedViewModel.opencvHelper)
+        imageAnalyzerViewModel = ViewModelProvider(this, viewModelFactory).get(DocumentAnalyzer::class.java)
 
-            imageAnalyzerViewModel = ViewModelProvider(this, viewModelFactory).get(DocumentAnalyzer::class.java)
+        imageAnalyzer = imageAnalyzerViewModel
 
-            imageAnalyzer = imageAnalyzerViewModel
+        val boundingBoxArOverlay = BoundingBoxArOverlay(requireContext(), BuildConfig.DEBUG)
 
-            val boundingBoxArOverlay = BoundingBoxArOverlay(currContext, BuildConfig.DEBUG)
+        arOverlayView.observe(viewLifecycleOwner) {
 
-            arOverlayView.observe(viewLifecycleOwner) {
+            it.doOnLayout { view ->
 
-                it.doOnLayout { view ->
-
-                    imageAnalyzerViewModel.arObjectTracker
+                imageAnalyzerViewModel.arObjectTracker
                         .pipe(animator)
                         .pipe(PositionTranslator(view.width, view.height))
                         .pipe(PathInterpolator())
                         .addTrackingListener(boundingBoxArOverlay)
-                }
-
-                it.add(boundingBoxArOverlay)
             }
+
+            it.add(boundingBoxArOverlay)
         }
 
         binding.cameraCaptureButton.setOnClickListener {
 
             saveImageToMemory()
         }
+
+        updateRoute(view)
+    }
+
+    private fun updateRoute(view: View) {
+
+        when(sharedViewModel.getRoute()) {
+            SharedViewModel.Route.RESULT_FRAGMENT -> {
+
+                sharedViewModel.clearFirst()
+
+                sharedViewModel.clearSecond()
+
+            }
+            SharedViewModel.Route.INTERN_FRAGMENT -> {
+
+                sharedViewModel.clearFirst()
+
+                sharedViewModel.clearSecond()
+            }
+            else -> {}
+        }
+
+        sharedViewModel.setRoute(SharedViewModel.Route.CAMERA_FRAGMENT)
     }
 
     override fun onResume() {
         super.onResume()
 
-        loadOpenCVLibrary()
+        startCamera()
     }
 
     override fun onDestroyView() {
@@ -200,24 +164,14 @@ class DBDocScanCameraFragment : Fragment() {
 
             cameraProviderFuture?.get()?.unbindAll()
 
+            imageCapture = null
+
             cameraRunning = false
 
             Log.i("CameraFragment", "Stopping camera")
         }
 
         _binding = null
-    }
-
-    private fun loadOpenCVLibrary() {
-
-        if (!OpenCVLoader.initDebug()) {
-
-            Log.e(TAG, "Failed to load OpenCV lib")
-
-        } else {
-
-            loader.onManagerConnected(LoaderCallbackInterface.SUCCESS)
-        }
     }
 
     @SuppressLint("UnsafeExperimentalUsageError")
@@ -228,7 +182,9 @@ class DBDocScanCameraFragment : Fragment() {
             try {
 
                 // Make sure that there are no other use cases bound to CameraX
-                cameraProviderFuture?.get()?.unbindAll()
+                activity?.runOnUiThread {
+                    cameraProviderFuture?.get()?.unbindAll()
+                }
 
                 // Create configuration object for the viewfinder use case
                 val previewConfig = onCreatePreviewConfigBuilder()
@@ -237,7 +193,6 @@ class DBDocScanCameraFragment : Fragment() {
                 imageCapture = createCaptureUseCase()
 
                 // Setup image analysis pipeline that computes average pixel luminance in real time
-
                 val imageAnalysis = onCreateAnalyzerConfigBuilder()
 
                 if (imageAnalyzer != null) {
@@ -267,11 +222,11 @@ class DBDocScanCameraFragment : Fragment() {
     private fun saveImageToMemory() {
 
         imageCapture?.takePicture(executor,
-            object : ImageCapture.OnImageCapturedCallback() {
+            object: ImageCapture.OnImageCapturedCallback() {
 
                 override fun onError(exception: ImageCaptureException) {
 
-                    binding.preview.post {
+                    activity?.runOnUiThread {
 
                         showAlert("Photo capture failed: ${exception.message}")
                     }
@@ -281,39 +236,23 @@ class DBDocScanCameraFragment : Fragment() {
                 @SuppressLint("UnsafeExperimentalUsageError")
                 override fun onCaptureSuccess(image: ImageProxy) {
 
-                    image.image?.let { currImage ->
+                    image.image?.let { currentImage ->
 
-                        edgePoints?.let { points ->
+                        sharedViewModel.processImage(
+                                currentImage,
+                                points = edgePoints ?: arrayListOf()
+                        ) { route ->
 
-                            val scannedImage = sharedViewModel.opencvHelper.getScannedBitmap(currImage, points)
 
-                            if (scannedImage != null) {
-
-                                sharedViewModel.addData(scannedImage)
-
-                                navigate(R.id.action_dbDocScanCameraFragment_to_DBDocScanResultFragment)
-
-                            } else {
-
-                                val bitmapImage = currImage.imageToBitmap()
-
-                                sharedViewModel.addData(bitmapImage)
-
-                                navigate(R.id.action_scan_cameraFragment_to_internFragment)
-                            }
-                        } ?: run {
-
-                            val bitmapImage = currImage.imageToBitmap()
-
-                            sharedViewModel.addData(bitmapImage)
-
-                            navigate(R.id.action_scan_cameraFragment_to_internFragment)
+                            navigateTo(route)
                         }
 
                     } ?: run {
 
                         showAlert("The camera is not responding. Please try again later.")
                     }
+
+                    super.onCaptureSuccess(image)
                 }
             })
     }
@@ -321,7 +260,25 @@ class DBDocScanCameraFragment : Fragment() {
     private fun navigate(id: Int) {
 
         activity?.run {
+
             findNavController().navigate(id)
+        }
+    }
+
+    fun navigateTo(fragment: SharedViewModel.Route) {
+
+        when(fragment) {
+            SharedViewModel.Route.INTERN_FRAGMENT -> {
+
+                navigate(R.id.action_DBDocScanCameraFragment_to_DBDocScanInternFragment)
+
+            }
+            SharedViewModel.Route.RESULT_FRAGMENT -> {
+
+                navigate(R.id.action_DBDocScanCameraFragment_to_DBDocScanResultProcessFragment)
+
+            }
+            else -> {}
         }
     }
 
@@ -362,3 +319,43 @@ class DBDocScanCameraFragment : Fragment() {
             .build()
     }
 }
+
+//    private fun saveImageToFile() {
+//
+//        Log.d(TAG, "saved saving ..")
+//        val dir  = fileUtils.createDirectoryIfNotExist()
+//        val file = fileUtils.makeFile(dir, "tempFile")
+//        val fileBuilder = ImageCapture.OutputFileOptions.Builder(file).build()
+//
+//        imageCapture?.takePicture(fileBuilder, executor, object: ImageCapture.OnImageCapturedCallback(), ImageCapture.OnImageSavedCallback {
+//            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+//
+//                outputFileResults.savedUri?.let {
+//
+//                    Log.d(TAG, "saved uri: $it")
+//
+//                    val uriHolder = DBDocScanURI(it)
+//
+//                    val direction = DBDocScanCameraFragmentDirections.actionScanCameraFragmentToInternFragment(uriHolder)
+//
+//                    findNavController().navigate(direction)
+//
+//                } ?: run {
+//
+//                    showAlert("Image cannot be saved")
+//                }
+//
+//            }
+//
+//            override fun onError(exception: ImageCaptureException) {
+//
+//                super.onError(exception)
+//
+//                activity?.runOnUiThread {
+//
+//                    showAlert("Photo capture failed: ${exception.message}")
+//                }
+//            }
+//
+//        })
+//    }

@@ -1,9 +1,7 @@
 package co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment
 
 import android.graphics.Bitmap
-import android.graphics.Matrix
 import android.graphics.PointF
-import android.graphics.RectF
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
@@ -12,44 +10,71 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
 import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import co.deshbidesh.db_android.R
-import co.deshbidesh.db_android.databinding.FragmentDBDocScanInternBinding
-import co.deshbidesh.db_android.db_document_scanner_feature.doc_scan_utils.DBImageUtils
+import co.deshbidesh.db_android.databinding.FragmentDbDocScanInternBinding
 import co.deshbidesh.db_android.db_document_scanner_feature.model.DBDocScanImage
-import co.deshbidesh.db_android.db_document_scanner_feature.model.DBDocScanURI
-import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 import co.deshbidesh.db_android.db_document_scanner_feature.overlays.PolygonView
-import com.robin.cameraxtutorial.camerax.viewmodel.SharedViewModel
-import java.util.ArrayList
-import java.util.HashMap
+import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.SharedViewModel
+import co.deshbidesh.db_android.shared.extensions.showAlert
+import java.util.*
 
+/*
+    *inward crop button
+    *outward crop button
 
-class DBDocScanInternFragment : Fragment() {
+    ------------------------------------------------------------
+    - fragment loads
+    - buffer gets a image and orientation
+    - image is shown in imageView
+    - calculates points for overlay(polygon view)
+    - if points is not null and has points then show outward free button
+    - if no points or null points then show default polygon of the sie of imageView holder
+
+    ------------------------------------------------------------
+    - when polygon is moved
+
+    - if free outward is shown do nothing
+    - if inward crop button is showing then change to outward free button
+
+    -------------------------------------------------------------
+
+    - when free outward is shown
+    - this means polygon has either moved or openCV has detected a square and square is showing on top of imageView
+
+    - when free outward button is pressed
+    - default polygon showing on screen and button changed to inward button showing
+
+    ---------------------------------------------------------------
+
+    - when inward crop is shown
+    - this means no points is detected and waiting for user to move the polygon according to their use
+
+    - user move the polygon
+    - show outward crop button
+
+    - user pressed inward crop button
+    - if points is not empty then show polygon in respect to points, button = outward crop button
+    - if points is empty then button button stays inward crop
+ */
+class DBDocScanInternFragment :
+        Fragment(),
+        PolygonView.PolygonViewMoveTracker {
 
     companion object {
 
         const val TAG = "DBDocScanInternFragment"
     }
 
-    private var _binding: FragmentDBDocScanInternBinding? = null
+    private var _binding: FragmentDbDocScanInternBinding? = null
 
     private val binding get() = _binding!!
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
-
-    private var bufferBitmap: Bitmap? = null
-        set(value){
-
-            field = value
-
-            //showImage()
-        }
 
     private var buffer: DBDocScanImage? = null
         set(value) {
@@ -59,106 +84,98 @@ class DBDocScanInternFragment : Fragment() {
             showImage()
         }
 
+    private var edgePoints: Map<Int, PointF>? = null
+
     private lateinit var polygonView: PolygonView
 
-    private val args by navArgs<DBDocScanInternFragmentArgs>()
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentDBDocScanInternBinding.inflate(layoutInflater)
+        _binding = FragmentDbDocScanInternBinding.inflate(layoutInflater)
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+            view: View,
+            savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         polygonView = view.findViewById(R.id.polygonView)
 
-        binding.internFragmentToolbar.setOnMenuItemClickListener {
+        polygonView.moveTracker = this
 
-            when(it.itemId) {
+        binding.internFragmentRotateCropInwardButton.setOnClickListener {
 
-                R.id.rotate0 -> {
+            edgePoints?.let {
 
-                    rotate(0)
-                    true
-                }
-                R.id.rotate90 -> {
+                Log.d(TAG, "inside -> $it")
+                drawPolygon(it)
 
-                    rotate(90)
-                    true
-                }
-                R.id.rotate180 -> {
-
-                    rotate(180)
-                    true
-                }
-                R.id.rotate270 -> {
-
-                    rotate(270)
-                    true
-                }
-                else -> false
+                showFreeCropButton()
             }
         }
 
-        binding.internFragmentRotateCropButton.setOnClickListener {
+        binding.internFragmentRotateCropOutwardButton.setOnClickListener {
 
+            drawPolygon(defaultOutlinePoints(currentScreenBitmap()))
+
+            showCroppedButton()
         }
 
         binding.internFragmentRotateLeftButton.setOnClickListener {
 
             buffer?.let {
 
-                buffer = DBImageUtils.rotateByOrientation(it.bitmap, ExifInterface.ORIENTATION_TRANSVERSE)
+                sharedViewModel.rotateByOrientation(it.bitmap, ExifInterface.ORIENTATION_ROTATE_270) { docScanImage ->
+
+                    buffer = docScanImage
+                }
             }
         }
 
         binding.internFragmentRotateRightButton.setOnClickListener {
 
-            // TODO background thread
             buffer?.let {
 
-                buffer = DBImageUtils.rotateByOrientation(it.bitmap, ExifInterface.ORIENTATION_ROTATE_90)
-            }
-        }
+                sharedViewModel.rotateByOrientation(it.bitmap, ExifInterface.ORIENTATION_ROTATE_90) { docScanImage ->
 
-        binding.internFragmentRotateNextButton.setOnClickListener {
-
-            val image = getCroppedImage()
-
-            image?.let {
-
-                sharedViewModel.addData(it)
-
-                findNavController().navigate(R.id.action_dbDocScanInternFragment_to_DBDocScanResultFragment)
-            }
-        }
-
-        args.uriHolder?.let {
-
-            val absolutePath = DBImageUtils.getAbsolutePathFor(context, it.uri)
-
-            Log.d(TAG, "Image Path: $absolutePath")
-
-            DBDocScanCameraFragment.Coroutines.uriToBitmap(it.uri, requireContext().contentResolver) { bitmap ->
-
-
-                bitmap?.let { currBitmap ->
-
-                    buffer = DBImageUtils.rotateBitmapWith(absolutePath, currBitmap)
+                    buffer = docScanImage
                 }
             }
         }
 
-        binding.holderImageCrop.post {
+        binding.internFragmentNextButton.setOnClickListener {
 
-            //showPolygon()
+            val image = getCroppedImage()
+
+            if (image != null) {
+
+                sharedViewModel.insertInSecond(image)
+
+            } else {
+
+                buffer?.let {
+
+                    sharedViewModel.insertInSecond(it.bitmap)
+
+                } ?: kotlin.run {
+
+                    showAlert("Could not process the image")
+
+                    requireActivity().onBackPressed()
+                }
+            }
+
+            navigateTo()
         }
+
+        Log.d(TAG, "uri xx pxy onViewCreated")
+        updateRoute(view)
     }
 
     override fun onDestroy() {
@@ -167,77 +184,189 @@ class DBDocScanInternFragment : Fragment() {
         _binding = null
     }
 
-    private fun rotate(degree: Int) {
+    private fun updateRoute(view: View) {
 
-        bufferBitmap?.let {
+        when(sharedViewModel.getRoute()) {
 
-            bufferBitmap = DBImageUtils.rotateBitmap(it, degree)
+            SharedViewModel.Route.CAMERA_FRAGMENT -> {
 
-            binding.internFragmentImageView.setImageBitmap(bufferBitmap)
+                setupFromFirstBitmap(view)
+            }
+            SharedViewModel.Route.SELECTION_FRAGMENT -> {
 
-            showPolygon()
+                bitmapFromUri(view)
+
+            }
+            SharedViewModel.Route.RESULT_FRAGMENT -> {
+
+                sharedViewModel.clearSecond()
+
+                if(sharedViewModel.uri == null) {
+
+                    setupFromFirstBitmap(view)
+
+                } else {
+
+                    bitmapFromUri(view)
+                }
+            }
+            else -> {}
+        }
+
+        sharedViewModel.setRoute(SharedViewModel.Route.INTERN_FRAGMENT)
+    }
+
+    private fun setupFromFirstBitmap(view: View) {
+        sharedViewModel.getFirstBitmap()?.let { bitmap ->
+
+            view.post {
+
+                val scaledBitmap = sharedViewModel.scaledBitmap(
+                        bitmap,
+                        binding.holderImageCrop.width,
+                        binding.holderImageCrop.height
+                )
+
+                buffer = DBDocScanImage(scaledBitmap, 1)
+            }
+
+
+        } ?: run {
+
+            // no image so go back
+            requireActivity().onBackPressed()
         }
     }
 
+    private fun bitmapFromUri(view: View){
+
+        context?.let { thisContext ->
+
+            sharedViewModel.uriToBitmap(thisContext) { bitmap, absPath ->
+
+                if (bitmap != null) {
+
+                    view.post {
+
+                        val scaledBitmap = sharedViewModel.scaledBitmap(
+                                bitmap,
+                                binding.holderImageCrop.width,
+                                binding.holderImageCrop.height
+                        )
+
+                        buffer = sharedViewModel.rotateImageIfRequired(absPath, scaledBitmap)
+                    }
+
+                } else {
+
+                    Log.e(TAG, " error decoding image")
+                }
+            }
+        }
+    }
+
+    private fun navigateTo() {
+
+        findNavController().navigate(
+                R.id.action_DBDocScanInternFragment_to_DBDocScanResultProcessFragment
+        )
+    }
 
     private fun showImage() {
 
         buffer?.let {
 
-            val scaledBitmap = scaledBitmap(
-                it.bitmap,
-                binding.holderImageCrop.width,
-                binding.holderImageCrop.height
-            )
-
             activity?.runOnUiThread {
 
-                binding.internFragmentImageView.setImageBitmap(scaledBitmap)
+                binding.internFragmentImageView.setImageBitmap(it.bitmap)
+
+                calculatePoints(currentScreenBitmap())
             }
         }
     }
 
-    private fun showPolygon() {
+    private fun drawPolygon(points: Map<Int, PointF>) {
 
-        bufferBitmap?.let {
+        view?.post {
 
-            val scaledBitmap = scaledBitmap(
-                it,
-                binding.holderImageCrop.width,
-                binding.holderImageCrop.height
+            polygonView.points =  points
+
+            polygonView.visibility = View.VISIBLE
+
+            val padding = resources.getDimension(R.dimen.scanPadding).toInt()
+
+            val layoutParams = FrameLayout.LayoutParams(
+                    currentScreenBitmap().width + 2 * padding,
+                    currentScreenBitmap().height + 2 * padding
             )
-            binding.internFragmentImageView.setImageBitmap(scaledBitmap)
 
-//            val tempBitmap = (binding.internFragmentImageView.drawable as BitmapDrawable).bitmap
-//
-//            val pointFs = getEdgePoints(scaledBitmap)
-//
-//            polygonView.points = pointFs
-//            polygonView.visibility = View.VISIBLE
-//
-//            val padding = resources.getDimension(R.dimen.scanPadding).toInt()
-//
-//            val layoutParams = FrameLayout.LayoutParams(
-//                tempBitmap.width + 2 * padding,
-//                tempBitmap.height + 2 * padding
-//            )
-//
-//            layoutParams.gravity = Gravity.CENTER
-//
-//            polygonView.layoutParams = layoutParams
+            layoutParams.gravity = Gravity.CENTER
+
+            polygonView.layoutParams = layoutParams
+        }
+    }
+
+    private fun calculatePoints(bitmap: Bitmap) {
+
+        getContourEdgePoints(bitmap) {
+
+            if (it.isNotEmpty()) {
+
+                edgePoints = it
+
+                drawPolygon(it)
+
+                showFreeCropButton()
+
+            } else {
+
+                drawPolygon(defaultOutlinePoints(currentScreenBitmap()))
+
+                showCroppedButton()
+            }
 
         }
     }
 
+//    private fun allButtonsStatus(enabled: Boolean) {
+//        binding.internFragmentRotateNextButton.isEnabled = enabled
+//        binding.internFragmentRotateRightButton.isEnabled = enabled
+//        binding.internFragmentRotateLeftButton.isEnabled = enabled
+//    }
+
+    private fun showCroppedButton() {
+
+        activity?.runOnUiThread {
+
+            binding.freeCardView.isVisible = false
+
+            binding.cropCardView.isVisible = true
+        }
+    }
+
+    private fun showFreeCropButton() {
+
+        activity?.runOnUiThread {
+
+            binding.freeCardView.isVisible = true
+
+            binding.cropCardView.isVisible = false
+        }
+
+    }
+
     private fun getCroppedImage(): Bitmap? {
+
         val points = polygonView.points
-        val width: Float? = (bufferBitmap?.width)?.toFloat()
-        val height: Float? = (bufferBitmap?.height)?.toFloat()
 
-        if (width != null && height != null) {
+        buffer?.let {
 
-            val xRatio: Float = width / binding.internFragmentImageView.width
-            val yRatio: Float = height / binding.internFragmentImageView.height
+            val w = it.bitmap.width.toFloat()
+
+            val h = it.bitmap.height.toFloat()
+
+            val xRatio: Float = w / binding.internFragmentImageView.width
+            val yRatio: Float = h / binding.internFragmentImageView.height
 
             val x1 = points[0]!!.x * xRatio
             val x2 = points[1]!!.x * xRatio
@@ -248,119 +377,63 @@ class DBDocScanInternFragment : Fragment() {
             val y3 = points[2]!!.y * yRatio
             val y4 = points[3]!!.y * yRatio
 
-            val point1 = EdgePoint(x1.toDouble(), y1.toDouble())
-            val point2 = EdgePoint(x2.toDouble(), y2.toDouble())
-            val point3 = EdgePoint(x3.toDouble(), y3.toDouble())
-            val point4 = EdgePoint(x4.toDouble(), y4.toDouble())
-
-            val edgePoint = arrayListOf(point1, point2, point3, point4)
-
-            return sharedViewModel.opencvHelper.getScannedBitmap(bufferBitmap,
-                x1,
-                y1,
-                x2,
-                y2,
-                x3,
-                y3,
-                x4,
-                y4)
+            return sharedViewModel.opencvHelper.getScannedBitmap(it.bitmap,
+                    x1,
+                    y1,
+                    x2,
+                    y2,
+                    x3,
+                    y3,
+                    x4,
+                    y4)
         }
-
         return null
-
     }
 
-    private fun scaledBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap {
-        Log.d(TAG, "scaledBitmap")
-        Log.d(TAG, "$width $height")
-        val m = Matrix()
-        m.setRectToRect(RectF(0f,
-            0f,
-            bitmap.width.toFloat(),
-            bitmap.height.toFloat()),
-            RectF(0f,
-                0f,
-                width.toFloat(),
-                height.toFloat()),
-            Matrix.ScaleToFit.CENTER)
-        return Bitmap.createBitmap(bitmap,
-            0,
-            0,
-            bitmap.width,
-            bitmap.height,
-            m, true)
-    }
+    private fun getContourEdgePoints(
+            tempBitmap: Bitmap,
+            listener: (Map<Int, PointF>) -> Unit
+    ){
 
-    private fun getEdgePoints(tempBitmap: Bitmap): Map<Int, PointF>? {
-        Log.d(TAG, "getEdgePoints")
-        val pointFs = getContourEdgePoints(tempBitmap)
-        return orderedValidEdgePoints(tempBitmap, pointFs)
-    }
+        sharedViewModel.processImageForPoints(tempBitmap) {
 
-    private fun getContourEdgePoints(tempBitmap: Bitmap): List<PointF> {
+            val orderedPoints = polygonView.getOrderedPoints(it)
 
-        val result: MutableList<PointF> = ArrayList()
-        val point2f =  sharedViewModel.opencvHelper.processImageForPoints(tempBitmap)
-        Log.d(TAG,"Points: $point2f")
-        if (point2f != null) {
-            val points = listOf(*point2f.toArray())
+            if (!polygonView.isValidShape(orderedPoints)) {
 
-            for (i in points.indices) {
-                Log.d(TAG,"Point: $i")
-                result.add(PointF(points[i].x.toFloat(), points[i].y.toFloat()))
+                listener(mapOf())
             }
-        } else {
-            Log.d(TAG,"No Points")
-        }
 
-        return result
+            listener(orderedPoints)
+        }
     }
 
-    private fun getOutlinePoints(tempBitmap: Bitmap): Map<Int, PointF> {
-        Log.d(TAG, "getOutlinePoints")
+    private fun defaultOutlinePoints(
+            tempBitmap: Bitmap
+    ): Map<Int, PointF> {
+
         val outlinePoints: MutableMap<Int, PointF> = HashMap()
+
         outlinePoints[0] = PointF(0f, 0f)
+
         outlinePoints[1] = PointF(tempBitmap.width.toFloat(), 0f)
+
         outlinePoints[2] = PointF(0f, tempBitmap.height.toFloat())
+
         outlinePoints[3] = PointF(tempBitmap.width.toFloat(), tempBitmap.height.toFloat())
+
         return outlinePoints
     }
 
-    private fun orderedValidEdgePoints(tempBitmap: Bitmap, pointFs: List<PointF>): Map<Int, PointF> {
-        Log.v(TAG, "orderedValidEdgePoints")
-        var orderedPoints = polygonView.getOrderedPoints(pointFs)
-        if (!polygonView.isValidShape(orderedPoints)) {
-            orderedPoints = getOutlinePoints(tempBitmap)
+    private fun currentScreenBitmap(): Bitmap = (binding.internFragmentImageView.drawable as BitmapDrawable).bitmap
+
+    override fun didMove() {
+
+        if (!binding.freeCardView.isVisible) {
+
+            binding.freeCardView.isVisible = true
+
+            binding.cropCardView.isVisible = false
         }
-        return orderedPoints
     }
-
-    private fun scaleBitmapXXX(bm: Bitmap): Bitmap? {
-
-        val maxHeight = 2024
-        val maxWidth = 2024
-        var bm = bm
-        var width = bm.width
-        var height = bm.height
-        Log.v("Pictures", "Width and height are $width--$height")
-        if (width > height) {
-            // landscape
-            val ratio = width.toFloat() / maxWidth
-            width = maxWidth
-            height = (height / ratio).toInt()
-        } else if (height > width) {
-            // portrait
-            val ratio = height.toFloat() / maxHeight
-            height = maxHeight
-            width = (width / ratio).toInt()
-        } else {
-            // square
-            height = maxHeight
-            width = maxWidth
-        }
-        Log.v("Pictures", "after scaling Width and height are $width--$height")
-        bm = Bitmap.createScaledBitmap(bm, width, height, true)
-        return bm
-    }
-
 }

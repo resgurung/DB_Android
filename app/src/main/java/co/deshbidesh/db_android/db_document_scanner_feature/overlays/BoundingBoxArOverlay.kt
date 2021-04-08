@@ -41,7 +41,6 @@ class BoundingBoxArOverlay(private val context: Context,
 
     override fun onObjectTracked(arObject: ArObject?) {
 
-        Log.d("BoundingBoxArOverlay", "${arObject}")
         currentBoundingBox  = arObject?.boundingBox
         currentTrackingId   = arObject?.trackingId
 

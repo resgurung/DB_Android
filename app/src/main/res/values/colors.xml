@@ -11,10 +11,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#000000</color>
     <color name="greyish">#403F3F</color>
+    <color name="light_greyish">#535151</color>
     <color name="white">#FFFFFFFF</color>
     <color name="color_black">#000000</color>
     <color name="blue">#ff59a9ff</color>
     <color name="orange">#ffff900d</color>
+    <color name="red">#FF0000</color>
+    <color name="green">#007005</color>
+    <color name="yellow">#FFEB3B</color>
 
     <color name="bottom_background_color">#ffc4c2bc</color>
 

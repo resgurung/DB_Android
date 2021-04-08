@@ -12,7 +12,3 @@ data class DBDocScanURI(
 
 }
 
-data class DBDocScanImage(
-    var bitmap: Bitmap,
-    var orientation: Int
-)

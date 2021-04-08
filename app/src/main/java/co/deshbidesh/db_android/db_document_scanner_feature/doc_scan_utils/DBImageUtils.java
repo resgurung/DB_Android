@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import androidx.exifinterface.media.ExifInterface;
 
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
@@ -28,8 +29,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import co.deshbidesh.db_android.db_document_scanner_feature.model.DBDocScanImage;
+import co.deshbidesh.db_android.db_note_feature.models.DBImage;
 
 public class DBImageUtils {
 
@@ -50,11 +54,6 @@ public class DBImageUtils {
         Bitmap bitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(mat, bitmap);
         return bitmap;
-    }
-
-    public static Rect predictionRect(MatOfPoint2f matOfPoint2f) {
-
-        return Imgproc.boundingRect(matOfPoint2f);
     }
 
     public static Mat jpegToMat(Image image) {
@@ -127,45 +126,6 @@ public class DBImageUtils {
                 return new DBDocScanImage(bitmap, orientation);
             }
 
-//            Matrix matrix = new Matrix();
-//            switch (orientation) {
-//                case 2:
-//                    matrix.setScale(-1, 1);
-//                    break;
-//                case 3:
-//                    matrix.setRotate(180);
-//                    break;
-//                case 4:
-//                    matrix.setRotate(180);
-//                    matrix.postScale(-1, 1);
-//                    break;
-//                case 5:
-//                    matrix.setRotate(90);
-//                    matrix.postScale(-1, 1);
-//                    break;
-//                case 6:
-//                    matrix.setRotate(90);
-//                    break;
-//                case 7:
-//                    matrix.setRotate(-90);
-//                    matrix.postScale(-1, 1);
-//                    break;
-//                case 8:
-//                    matrix.setRotate(-90);
-//                    break;
-//                default:
-//                    return new DBDocScanImage(bitmap, orientation);
-//            }
-//
-//            try {
-//                Bitmap oriented = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-//                bitmap.recycle();
-//                return new DBDocScanImage(oriented, orientation);
-//            } catch (OutOfMemoryError e) {
-//                e.printStackTrace();
-//                return new DBDocScanImage(bitmap, orientation);
-//            }
-
             DBDocScanImage imgObj = rotateByOrientation(bitmap, orientation);
 
             if (imgObj != null) {
@@ -183,55 +143,12 @@ public class DBImageUtils {
         return new DBDocScanImage(bitmap, 0);
     }
 
-//    public static Bitmap rotateByOrientation(int orientation, Bitmap bitmap) {
-//
-//        Matrix matrix = new Matrix();
-//        switch (orientation) {
-//            case 2:
-//                matrix.setScale(-1, 1);
-//                break;
-//            case 3:
-//                matrix.setRotate(180);
-//                break;
-//            case 4:
-//                matrix.setRotate(180);
-//                matrix.postScale(-1, 1);
-//                break;
-//            case 5:
-//                matrix.setRotate(90);
-//                matrix.postScale(-1, 1);
-//                break;
-//            case 6:
-//                matrix.setRotate(90);
-//                break;
-//            case 7:
-//                matrix.setRotate(-90);
-//                matrix.postScale(-1, 1);
-//                break;
-//            case 8:
-//                matrix.setRotate(-90);
-//                break;
-//            default:
-//                return bitmap;
-//        }
-//
-//        try {
-//            Bitmap oriented = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-//            bitmap.recycle();
-//            return oriented;
-//        } catch (OutOfMemoryError e) {
-//            e.printStackTrace();
-//            return bitmap;
-//        }
-//    }
-
     public static DBDocScanImage rotateByOrientation(Bitmap bitmap, int orientation) {
 
         Matrix matrix = new Matrix();
 
         switch (orientation) {
-//            case ExifInterface.ORIENTATION_NORMAL:
-//                return bitmap;
+
             case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
                 matrix.setScale(-1, 1);
                 break;
@@ -270,5 +187,4 @@ public class DBImageUtils {
             return null;
         }
     }
-
 }

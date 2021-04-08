@@ -1,4 +1,4 @@
-package com.robin.cameraxtutorial.camerax.viewmodel
+package co.deshbidesh.db_android.db_document_scanner_feature.viewmodel
 
 import android.annotation.SuppressLint
 import android.graphics.ImageFormat
@@ -16,14 +16,13 @@ import co.deshbidesh.db_android.db_document_scanner_feature.overlays.ArObjectTra
 import co.deshbidesh.db_android.db_document_scanner_feature.processor.OpenCVNativeHelper
 import co.deshbidesh.db_android.shared.extensions.yuvToRgba
 import org.opencv.core.Core
-import org.opencv.core.MatOfPoint2f
 import java.lang.Exception
 import java.util.concurrent.atomic.AtomicBoolean
 
 
 
 class DocumentAnalyzer(
-    private val opencvHelper: OpenCVNativeHelper
+        private val opencvHelper: OpenCVNativeHelper
     ): ViewModel(), ThreadedImageAnalyzer {
 
     companion object {
@@ -84,14 +83,9 @@ class DocumentAnalyzer(
 
                                     points.add(EdgePoint(point.x, point.y))
                                 }
-
-                                Log.d(TAG, "Edge Points: $points")
                             }
 
                         }
-
-                        Log.d(TAG, "Rect: $tmpRectF")
-                        Log.d(TAG, "Size: $size")
 
                         uiHandler.post {
 

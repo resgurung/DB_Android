@@ -86,18 +86,4 @@ class NoteListFragment : DBBaseFragment() {
             }
         }
     }
-
-   /* override fun onResume() {
-        super.onResume()
-
-        if (adapter == null) {
-
-            adapter = DBNoteListPagingDataAdapter()
-        }
-
-        adapter?.let {
-
-            suscribeUI(it)
-        }
-    }*/
 }

@@ -1,11 +1,13 @@
 package co.deshbidesh.db_android.db_document_scanner_feature.processor
 
 import android.graphics.Bitmap
+import android.graphics.PointF
 import android.media.Image
 import android.util.Log
 import co.deshbidesh.db_android.db_document_scanner_feature.doc_scan_utils.DBImageUtils
 import co.deshbidesh.db_android.db_document_scanner_feature.doc_scan_utils.DBMathUtils
 import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
+import co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanInternFragment
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import java.util.*
@@ -92,8 +94,47 @@ class OpenCVNativeHelper {
         return DBImageUtils.matToBitmap(dstMat)
     }
 
+//    fun getCroppedBitmap(
+//            bitmap: Bitmap?,
+//            x1: Float,
+//            y1: Float,
+//            x2: Float,
+//            y2: Float,
+//            x3: Float,
+//            y3: Float,
+//            x4: Float,
+//            y4: Float
+//    ): Bitmap? {
+//
+//        val rect = Rect(
+//                Point(x1.toDouble(),y1.toDouble()),
+//                Point(x4.toDouble(), y4.toDouble())
+//        )
+//        val dstMat = Mat(DBImageUtils.bitmapToMat(bitmap), rect)
+//
+//        return DBImageUtils.matToBitmap(dstMat)
+//    }
 
-    private val areaDescendingComparator: Comparator<MatOfPoint2f?> = Comparator<MatOfPoint2f?> { o1, o2 ->
+    fun cropBitmap(
+            bitmap: Bitmap,
+            point1: Point,
+            point2: Point): Bitmap? {
+
+        val rect = Rect(
+                point1,
+                point2
+        )
+
+        val dstMat = Mat(DBImageUtils.bitmapToMat(bitmap), rect)
+
+        val croppedBitmap = DBImageUtils.matToBitmap(dstMat)
+
+        dstMat.release()
+
+        return croppedBitmap
+    }
+
+    private val areaDescendingComparator: Comparator<MatOfPoint2f?> = Comparator { o1, o2 ->
         val area1 = Imgproc.contourArea(o1)
 
         val area2 = Imgproc.contourArea(o2)
@@ -109,10 +150,6 @@ class OpenCVNativeHelper {
         }
 
         val area = abs(Imgproc.contourArea(polygon))
-
-        Log.d(TAG, "Area: $area")
-        Log.d(TAG, "Lower: ${srcArea * AREA_LOWER_THRESHOLD}")
-        Log.d(TAG, "Upper: ${srcArea * AREA_UPPER_THRESHOLD}")
 
         if (area < srcArea * AREA_LOWER_THRESHOLD || area > srcArea * AREA_UPPER_THRESHOLD) {
 
@@ -160,11 +197,7 @@ class OpenCVNativeHelper {
 
     fun getPointsFromMat(srcMat: Mat): MatOfPoint2f? {
 
-        Log.d(TAG, "Src Mat: ${srcMat.width()}x${srcMat.height()}")
-
         val ratio = DOWNSCALE_IMAGE_SIZE / srcMat.width().coerceAtLeast(srcMat.height())
-
-        Log.d(TAG, "Ratio: $ratio")
 
         val downscaledSize = Size(
             (srcMat.width() * ratio).toDouble(),
@@ -172,8 +205,6 @@ class OpenCVNativeHelper {
         )
 
         var downscaled = Mat(downscaledSize, srcMat.type())
-
-        Log.d(TAG, "DownscaledSize: ${downscaled.width()}x${downscaled.height()}")
 
         Imgproc.resize(srcMat, downscaled, downscaledSize)
 
@@ -184,8 +215,6 @@ class OpenCVNativeHelper {
         downscaled = runDilation(downscaled)
 
         val rectangles = runFindContours(downscaled)
-
-        Log.d(TAG, "Rectangles: $rectangles")
 
         downscaled.release()
 
@@ -242,15 +271,9 @@ class OpenCVNativeHelper {
         var destMat = Mat()
 
 
-        Imgproc.erode(destMat, destMat, element)
+        Imgproc.erode(srcMat, destMat, element)
 
-        Imgproc.dilate(srcMat, destMat, element)
-
-
-
-        //Imgproc.dilate(srcMat, destMat, Mat.ones(Size(5.0, 5.0), 0))
-
-        //Imgproc.erode(destMat, destMat, Mat.ones(Size(5.0, 5.0), 0))
+        Imgproc.dilate(destMat, destMat, element)
 
         return destMat
     }
@@ -260,8 +283,6 @@ class OpenCVNativeHelper {
         var tmpMat = DBImageUtils.bitmapToMat(bitmap)
 
         tmpMat = runGreyScale(tmpMat)
-
-        tmpMat = runMorphological(tmpMat)
 
         val tmpBitmap = DBImageUtils.matToBitmap(tmpMat)
 
@@ -294,7 +315,10 @@ class OpenCVNativeHelper {
         return tmpBitmap
     }
 
-    private fun runAdaptiveThreshold(srcMat: Mat, blockSize: Int, meanoffset: Double): Mat {
+    private fun runAdaptiveThreshold(
+            srcMat: Mat,
+            blockSize: Int,
+            meanOffset: Double): Mat {
 
         var destMat = Mat()
 
@@ -304,19 +328,22 @@ class OpenCVNativeHelper {
             255.0,
             Imgproc.ADAPTIVE_THRESH_MEAN_C,//Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,//
             Imgproc.THRESH_BINARY,
-            blockSize, meanoffset
+            blockSize, meanOffset
         )
 
         return destMat
     }
 
-    fun runAdaptiveThresholdBitmap(bitmap: Bitmap, blockSize: Int, meanoffset: Float): Bitmap {
+    fun runAdaptiveThresholdBitmap(
+            bitmap: Bitmap,
+            blockSize: Int,
+            meanOffset: Double): Bitmap {
 
         var srcMat = DBImageUtils.bitmapToMat(bitmap)
 
         srcMat = runGreyScale(srcMat)
 
-        srcMat = runAdaptiveThreshold(srcMat, blockSize, meanoffset.toDouble())//runBinaryThreshold(srcMat, max.toDouble())
+        srcMat = runAdaptiveThreshold(srcMat, blockSize, meanOffset)
 
         val tmpBitmap = DBImageUtils.matToBitmap(srcMat)
 
@@ -416,7 +443,6 @@ class OpenCVNativeHelper {
 
             Imgproc.approxPolyDP(mop2f, approx, epsilon * peri, true)
 
-            Log.d(TAG, "Is Quad: ${isQuadrilateral(approx, srcArea)}")
             if (isQuadrilateral(approx, srcArea)) { // rectangle found
 
                 rectangles.add(approx)
@@ -528,4 +554,5 @@ class OpenCVNativeHelper {
         val largestRectangle = rectangles[0]
         return DBMathUtils.scaleRectangle(largestRectangle, (1f / ratio).toDouble())
     }
+
 }

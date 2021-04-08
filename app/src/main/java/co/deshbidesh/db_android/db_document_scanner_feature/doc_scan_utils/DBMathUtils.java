@@ -22,7 +22,11 @@ public class DBMathUtils {
         return matFloat;
     }
 
-    public static double angle(Point p1, Point p2, Point p0) {
+    public static double angle(
+            Point p1,
+            Point p2,
+            Point p0
+    ) {
         double dx1 = p1.x - p0.x;
         double dy1 = p1.y - p0.y;
         double dx2 = p2.x - p0.x;
@@ -30,13 +34,13 @@ public class DBMathUtils {
         return (dx1 * dx2 + dy1 * dy2) / Math.sqrt((dx1 * dx1 + dy1 * dy1) * (dx2 * dx2 + dy2 * dy2) + 1e-10);
     }
 
-    public static double calculateAngle(Point p1, Point p2, Point p3
-                                        //double P1X, double P1Y, double P2X, double P2Y, double P3X, double P3Y) {
+    public static double calculateAngle(
+            Point p1,
+            Point p2,
+            Point p3
         ){
 
         double numerator = p2.y * (p1.x - p3.x) + p1.y * (p3.x - p2.x) + p3.y * (p2.x - p1.x);
-        //double numerator = P2Y*(P1X-P3X) + P1Y*(P3X-P2X) + P3Y*(P2X-P1X);
-        //double denominator = (P2X-P1X)*(P1X-P3X) + (P2Y-P1Y)*(P1Y-P3Y);
         double denominator = (p2.x - p1.x) * (p1.x - p3.x) + (p2.y - p1.y) * (p1.y - p3.y);
         double ratio = numerator/denominator;
 
@@ -50,7 +54,10 @@ public class DBMathUtils {
         return angleDeg;
     }
 
-    public static MatOfPoint2f scaleRectangle(MatOfPoint2f original, double scale) {
+    public static MatOfPoint2f scaleRectangle(
+            MatOfPoint2f original,
+            double scale
+    ) {
         List<Point> originalPoints = original.toList();
         List<Point> resultPoints = new ArrayList<Point>();
 
