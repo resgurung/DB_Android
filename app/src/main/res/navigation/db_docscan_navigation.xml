@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/db_docscan_navigation"
+    app:startDestination="@id/DBDocScanSelectionFragment">
+
+    <fragment
+        android:id="@+id/DBDocScanSelectionFragment"
+        android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanSelectionFragment"
+        android:label="DBDocScanSelectionFragment"
+        tools:layout="@layout/fragment_db_doc_scan_selection">
+        <action
+            android:id="@+id/action_DBDocScanSelectionFragment_to_DBDocScanCameraFragment"
+            app:destination="@id/DBDocScanCameraFragment" />
+        <action
+            android:id="@+id/action_DBDocScanSelectionFragment_to_DBDocScanInternFragment"
+            app:destination="@id/DBDocScanInternFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/DBDocScanCameraFragment"
+        android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanCameraFragment"
+        android:label="DBDocScanCameraFragment"
+        tools:layout="@layout/fragment_db_doc_scan_camera" >
+        <action
+            android:id="@+id/action_DBDocScanCameraFragment_to_DBDocScanInternFragment"
+            app:destination="@id/DBDocScanInternFragment" />
+        <action
+            android:id="@+id/action_DBDocScanCameraFragment_to_DBDocScanResultProcessFragment"
+            app:destination="@id/DBDocScanResultProcessFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/DBDocScanInternFragment"
+        android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanInternFragment"
+        android:label="DBDocScanInternFragment"
+        tools:layout="@layout/fragment_db_doc_scan_intern" >
+        <action
+            android:id="@+id/action_DBDocScanInternFragment_to_DBDocScanResultProcessFragment"
+            app:destination="@id/DBDocScanResultProcessFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/DBScannerDialogFragment"
+        android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.dialogfragment.ScannerDialogFragment"
+        android:label="DBScannerDialogFragment"
+        tools:layout="@layout/fragment_scanner_dialog"/>
+
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="co.deshbidesh.db_android.main.MainActivity"
+        android:label="MainActivity"
+        tools:layout="@layout/activity_main" />
+
+    <fragment
+        android:id="@+id/DBDocScanResultProcessFragment"
+        android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanResultProcessFragment"
+        android:label="DBDocScanResultProcessFragment"
+        tools:layout="@layout/fragment_db_doc_scan_result_process"/>
+
+</navigation>

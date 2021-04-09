@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="margin_xsmall">16dp</dimen>
+    <dimen name="margin_small">32dp</dimen>
+    <dimen name="margin_medium">48dp</dimen>
+    <dimen name="margin_large">64dp</dimen>
+    <dimen name="margin_xlarge">92dp</dimen>
+
+    <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_medium">8dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+
+    <dimen name="round_button_small">32dp</dimen>
+    <dimen name="round_button_medium">64dp</dimen>
+    <dimen name="round_button_large">92dp</dimen>
+
+    <dimen name="shutter_button_margin">80dp</dimen>
+
+    <dimen name="ar_bounding_rect_stroke_width">1dp</dimen>
+    <dimen name="ar_bounding_box_corner_radius">8dp</dimen>
+    <dimen name="ar_bounding_box_padding">8dp</dimen>
+    <dimen name="ar_scan_beam_stroke_width">2dp</dimen>
+
+    <dimen name="bottom_bar_padding">15dp</dimen>
+    <dimen name="scanPadding">16dp</dimen>
+
+    <!-- Circle -->
+    <dimen name="polygonViewCircleWidth">32dp</dimen>
+    <dimen name="polygonViewStrokeWidth">2dp</dimen>
+
+    <!-- BottomSheet Dialog fragment-->
+    <dimen name="bottomSheetSpaceAround">10dp</dimen>
+    <!--
+    Because the window insets on round devices are larger than 15dp, this padding only applies
+    to square screens.
+    -->
+    <dimen name="box_inset_layout_padding">0dp</dimen>
+
+    <!--
+    This padding applies to both square and round screens. The total padding between the buttons
+    and the window insets is box_inset_layout_padding (above variable) on square screens and
+    inner_frame_layout_padding (below variable) on round screens.
+    -->
+    <dimen name="inner_frame_layout_padding">5dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>

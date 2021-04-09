@@ -5,6 +5,12 @@
     android:id="@+id/db_main_navigation"
     app:startDestination="@id/splashFragment">
 
+    <activity
+        android:id="@+id/DBDocScanActivity"
+        android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.activity.DBDocScanActivity"
+        android:label="activity_d_b_doc_scan"
+        tools:layout="@layout/activity_d_b_doc_scan" />
+
     <fragment
         android:id="@+id/splashFragment"
         android:name="co.deshbidesh.db_android.db_onboarding_feature.SplashFragment"
@@ -54,6 +60,9 @@
         <action
             android:id="@+id/action_homeFragment_to_noteListFragment"
             app:destination="@id/noteListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_DBDocScanActivity"
+            app:destination="@id/DBDocScanActivity" />
     </fragment>
 
     <fragment

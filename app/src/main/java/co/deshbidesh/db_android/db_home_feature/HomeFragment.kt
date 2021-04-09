@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import co.deshbidesh.db_android.R
+import co.deshbidesh.db_android.databinding.FragmentHomeBinding
 import co.deshbidesh.db_android.shared.DBAppBarConfiguration
 import co.deshbidesh.db_android.shared.DBBaseFragment
 
@@ -21,12 +22,18 @@ class HomeFragment : DBBaseFragment() {
 
     private lateinit var navController: NavController
 
+    private var _binding: FragmentHomeBinding? = null
+
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = FragmentHomeBinding.inflate(layoutInflater)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,15 +41,24 @@ class HomeFragment : DBBaseFragment() {
 
         toolBar = view.findViewById(R.id.home_fragment_toolbar)
 
-        val noteButton: Button = view.findViewById(R.id.home_fragment_notes_button)
-
-        noteButton.setOnClickListener {
+        binding.homeFragmentNotesButton.setOnClickListener {
 
             findNavController().navigate(R.id.action_homeFragment_to_noteListFragment)
+        }
+
+        binding.homeFragmentDocScanButton.setOnClickListener {
+
+            findNavController().navigate(R.id.action_homeFragment_to_DBDocScanActivity)
         }
 
         navController = NavHostFragment.findNavController(this);
 
         NavigationUI.setupWithNavController(toolBar, navController, DBAppBarConfiguration.configuration())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        _binding = null
     }
 }

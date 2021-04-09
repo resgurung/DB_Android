@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".db_document_scanner_feature.ui.fragment.DBDocScanCameraFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.camera.view.PreviewView
+                android:id="@+id/preview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:visibility="visible" />
+
+            <co.deshbidesh.db_android.db_document_scanner_feature.overlays.ArOverlayView
+                android:id="@+id/arOverlays"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/cameraOpenLayout"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:padding="8dp"
+            android:background="@color/greyish"
+            android:visibility="visible">
+
+            <ImageButton
+                android:id="@+id/camera_capture_button"
+                android:layout_width="@dimen/round_button_medium"
+                android:layout_height="@dimen/round_button_medium"
+                android:background="@drawable/ic_shutter"
+                android:layout_gravity="center"
+                android:visibility="visible"
+                android:contentDescription="capture_button_alt" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</layout>

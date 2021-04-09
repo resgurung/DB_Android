@@ -92,18 +92,4 @@ class NoteListFragment : DBBaseFragment(), DBNoteListPagingDataAdapter.Interface
 
         listViewModel.deleteNote(note)
     }
-
-    /* override fun onResume() {
-         super.onResume()
-
-         if (adapter == null) {
-
-             adapter = DBNoteListPagingDataAdapter()
-         }
-
-         adapter?.let {
-
-             suscribeUI(it)
-         }
-     }*/
 }
