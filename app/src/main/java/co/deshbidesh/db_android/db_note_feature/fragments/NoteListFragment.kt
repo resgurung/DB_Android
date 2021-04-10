@@ -93,3 +93,9 @@ class NoteListFragment : DBBaseFragment(), DBNoteListPagingDataAdapter.Interface
         listViewModel.deleteNote(note)
     }
 }
+
+
+/*
+
+    master branch
+ */
