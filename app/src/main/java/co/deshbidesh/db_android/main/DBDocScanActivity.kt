@@ -1,4 +1,4 @@
-package co.deshbidesh.db_android.db_document_scanner_feature.ui.activity
+package co.deshbidesh.db_android.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,7 +9,7 @@ class DBDocScanActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_d_b_doc_scan)
+        setContentView(R.layout.activity_db_doc_scan)
     }
 
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/db_splash_navigation"
+    app:startDestination="@id/splashFragment">
+
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="co.deshbidesh.db_android.db_onboarding_feature.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_DBSplashFragment_to_OnboardingViewPager"
+            app:destination="@id/onboardingViewPager" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboardingViewPager"
+        android:name="co.deshbidesh.db_android.db_onboarding_feature.OnboardingViewPager"
+        android:label="fragment_onboarding_view_pager"
+        tools:layout="@layout/fragment_onboarding_view_pager" />
+</navigation>

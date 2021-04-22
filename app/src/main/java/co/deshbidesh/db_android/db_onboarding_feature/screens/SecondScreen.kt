@@ -1,12 +1,15 @@
 package co.deshbidesh.db_android.db_onboarding_feature.screens
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import co.deshbidesh.db_android.R
+import co.deshbidesh.db_android.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_second_screen.view.*
 
 
@@ -19,14 +22,15 @@ class SecondScreen : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_second_screen, container, false)
 
-        val viewPager = activity?.findViewById<ViewPager2>(R.id.onboarding_view_pager)
-
         view.second_scene_next_button.setOnClickListener {
 
-            viewPager?.currentItem = 2
+            activity?.let{
+                val intent = Intent (it, MainActivity::class.java)
+                it.finish()
+                it.startActivity(intent)
+            }
         }
 
         return view
     }
-
 }

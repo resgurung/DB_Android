@@ -25,9 +25,9 @@ class OnboardingViewPager : Fragment() {
 
         val fragmentList = arrayListOf(
             FirstScreen(),
-            SecondScreen(),
-            ThirdScreen(),
-            FourthScreen()
+            SecondScreen()
+            //ThirdScreen(),
+            //FourthScreen()
         )
 
         val adapter = DBOnboardingViewPagerAdapter(

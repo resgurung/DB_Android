@@ -11,7 +11,7 @@ object DBPreferenceHelper {
     private const val MODE = Context.MODE_PRIVATE
     private lateinit var preferences: SharedPreferences
     // list of app specific preferences
-    private val IS_FIRST_RUN_PREF = Pair("is_first_run", false)
+    private val IS_FIRST_RUN_PREF = Pair("is_first_run", true)
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)

@@ -25,6 +25,9 @@ class DBDocScanConstant {
         const val ADAPTIVE_OFFSET_FROM_MEAN_KEY = "AdaptiveOffsetFromMean"
         const val ADAPTIVE_OFFSET_FROM_MEAN_DEFAULT_VALUE = 2.0f
 
+        const val IS_FIRST_RUN = "isFirstRun"
+
+
         fun setInitialPreferences() {
 
             if (!DBPreferenceHelper.firstRun) {

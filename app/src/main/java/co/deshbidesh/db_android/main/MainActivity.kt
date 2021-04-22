@@ -2,6 +2,7 @@ package co.deshbidesh.db_android.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
@@ -24,12 +25,11 @@ class MainActivity : AppCompatActivity() {
         navController = Navigation.findNavController(this@MainActivity, R.id.main_fragment_container)
 
         bottomNavigationView.setupWithNavController(navController)
-
-        DBDatabase.getDatabase(application)
     }
 
     fun setBottomNavigationVisibility(visibility: Int) {
 
         bottomNavigationView.visibility = visibility
     }
+
 }

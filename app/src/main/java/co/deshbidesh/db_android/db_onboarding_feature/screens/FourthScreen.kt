@@ -21,27 +21,11 @@ class FourthScreen : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_fourth_screen, container, false)
 
-        val viewPager = activity?.findViewById<ViewPager2>(R.id.onboarding_view_pager)
+        //val viewPager = activity?.findViewById<ViewPager2>(R.id.onboarding_view_pager)
 
-        view.fourth_scene_finish_button.setOnClickListener {
-
-            findNavController().navigate(R.id.action_onboardingViewPager_to_homeFragment)
-
-            onBoardingFinished()
-        }
+        view.fourth_scene_finish_button.setOnClickListener {}
 
         return view
-    }
-
-    private fun onBoardingFinished() {
-
-        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-
-        val editor = sharedPref.edit()
-
-        editor.putBoolean("Finished", true)
-
-        editor.apply()
     }
 
 }

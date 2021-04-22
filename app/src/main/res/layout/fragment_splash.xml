@@ -6,15 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".db_onboarding_feature.SplashFragment">
 
-
-    <TextView
-        android:id="@+id/splash_screen_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Desh Bidesh"
-        android:textSize="24sp"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@mipmap/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
