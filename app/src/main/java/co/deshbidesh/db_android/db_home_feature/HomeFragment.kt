@@ -41,12 +41,12 @@ class HomeFragment : DBBaseFragment() {
 
         toolBar = view.findViewById(R.id.home_fragment_toolbar)
 
-        binding.homeFragmentNotesButton.setOnClickListener {
+        binding.homeNoteCard.setOnClickListener {
 
             findNavController().navigate(R.id.action_homeFragment_to_noteListFragment)
         }
 
-        binding.homeFragmentDocScanButton.setOnClickListener {
+        binding.homeDocScannerCard.setOnClickListener {
 
             findNavController().navigate(R.id.action_homeFragment_to_DBDocScanActivity)
         }
