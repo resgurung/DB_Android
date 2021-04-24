@@ -44,6 +44,7 @@ class DBDocScanCameraFragment : Fragment() {
         const val NUMBER_OF_TIMES_LAST_POINTS_TO_BE_USED = 4
 
         val targetResolution: Size = Size(720, 1280)
+
     }
 
     private var _binding: FragmentDbDocScanCameraBinding? = null

@@ -14,7 +14,6 @@ import co.deshbidesh.db_android.db_database.database.DBDatabase
 import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.adapters.DBNoteListPagingDataAdapter
 import co.deshbidesh.db_android.db_note_feature.factories.DBNoteListViewModelFactory
-import co.deshbidesh.db_android.db_note_feature.models.DBNote
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteListViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
 import co.deshbidesh.db_android.shared.decorators.EqualSpaceItemDecorator
@@ -23,7 +22,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 
-class NoteListFragment : DBBaseFragment(), DBNoteListPagingDataAdapter.InterfaceDeleteNote {
+class NoteListFragment : DBBaseFragment(){
 
     override var bottomNavigationViewVisibility = View.GONE
 
@@ -54,10 +53,10 @@ class NoteListFragment : DBBaseFragment(), DBNoteListPagingDataAdapter.Interface
 
             binding.noteListRecycleview.addItemDecoration(EqualSpaceItemDecorator(10))
 
-            // layout for potrait and landscape
+            // Layout for portrait and landscape
             binding.noteListRecycleview.layoutManager = GridLayoutManager(it, resources.getInteger(R.integer.grid_column_count))
 
-            adapter = DBNoteListPagingDataAdapter(this)
+            adapter = DBNoteListPagingDataAdapter()
 
             binding.noteListRecycleview.adapter = adapter
 
@@ -87,15 +86,4 @@ class NoteListFragment : DBBaseFragment(), DBNoteListPagingDataAdapter.Interface
             }
         }
     }
-
-    override fun deleteNote(note: DBNote) {
-
-        listViewModel.deleteNote(note)
-    }
 }
-
-
-/*
-
-    master branch
- */

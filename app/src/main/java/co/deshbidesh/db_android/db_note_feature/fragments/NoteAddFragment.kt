@@ -6,10 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -23,15 +23,13 @@ import co.deshbidesh.db_android.db_database.repository.DBImageRepository
 import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.adapters.DBNoteAddImageRecyclerAdapter
 import co.deshbidesh.db_android.db_note_feature.factories.DBNoteAddViewModelFactory
+import co.deshbidesh.db_android.db_note_feature.note_utils.NotesImageUtils
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteAddViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
 import co.deshbidesh.db_android.shared.DBHelper
 import co.deshbidesh.db_android.shared.hideKeyboard
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 
 
 class NoteAddFragment : DBBaseFragment() {
@@ -169,7 +167,7 @@ class NoteAddFragment : DBBaseFragment() {
 
                 if (id != null) {
 
-                    prepareFilePath(uriList)
+                    NotesImageUtils.prepareFilePath(uriList, destFilePath, bitMapFileMap, requireContext(), requireActivity())
 
                     addViewModel.addImage(destFilePath, id) { imageList -> //thread 2, addImages returns imageIdList
 
@@ -181,7 +179,7 @@ class NoteAddFragment : DBBaseFragment() {
 
                                 addViewModel.updateNote(currNote) { // thread 4, finally update Note with imageIds
 
-                                    writeImagesToExternalStorage(bitMapFileMap);
+                                    NotesImageUtils.writeImagesToExternalStorage(bitMapFileMap)
 
                                     createNoteFinalize("Successful, note saved.")
                                 }
@@ -229,33 +227,6 @@ class NoteAddFragment : DBBaseFragment() {
         if((resultCode == Activity.RESULT_OK) && (requestCode == IMAGE_PICK_CODE)) {
             uriList.add(data?.data.toString())
             noteAddImgAdapter.setData(uriList)
-        }
-    }
-
-    private fun prepareFilePath(imageList: ArrayList<String>){
-        for (path in imageList) {
-            // Decode bitmap from uri
-            val imgUri: Uri? = Uri.parse(path)
-            val imgStream: InputStream? = context?.contentResolver?.openInputStream(imgUri!!)
-
-            imgStream?.let {
-                val selectedImg: Bitmap = BitmapFactory.decodeStream(imgStream)
-
-                // Determine destination file path
-                val dirPath = this.requireActivity().getExternalFilesDir("/images/")?.absolutePath
-                val file: File = File(dirPath, "${System.currentTimeMillis()}.jpg")
-                val finalFilePath = file.path
-                destFilePath.add(finalFilePath)
-                bitMapFileMap.put(selectedImg, file)
-            }
-        }
-    }
-
-    private fun writeImagesToExternalStorage(fileMap: HashMap<Bitmap, File>) {
-        var outputStream: OutputStream?
-        fileMap.forEach {
-            outputStream = FileOutputStream(it.value)
-            it.key.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         }
     }
 
