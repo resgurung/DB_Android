@@ -14,4 +14,20 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Preference Contact  -->
+    <string name="contact_header">Contact</string>
+    <string name="contact_name">Manager</string>
+    <string name="contact_email">Email</string>
+
+    <!-- Preference Legal -->
+    <string name="legal_header">Terms and Conditions</string>
+    <string name="legal_disclaimer">Legal Disclaimer</string>
+    <string name="legal_privacy">Privacy</string>
+    <string name="legal_summary">Click to view</string>
+
+    <!-- Preference Social -->
+    <string name="social_header">Find us</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

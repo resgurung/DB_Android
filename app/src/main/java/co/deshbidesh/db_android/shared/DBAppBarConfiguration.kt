@@ -11,7 +11,7 @@ object DBAppBarConfiguration {
             R.id.homeFragment,
             R.id.calendarFragment,
             R.id.dictionaryFragment,
-            R.id.settingsFragment
+            R.id.DBSettingsFragment
         ))
     }
 }

@@ -37,12 +37,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="co.deshbidesh.db_android.db_settings_feature.SettingsFragment"
-        android:label="Settings"
-        tools:layout="@layout/fragment_settings" />
-
-    <fragment
         android:id="@+id/noteListFragment"
         android:name="co.deshbidesh.db_android.db_note_feature.fragments.NoteListFragment"
         android:label="fragment_note_list"
@@ -101,6 +95,35 @@
         <argument
             android:name="imagePath"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/disclaimerViewFragment"
+        android:name="co.deshbidesh.db_android.db_settings_feature.ui.DisclaimerViewFragment"
+        android:label="fragment_disclaimer_view"
+        tools:layout="@layout/fragment_disclaimer_view" >
+        <action
+            android:id="@+id/action_disclaimerViewFragment_to_DBSettingsFragment"
+            app:destination="@id/DBSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/privacyViewFragment"
+        android:name="co.deshbidesh.db_android.db_settings_feature.ui.PrivacyViewFragment"
+        android:label="fragment_privacy_view"
+        tools:layout="@layout/fragment_privacy_view" >
+        <action
+            android:id="@+id/action_privacyViewFragment_to_DBSettingsFragment"
+            app:destination="@id/DBSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/DBSettingsFragment"
+        android:name="co.deshbidesh.db_android.db_settings_feature.ui.DBSettingsFragment"
+        android:label="DBSettingsFragment" >
+        <action
+            android:id="@+id/action_DBSettingsFragment_to_disclaimerViewFragment"
+            app:destination="@id/disclaimerViewFragment" />
+        <action
+            android:id="@+id/action_DBSettingsFragment_to_privacyViewFragment"
+            app:destination="@id/privacyViewFragment" />
     </fragment>
 
 </navigation>

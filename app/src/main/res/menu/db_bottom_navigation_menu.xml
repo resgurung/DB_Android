@@ -19,7 +19,7 @@
     -->
 
     <item
-        android:id="@+id/settingsFragment"
+        android:id="@+id/DBSettingsFragment"
         android:title="Settings"
         android:icon="@drawable/ic_settings"/>
 </menu>

@@ -1,0 +1,54 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory>
+
+        <Preference
+            app:layout="@layout/layout_db_settings_image"/>
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory app:title="@string/contact_header">
+
+        <Preference
+            app:key="contactName"
+            app:title="@string/contact_name"
+            app:summary="Sumish Hirachan" />
+
+        <Preference
+            app:key="contactEmail"
+            app:title="@string/contact_email"
+            app:summary="informationdeshbidesh@gmail.com" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/legal_header">
+
+        <Preference
+            app:key="legalDisclaimer"
+            app:title="@string/legal_disclaimer"
+            app:summary="@string/legal_summary"/>
+
+        <Preference
+            app:key="legalPrivacy"
+            app:title="@string/legal_privacy"
+            app:summary="@string/legal_summary"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/social_header">
+
+        <Preference
+            app:layout="@layout/layout_db_settings_findus">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://www.facebook.com/Desh-Bidesh-103355211335288"
+                />
+        </Preference>
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
