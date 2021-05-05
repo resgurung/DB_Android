@@ -1,5 +1,6 @@
 package co.deshbidesh.db_android.db_document_scanner_feature.overlays
 
+import co.deshbidesh.db_android.db_document_scanner_feature.model.DBScannedObjectInfo
 import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 
 
@@ -9,8 +10,10 @@ import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 
 typealias EdgePointsListener = (points: List<EdgePoint>?) -> Unit
 
+typealias DBObjectInfo = (info: DBScannedObjectInfo?) -> Unit
+
 class BoundingBoxAnimator(private var number: Int,
-                          private val listener: EdgePointsListener
+                          private val listener: DBObjectInfo
                           ): ArObjectTracker() {
 
     private var counter = 0
@@ -41,7 +44,7 @@ class BoundingBoxAnimator(private var number: Int,
             }
         }
 
-        listener(tempArObject?.points)
+        listener(tempArObject?.objectInfo)
 
         super.processObject(tempArObject?.copy())
 

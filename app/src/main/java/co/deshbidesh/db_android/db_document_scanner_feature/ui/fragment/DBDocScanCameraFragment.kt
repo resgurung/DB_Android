@@ -24,6 +24,7 @@ import androidx.viewbinding.BuildConfig
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentDbDocScanCameraBinding
 import co.deshbidesh.db_android.db_document_scanner_feature.factories.DocumentAnalyzerViewModelFactory
+import co.deshbidesh.db_android.db_document_scanner_feature.model.DBScannedObjectInfo
 import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 import co.deshbidesh.db_android.db_document_scanner_feature.overlays.*
 import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.DocumentAnalyzer
@@ -60,7 +61,9 @@ class DBDocScanCameraFragment : Fragment() {
 
     private var imageAnalyzer: ThreadedImageAnalyzer? = null
 
-    private var edgePoints: List<EdgePoint>? = null
+    //private var edgePoints: List<EdgePoint>? = null
+
+    private var scannedObjectInfo: DBScannedObjectInfo? = null
 
     private lateinit var viewModelFactory: DocumentAnalyzerViewModelFactory
 
@@ -95,9 +98,11 @@ class DBDocScanCameraFragment : Fragment() {
 
         mutableArOverlayView.postValue(binding.arOverlays) // background thread
 
-        animator = BoundingBoxAnimator(NUMBER_OF_TIMES_LAST_POINTS_TO_BE_USED) { points ->
+        animator = BoundingBoxAnimator(NUMBER_OF_TIMES_LAST_POINTS_TO_BE_USED) { info ->
 
-            edgePoints = points
+            //edgePoints = points
+
+            scannedObjectInfo = info
         }
 
         viewModelFactory = DocumentAnalyzerViewModelFactory(sharedViewModel.opencvHelper)
@@ -124,7 +129,14 @@ class DBDocScanCameraFragment : Fragment() {
 
         binding.cameraCaptureButton.setOnClickListener {
 
-            saveImageToMemory()
+            scannedObjectInfo?.let {
+
+                processImage(it)
+
+            } ?: run {
+
+                saveImageToMemory()
+            }
         }
 
         updateRoute(view)
@@ -220,6 +232,20 @@ class DBDocScanCameraFragment : Fragment() {
         }, ContextCompat.getMainExecutor(context))
     }
 
+    private fun processImage(objectInfo: DBScannedObjectInfo) {
+
+        sharedViewModel.processImageWithObjectInfo(objectInfo) { processComplete ->
+
+            if (processComplete) {
+
+                navigateTo(SharedViewModel.Route.RESULT_FRAGMENT)
+
+            } else {
+
+                saveImageToMemory()
+            }
+        }
+    }
     private fun saveImageToMemory() {
 
         imageCapture?.takePicture(executor,
@@ -240,13 +266,17 @@ class DBDocScanCameraFragment : Fragment() {
                     image.image?.let { currentImage ->
 
                         sharedViewModel.processImage(
-                                currentImage,
-                                points = edgePoints ?: arrayListOf()
-                        ) { route ->
-
-
+                                currentImage) { route ->
                             navigateTo(route)
                         }
+
+//                        sharedViewModel.processImage(
+//                                currentImage,
+//                                points = edgePoints ?: arrayListOf()
+//                        ) { route ->
+//
+//                            navigateTo(route)
+//                        }
 
                     } ?: run {
 
@@ -295,29 +325,37 @@ class DBDocScanCameraFragment : Fragment() {
     private fun onCreateAnalyzerConfigBuilder(): ImageAnalysis {
 
         return ImageAnalysis.Builder()
-            .setTargetResolution(targetResolution)
-            .setTargetRotation(Surface.ROTATION_0)
-            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-            .build()
+                //.setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .setTargetResolution(targetResolution)
+                .setTargetRotation(Surface.ROTATION_0)
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build()
 
+        //.setTargetResolution(targetResolution)
         // note: cannot set aspect ratio and target resolution on the same config
     }
 
     private fun onCreatePreviewConfigBuilder(): Preview {
 
         return Preview.Builder()
-            .setTargetResolution(targetResolution)
-            .setTargetRotation(Surface.ROTATION_0)
-            .build()
+                //.setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .setTargetResolution(targetResolution)
+                .setTargetRotation(Surface.ROTATION_0)
+                .build()
+
+        //.setTargetResolution(targetResolution)
     }
 
     private fun createCaptureUseCase(): ImageCapture {
 
         return  ImageCapture.Builder()
-            .setTargetResolution(targetResolution)
-            .setTargetRotation(Surface.ROTATION_0)
-            .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
-            .build()
+                //.setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .setTargetResolution(targetResolution)
+                //.setTargetRotation(Surface.ROTATION_0)
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
+                .build()
+
+        //.setTargetResolution(targetResolution)
     }
 }
 

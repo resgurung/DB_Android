@@ -27,24 +27,28 @@ class PositionTranslator(
         if (arObject != null) {
 
             // Rotate Size
-            val rotatedSize = when (arObject.sourceRotationDegrees) {
+            val rotatedSize = when (arObject.objectInfo.rotation) {
                 90, 270 -> Size(arObject.sourceSize.height, arObject.sourceSize.width)
                 0, 180 -> arObject.sourceSize
                 else -> throw IllegalArgumentException("Unsupported rotation. Must be 0, 90, 180 or 270")
             }
 
+            Log.d(TAG,"Mapping from source ${rotatedSize.width}x${rotatedSize.height} to ${targetWidth}x$targetHeight")
 
             // Calculate scale
             val scaleX = targetWidth / rotatedSize.width.toDouble()
             val scaleY = targetHeight / rotatedSize.height.toDouble()
             val scale = scaleX.coerceAtLeast(scaleY)
             val scaleF = scale.toFloat()
-            val scaledSize = Size(ceil(rotatedSize.width * scale).toInt(), ceil(rotatedSize.height * scale).toInt())
+            val scaledSize = Size(ceil(rotatedSize.width * scaleX).toInt(), ceil(rotatedSize.height * scaleY).toInt())
 
             // Calculate offset (we need to center the overlay on the target)
             val offsetX = (targetWidth - scaledSize.width) / 2
             val offsetY = (targetHeight - scaledSize.height) / 2
 
+            Log.d(TAG,"Use scale=$scale, scaledSize: ${scaledSize.width}x${scaledSize.height}")
+            Log.d(TAG,"Use offsetX=$offsetX, offsetY=$offsetY")
+            Log.d(TAG,"Boundingbox=${arObject.boundingBox}")
             // Map bounding box
             val mappedBoundingBox = RectF().apply {
                 left = arObject.boundingBox.left * scaleF + offsetX
@@ -53,7 +57,7 @@ class PositionTranslator(
                 bottom = arObject.boundingBox.bottom * scaleF + offsetY
             }
 
-            // The front facing image is flipped, so we need to mirrow the positions on the vertical axis (centerX)
+            // The front facing image is flipped, so we need to mirror the positions on the vertical axis (centerX)
             if (frontFacing) {
                 val centerX = targetWidth / 2
                 mappedBoundingBox.left = centerX + (centerX - mappedBoundingBox.left)

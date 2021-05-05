@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.deshbidesh.db_android.db_document_scanner_feature.doc_scan_utils.DBImageUtils
 import co.deshbidesh.db_android.db_document_scanner_feature.model.DBDocScanImage
+import co.deshbidesh.db_android.db_document_scanner_feature.model.DBScannedObjectInfo
 import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 import co.deshbidesh.db_android.db_document_scanner_feature.processor.OpenCVNativeHelper
 import co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanInternFragment
@@ -24,7 +25,6 @@ import java.util.*
 
 
 class SharedViewModel: ViewModel() {
-
 
     enum class Route {
 
@@ -267,7 +267,6 @@ class SharedViewModel: ViewModel() {
             listener: (Bitmap?) -> Unit
     ) {
 
-
         bitmap?.let {
 
             viewModelScope.launch(Dispatchers.IO) {
@@ -301,34 +300,29 @@ class SharedViewModel: ViewModel() {
     }
 
     /////////////////////  DBDocScanCameraFragment ////////////////////////
+    fun processImageWithObjectInfo(objectInfo: DBScannedObjectInfo, listener: (Boolean) -> Unit) {
 
-    fun processImage(
-            image: Image,
-            points: List<EdgePoint>,
-            listener: (Route) -> Unit
-    ) {
+        val bitmap = opencvHelper.getScannedBitmapWith(objectInfo.imageMat, objectInfo.points)
 
-        if (points.isEmpty()) {
+        if (bitmap != null) {
 
-            listener(routeToIntern(image))
+            insertInFirst(bitmap)
+
+            listener(true)
 
         } else {
 
-            val bitmap = opencvHelper.getScannedBitmap(image, points)
-
-            if (bitmap == null) {
-
-                insertInFirst(image.imageToBitmap())
-
-                listener(Route.INTERN_FRAGMENT)
-
-            } else {
-
-                insertInFirst(bitmap)
-
-                listener(Route.RESULT_FRAGMENT)
-            }
+            listener(false)
         }
+    }
+
+    fun processImage(
+            image: Image,
+            listener: (Route) -> Unit
+    ) {
+
+        listener(routeToIntern(image))
+
     }
 
     private fun routeToIntern(
@@ -350,5 +344,4 @@ class SharedViewModel: ViewModel() {
     }
 
     ///////////////////////////////////////////////////
-
 }

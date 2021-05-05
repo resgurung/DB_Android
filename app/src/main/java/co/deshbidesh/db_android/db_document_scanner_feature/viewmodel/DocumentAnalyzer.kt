@@ -3,6 +3,7 @@ package co.deshbidesh.db_android.db_document_scanner_feature.viewmodel
 import android.annotation.SuppressLint
 import android.graphics.ImageFormat
 import android.graphics.RectF
+import android.media.Image
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -10,10 +11,13 @@ import android.util.Log
 import android.util.Size
 import androidx.camera.core.ImageProxy
 import androidx.lifecycle.ViewModel
+import co.deshbidesh.db_android.db_document_scanner_feature.model.DBScannedObjectInfo
 import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 import co.deshbidesh.db_android.db_document_scanner_feature.overlays.ArObject
 import co.deshbidesh.db_android.db_document_scanner_feature.overlays.ArObjectTracker
 import co.deshbidesh.db_android.db_document_scanner_feature.processor.OpenCVNativeHelper
+import co.deshbidesh.db_android.shared.extensions.imageToBitmap
+import co.deshbidesh.db_android.shared.extensions.mapOrientation
 import co.deshbidesh.db_android.shared.extensions.yuvToRgba
 import org.opencv.core.Core
 import java.lang.Exception
@@ -52,13 +56,17 @@ class DocumentAnalyzer(
 
                         val rotation = image.imageInfo.rotationDegrees
 
+                        Log.d(TAG, "Rotation: $rotation")
+
                         val rgbaMat = currentImage.yuvToRgba()
 
                         val greyMat = opencvHelper.runGreyScale(rgbaMat)
 
                         val rotatedMat = opencvHelper.runRotate(greyMat, mapOrientation(rotation))
 
-                        val size = Size(rotatedMat.width(), rotatedMat.height())
+                        val size = Size(greyMat.width(), greyMat.height())
+
+                        Log.d(TAG, "Size $size")
 
                         var tmpRectF = RectF()
 
@@ -84,7 +92,6 @@ class DocumentAnalyzer(
                                     points.add(EdgePoint(point.x, point.y))
                                 }
                             }
-
                         }
 
                         uiHandler.post {
@@ -94,8 +101,9 @@ class DocumentAnalyzer(
                                             trackingId = 18,
                                             boundingBox = tmpRectF,
                                             sourceSize = size,
-                                            sourceRotationDegrees = 0,
-                                            points = points
+                                            objectInfo = DBScannedObjectInfo(points, rotation, rotatedMat)
+                                            //sourceRotationDegrees = rotation,
+                                            //points = points
                                     )
                             )
                         }
@@ -106,7 +114,7 @@ class DocumentAnalyzer(
 
                         greyMat.release()
 
-                        rotatedMat.release()
+                        //rotatedMat.release()
 
                     } else {
                         // Manage other image formats
@@ -126,14 +134,14 @@ class DocumentAnalyzer(
         image.close()
     }
 
-    private fun mapOrientation(degree: Int): Int {
-        return when (degree) {
-            0 -> Core.ROTATE_180
-            90 -> Core.ROTATE_90_CLOCKWISE
-            180 -> Core.ROTATE_180
-            270 -> Core.ROTATE_90_COUNTERCLOCKWISE
-            else -> Core.ROTATE_90_CLOCKWISE
-        }
-    }
+//    public fun mapOrientation(degree: Int): Int {
+//        return when (degree) {
+//            0 -> Core.ROTATE_180
+//            90 -> Core.ROTATE_90_CLOCKWISE
+//            180 -> Core.ROTATE_180
+//            270 -> Core.ROTATE_90_COUNTERCLOCKWISE
+//            else -> Core.ROTATE_90_CLOCKWISE
+//        }
+//    }
 
 }

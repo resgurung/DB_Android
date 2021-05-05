@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageFormat
 import android.media.Image
+import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
@@ -87,4 +88,15 @@ fun Image.imageToBitmap(): Bitmap {
     buffer.get(bytes)
 
     return BitmapFactory.decodeByteArray(bytes, 0, bytes.size, null)
+}
+
+// maps the given orientation to opencv orientations
+fun mapOrientation(degree: Int): Int {
+    return when (degree) {
+        0 -> Core.ROTATE_180
+        90 -> Core.ROTATE_90_CLOCKWISE
+        180 -> Core.ROTATE_180
+        270 -> Core.ROTATE_90_COUNTERCLOCKWISE
+        else -> Core.ROTATE_90_CLOCKWISE
+    }
 }

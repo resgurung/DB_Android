@@ -8,6 +8,7 @@ import co.deshbidesh.db_android.db_document_scanner_feature.doc_scan_utils.DBIma
 import co.deshbidesh.db_android.db_document_scanner_feature.doc_scan_utils.DBMathUtils
 import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 import co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanInternFragment
+import co.deshbidesh.db_android.shared.extensions.mapOrientation
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import java.util.*
@@ -54,6 +55,28 @@ class OpenCVNativeHelper {
         )
 
         var dstMat = perspective.transform(DBImageUtils.jpegToMat(image), rectangle)
+
+        val bitmap = DBImageUtils.matToBitmap(dstMat)
+
+        dstMat.release()
+
+        return bitmap
+    }
+
+    fun getScannedBitmapWith(srcMat: Mat, points: List<EdgePoint>): Bitmap? {
+
+        val perspective = PerspectiveTransformation()
+
+        val rectangle = MatOfPoint2f()
+
+        rectangle.fromArray(
+                points[0].toOpenCVPoint(),
+                points[1].toOpenCVPoint(),
+                points[2].toOpenCVPoint(),
+                points[3].toOpenCVPoint()
+        )
+
+        var dstMat = perspective.transform(srcMat, rectangle)
 
         val bitmap = DBImageUtils.matToBitmap(dstMat)
 
