@@ -26,7 +26,6 @@ class SecondScreen : Fragment() {
 
             activity?.let{
                 val intent = Intent (it, MainActivity::class.java)
-                it.finish()
                 it.startActivity(intent)
             }
         }
