@@ -40,11 +40,47 @@
     <PreferenceCategory app:title="@string/social_header">
 
         <Preference
-            app:layout="@layout/layout_db_settings_findus">
+            app:layout="@layout/layout_db_settings_findus_fb">
 
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://www.facebook.com/Desh-Bidesh-103355211335288"
+                />
+        </Preference>
+
+        <Preference
+            app:layout="@layout/layout_db_settings_findus_tw">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://twitter.com/DeshBidesh4"
+                />
+        </Preference>
+
+        <Preference
+            app:layout="@layout/layout_db_settings_findus_ig">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://www.instagram.com/deshbideshapp"
+                />
+        </Preference>
+
+        <Preference
+            app:layout="@layout/layout_db_settings_findus_yt">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://www.youtube.com/channel/UC22Tp-7tetG-CwbnNPPkeWQ"
+                />
+        </Preference>
+
+        <Preference
+            app:layout="@layout/layout_db_settings_findus_web">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://deshbidesh.co.uk"
                 />
         </Preference>
 

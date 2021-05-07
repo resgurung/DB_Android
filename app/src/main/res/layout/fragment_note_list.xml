@@ -35,21 +35,16 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/note_list_recycleview"
             android:layout_width="match_parent"
-            android:layout_height="615dp"
-            android:layout_gravity="center">
+            android:layout_height="wrap_content"
+            app:layout_anchor="@id/note_list_toolbar"
+            app:layout_anchorGravity="bottom"
+            android:paddingTop="5dp"
+            android:layout_gravity="bottom" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/note_list_recycleview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/note_list_fab"

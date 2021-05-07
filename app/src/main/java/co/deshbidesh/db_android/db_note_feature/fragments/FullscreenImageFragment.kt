@@ -85,9 +85,6 @@ class FullscreenImageFragment : DBBaseFragment() {
 
         doneButton = view.findViewById(R.id.done_button)
 
-        deleteButton = view.findViewById(R.id.delete_button)
-
-
         fullscreenContent = view.findViewById(R.id.full_screen_img_view)
         //fullscreenContentControls = view.findViewById(R.id.fullscreen_content_controls)
 
