@@ -31,7 +31,9 @@
         <activity
             android:name=".main.DBDocScanActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".main.MainActivity"></activity>
+        <activity
+            android:name=".main.MainActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -5,12 +5,6 @@
     android:id="@+id/db_main_navigation"
     app:startDestination="@id/homeFragment">
 
-    <activity
-        android:id="@+id/DBDocScanActivity"
-        android:name="co.deshbidesh.db_android.main.DBDocScanActivity"
-        android:label="activity_db_doc_scan"
-        tools:layout="@layout/activity_db_doc_scan" />
-
     <fragment
         android:id="@+id/calendarFragment"
         android:name="co.deshbidesh.db_android.db_calendar_feature.CalendarFragment"
@@ -31,16 +25,13 @@
         <action
             android:id="@+id/action_homeFragment_to_noteListFragment"
             app:destination="@id/noteListFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_DBDocScanActivity"
-            app:destination="@id/DBDocScanActivity" />
     </fragment>
 
     <fragment
         android:id="@+id/noteListFragment"
         android:name="co.deshbidesh.db_android.db_note_feature.fragments.NoteListFragment"
         android:label="fragment_note_list"
-        tools:layout="@layout/fragment_note_list" >
+        tools:layout="@layout/fragment_note_list">
         <action
             android:id="@+id/action_noteListFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
@@ -52,6 +43,9 @@
         <action
             android:id="@+id/action_noteListFragment_to_noteAddFragment"
             app:destination="@id/noteAddFragment" />
+        <deepLink
+            android:id="@+id/db_note_feature_list_deepLink"
+            app:uri="app://db_note_feature/list" />
     </fragment>
 
     <fragment

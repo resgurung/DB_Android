@@ -10,19 +10,23 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.SeekBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentDbDocScanResultProcessBinding
+import co.deshbidesh.db_android.db_document_scanner_feature.model.DBDocScanSaveObject
 import co.deshbidesh.db_android.db_document_scanner_feature.overlays.PolygonView
 import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.SharedViewModel
 import co.deshbidesh.db_android.shared.extensions.setBrightnessContrast
 import co.deshbidesh.db_android.shared.extensions.setSaturation
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.withContext
-import java.util.HashMap
+import java.util.*
 
 
 class DBDocScanResultProcessFragment :
@@ -88,6 +92,8 @@ class DBDocScanResultProcessFragment :
     private var blockValue = 11
 
     private var meanOffsetValue = 2.0
+
+    private lateinit var lastRoute: SharedViewModel.Route
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -191,7 +197,10 @@ class DBDocScanResultProcessFragment :
 
     private fun updateRoute() {
 
-        when(sharedViewModel.getRoute()) {
+        lastRoute = sharedViewModel.getRoute()
+
+        when(lastRoute) {
+
             SharedViewModel.Route.CAMERA_FRAGMENT -> {
 
                 Log.d(TAG, "${sharedViewModel.getSecondBitmap()}")
@@ -207,6 +216,8 @@ class DBDocScanResultProcessFragment :
 
             } else -> false
         }
+
+        Log.d("Testing", "BufferBitmap-> $bufferBitmap")
 
         mainDisplayingImage = DisplayImage.ORIGINAL
 
@@ -368,7 +379,6 @@ class DBDocScanResultProcessFragment :
 
             updateGreyUI(grey)
         }
-
     }
 
     private fun updateBWImageView() {
@@ -628,6 +638,23 @@ class DBDocScanResultProcessFragment :
 
     private fun save() {
 
+        //val deepLink = Uri.parse("app://db_note_feature/add")
+
+        //mainDisplayingImage
+
+        mainDisplayingImage?.let {
+
+            val action = DBDocScanResultProcessFragmentDirections.actionDBDocScanResultProcessFragmentToDBDocScanSaveFragment(
+                    DBDocScanSaveObject(
+                        lastRoute,
+                            currentImageViewsScreenBitmap(
+                                    it
+                            )
+                    )
+            )
+
+            findNavController().navigate(action)
+        }
     }
 
     override fun didMove() {

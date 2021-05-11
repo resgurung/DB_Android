@@ -151,7 +151,6 @@ class NoteAddFragment : DBBaseFragment() {
     override fun onResume() {
         super.onResume()
 
-        println("FilePath: $uriList")
         noteAddImgAdapter.setData(uriList)  // re-load uri
     }
 
@@ -208,8 +207,8 @@ class NoteAddFragment : DBBaseFragment() {
 
     private fun createNoteFinalize(msg: String) {
         activity?.runOnUiThread {
-            uriList.clear();
-            destFilePath.clear();
+            uriList.clear()
+            destFilePath.clear()
             showToast(msg)
             findNavController().navigate(R.id.action_noteAddFragment_to_noteListFragment)
         }

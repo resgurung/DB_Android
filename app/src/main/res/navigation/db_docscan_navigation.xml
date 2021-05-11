@@ -47,16 +47,25 @@
         tools:layout="@layout/fragment_scanner_dialog"/>
 
 
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="co.deshbidesh.db_android.main.MainActivity"
-        android:label="MainActivity"
-        tools:layout="@layout/activity_main" />
-
     <fragment
         android:id="@+id/DBDocScanResultProcessFragment"
         android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanResultProcessFragment"
         android:label="DBDocScanResultProcessFragment"
-        tools:layout="@layout/fragment_db_doc_scan_result_process"/>
+        tools:layout="@layout/fragment_db_doc_scan_result_process">
+        <action
+            android:id="@+id/action_DBDocScanResultProcessFragment_to_DBDocScanSaveFragment"
+            app:destination="@id/DBDocScanSaveFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/DBDocScanSaveFragment"
+        android:name="co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanSaveFragment"
+        android:label="DBDocScanSaveFragment"
+        tools:layout="@layout/fragment_db_doc_scan_save">
+        <argument
+            android:name="dbSaveObject"
+            app:argType="co.deshbidesh.db_android.db_document_scanner_feature.model.DBDocScanSaveObject"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 
 </navigation>

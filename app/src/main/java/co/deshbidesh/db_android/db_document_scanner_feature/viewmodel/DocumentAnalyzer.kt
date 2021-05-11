@@ -3,7 +3,6 @@ package co.deshbidesh.db_android.db_document_scanner_feature.viewmodel
 import android.annotation.SuppressLint
 import android.graphics.ImageFormat
 import android.graphics.RectF
-import android.media.Image
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -16,13 +15,9 @@ import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 import co.deshbidesh.db_android.db_document_scanner_feature.overlays.ArObject
 import co.deshbidesh.db_android.db_document_scanner_feature.overlays.ArObjectTracker
 import co.deshbidesh.db_android.db_document_scanner_feature.processor.OpenCVNativeHelper
-import co.deshbidesh.db_android.shared.extensions.imageToBitmap
 import co.deshbidesh.db_android.shared.extensions.mapOrientation
 import co.deshbidesh.db_android.shared.extensions.yuvToRgba
-import org.opencv.core.Core
-import java.lang.Exception
 import java.util.concurrent.atomic.AtomicBoolean
-
 
 
 class DocumentAnalyzer(
@@ -56,17 +51,13 @@ class DocumentAnalyzer(
 
                         val rotation = image.imageInfo.rotationDegrees
 
-                        Log.d(TAG, "Rotation: $rotation")
-
                         val rgbaMat = currentImage.yuvToRgba()
 
-                        val greyMat = opencvHelper.runGreyScale(rgbaMat)
+                        val size = Size(rgbaMat.width(), rgbaMat.height())
 
-                        val rotatedMat = opencvHelper.runRotate(greyMat, mapOrientation(rotation))
+                        val rotatedMat = opencvHelper.runRotate(rgbaMat, mapOrientation(rotation))
 
-                        val size = Size(greyMat.width(), greyMat.height())
-
-                        Log.d(TAG, "Size $size")
+                        val greyMat = opencvHelper.runGreyScale(rotatedMat)
 
                         var tmpRectF = RectF()
 
@@ -92,6 +83,7 @@ class DocumentAnalyzer(
                                     points.add(EdgePoint(point.x, point.y))
                                 }
                             }
+
                         }
 
                         uiHandler.post {
@@ -102,8 +94,6 @@ class DocumentAnalyzer(
                                             boundingBox = tmpRectF,
                                             sourceSize = size,
                                             objectInfo = DBScannedObjectInfo(points, rotation, rotatedMat)
-                                            //sourceRotationDegrees = rotation,
-                                            //points = points
                                     )
                             )
                         }
@@ -113,8 +103,6 @@ class DocumentAnalyzer(
                         rgbaMat.release()
 
                         greyMat.release()
-
-                        //rotatedMat.release()
 
                     } else {
                         // Manage other image formats
@@ -133,15 +121,4 @@ class DocumentAnalyzer(
 
         image.close()
     }
-
-//    public fun mapOrientation(degree: Int): Int {
-//        return when (degree) {
-//            0 -> Core.ROTATE_180
-//            90 -> Core.ROTATE_90_CLOCKWISE
-//            180 -> Core.ROTATE_180
-//            270 -> Core.ROTATE_90_COUNTERCLOCKWISE
-//            else -> Core.ROTATE_90_CLOCKWISE
-//        }
-//    }
-
 }

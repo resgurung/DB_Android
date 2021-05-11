@@ -14,7 +14,6 @@ import androidx.lifecycle.viewModelScope
 import co.deshbidesh.db_android.db_document_scanner_feature.doc_scan_utils.DBImageUtils
 import co.deshbidesh.db_android.db_document_scanner_feature.model.DBDocScanImage
 import co.deshbidesh.db_android.db_document_scanner_feature.model.DBScannedObjectInfo
-import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 import co.deshbidesh.db_android.db_document_scanner_feature.processor.OpenCVNativeHelper
 import co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanInternFragment
 import co.deshbidesh.db_android.shared.extensions.imageToBitmap
@@ -34,7 +33,9 @@ class SharedViewModel: ViewModel() {
 
         INTERN_FRAGMENT,
 
-        RESULT_FRAGMENT
+        RESULT_FRAGMENT,
+
+        SAVE_FRAGMENT
     }
 
     private var currentRoute: Route = Route.SELECTION_FRAGMENT

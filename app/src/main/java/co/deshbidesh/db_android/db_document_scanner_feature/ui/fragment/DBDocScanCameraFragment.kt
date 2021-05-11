@@ -25,7 +25,6 @@ import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentDbDocScanCameraBinding
 import co.deshbidesh.db_android.db_document_scanner_feature.factories.DocumentAnalyzerViewModelFactory
 import co.deshbidesh.db_android.db_document_scanner_feature.model.DBScannedObjectInfo
-import co.deshbidesh.db_android.db_document_scanner_feature.model.EdgePoint
 import co.deshbidesh.db_android.db_document_scanner_feature.overlays.*
 import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.DocumentAnalyzer
 import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.SharedViewModel
@@ -269,14 +268,6 @@ class DBDocScanCameraFragment : Fragment() {
                                 currentImage) { route ->
                             navigateTo(route)
                         }
-
-//                        sharedViewModel.processImage(
-//                                currentImage,
-//                                points = edgePoints ?: arrayListOf()
-//                        ) { route ->
-//
-//                            navigateTo(route)
-//                        }
 
                     } ?: run {
 
