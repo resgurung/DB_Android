@@ -11,8 +11,6 @@
 
     <string name="editButtonText">edit</string>
     <string name="closeButtonText">close</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Preference Contact  -->
     <string name="contact_header">Contact</string>
@@ -27,7 +25,5 @@
 
     <!-- Preference Social -->
     <string name="social_header">Find us</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
