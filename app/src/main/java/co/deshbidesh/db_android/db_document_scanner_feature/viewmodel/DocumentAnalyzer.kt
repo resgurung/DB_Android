@@ -63,7 +63,7 @@ class DocumentAnalyzer(
 
                         var points = arrayListOf<EdgePoint>()
 
-                        val matOfPoint2f = opencvHelper.getPointsFromMat(rotatedMat)
+                        val matOfPoint2f = opencvHelper.getPointsFromMat(greyMat)
 
                         if (matOfPoint2f != null) {
 
