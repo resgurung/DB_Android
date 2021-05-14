@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.PointF
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
 import android.util.Size
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -203,7 +202,6 @@ class DBDocScanResultProcessFragment :
 
             SharedViewModel.Route.CAMERA_FRAGMENT -> {
 
-                Log.d(TAG, "${sharedViewModel.getSecondBitmap()}")
                 bufferBitmap = sharedViewModel.getFirstBitmap()?.copy(
                         sharedViewModel.getFirstBitmap()?.config,
                         true)
@@ -216,8 +214,6 @@ class DBDocScanResultProcessFragment :
 
             } else -> false
         }
-
-        Log.d("Testing", "BufferBitmap-> $bufferBitmap")
 
         mainDisplayingImage = DisplayImage.ORIGINAL
 
@@ -361,11 +357,11 @@ class DBDocScanResultProcessFragment :
             activity?.runOnUiThread {
 
                 binding.originalImageView.setImageBitmap(it)
+
+                updateGreyImageView()
+
+                updateBWImageView()
             }
-
-            updateGreyImageView()
-
-            updateBWImageView()
         }
 
         showSetting(false)
@@ -510,6 +506,37 @@ class DBDocScanResultProcessFragment :
         }
     }
 
+    private fun getCroppedImage() {
+
+        val points = polygonView.points
+
+        sharedViewModel.cropImage(
+                bufferBitmap,
+                Size(
+                        binding.scannedImage.width,
+                        binding.scannedImage.height
+                ),
+                Pair(
+                        PointF(points[0]!!.x, points[0]!!.y),
+                        PointF(points[3]!!.x, points[3]!!.y)
+                )
+        ) {
+
+            if (it != null) {
+
+                showImageViewHolder()
+
+                bufferBitmap = it
+
+                mainDisplayingImage = DisplayImage.ORIGINAL
+            }
+            else {
+
+                showImageViewHolder()
+            }
+        }
+    }
+
     private fun showHideSquareCropView() {
 
         if (squareCropViewShowing) {
@@ -591,37 +618,6 @@ class DBDocScanResultProcessFragment :
 
     private fun currentScreenBitmap(): Bitmap = (binding.scannedImage.drawable as BitmapDrawable).bitmap
 
-    private fun getCroppedImage() {
-
-        val points = polygonView.points
-
-        sharedViewModel.cropImage(
-                bufferBitmap,
-                Size(
-                        binding.scannedImage.width,
-                        binding.scannedImage.height
-                ),
-                Pair(
-                        PointF(points[0]!!.x, points[0]!!.y),
-                        PointF(points[3]!!.x, points[3]!!.y)
-                )
-        ) {
-
-            if (it != null) {
-
-                bufferBitmap = it
-
-                mainDisplayingImage = DisplayImage.ORIGINAL
-
-                showImageViewHolder()
-            }
-            else {
-
-                showImageViewHolder()
-            }
-        }
-    }
-
     private fun showImageViewHolder() {
 
         activity?.runOnUiThread {
@@ -637,10 +633,6 @@ class DBDocScanResultProcessFragment :
     }
 
     private fun save() {
-
-        //val deepLink = Uri.parse("app://db_note_feature/add")
-
-        //mainDisplayingImage
 
         mainDisplayingImage?.let {
 
