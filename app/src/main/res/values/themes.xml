@@ -15,6 +15,18 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.DeshBideshDocScan" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/greyish</item>
+        <item name="colorPrimaryVariant">@color/dark_greyish</item>
+        <item name="colorOnPrimary">@color/background_color_light</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/design_default_color_secondary</item>
+        <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
+        <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+    </style>
+
     <style name="ThemeOverlay.DB_Android.FullscreenContainer" parent="">
         <item name="fullscreenBackgroundColor">#000000</item>
         <item name="fullscreenTextColor">@color/light_blue_A200</item>

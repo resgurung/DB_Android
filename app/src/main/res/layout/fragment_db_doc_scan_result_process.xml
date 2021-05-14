@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
+            android:backgroundTint="@color/dark_greyish"
             android:theme="?attr/actionBarTheme"
             app:menu="@menu/db_doc_scan_result_fragment_menu"/>
 
