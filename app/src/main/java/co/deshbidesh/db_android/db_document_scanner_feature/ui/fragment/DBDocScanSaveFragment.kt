@@ -1,5 +1,6 @@
 package co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment
 
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,7 +22,10 @@ import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.SharedView
 import co.deshbidesh.db_android.db_note_feature.factories.DBNoteAddViewModelFactory
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteAddViewModel
 import co.deshbidesh.db_android.shared.DBHelper
+import co.deshbidesh.db_android.shared.extensions.hasPermission
+import co.deshbidesh.db_android.shared.extensions.showAlert
 import co.deshbidesh.db_android.shared.hideKeyboard
+import co.deshbidesh.db_android.shared.utility.DBPermissionConstant
 import co.deshbidesh.db_android.shared.utility.FileUtils
 import co.deshbidesh.db_android.shared.utility.FileUtilsImpl
 import java.io.File
@@ -30,6 +34,13 @@ import java.io.OutputStream
 
 
 class DBDocScanSaveFragment : Fragment() {
+
+    companion object{
+
+        const val TAG = "DBDocScanSaveFragment"
+
+        val writeExternalStoragePermissions = arrayOf(DBPermissionConstant.WriteExternalStorage)
+    }
 
     private var _binding: FragmentDbDocScanSaveBinding? = null
 
@@ -66,7 +77,7 @@ class DBDocScanSaveFragment : Fragment() {
 
                 R.id.doc_scan_save_fragment_menu -> {
 
-                    saveNote()
+                    askWritePermission()
                     true
                 }
                 else -> false
@@ -195,5 +206,66 @@ class DBDocScanSaveFragment : Fragment() {
         outputStream.flush()
 
         outputStream.close()
+    }
+
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when(requestCode) {
+
+            DBPermissionConstant.writeExternalStoragePermissionCode -> {
+
+                if (permission(grantResults)) {
+
+                    saveNote()
+
+                } else {
+
+                    showToast("Please grant permission to save image.")
+                }
+
+            }
+        }
+    }
+
+    private fun permission(grantResults: IntArray): Boolean {
+
+        return if(grantResults.isNotEmpty()) {
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                true
+
+            } else {
+
+                showAlert("DeshBidesh App will require permission to work")
+
+                false
+            }
+        } else {
+
+            showAlert("Something went wrong. Please try again later")
+
+            false
+        }
+    }
+
+    private fun askWritePermission() {
+
+        if (activity?.hasPermission(*writeExternalStoragePermissions) == true) {
+
+            saveNote()
+
+        } else {
+
+            requestPermissions(
+                    writeExternalStoragePermissions,
+                    DBPermissionConstant.writeExternalStoragePermissionCode
+            )
+        }
     }
 }
