@@ -63,6 +63,11 @@
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#c0c0c0"/>
+
                 <EditText
                     android:id="@+id/note_detail_content"
                     android:layout_width="match_parent"
@@ -76,11 +81,17 @@
                     android:textColor="#000"
                     android:textSize="20sp" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#c0c0c0"/>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/detail_note_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
+                    android:orientation="horizontal"
+                    android:paddingTop="16dp"/>
 
             </LinearLayout>
 
