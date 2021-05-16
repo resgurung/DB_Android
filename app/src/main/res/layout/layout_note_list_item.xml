@@ -7,6 +7,7 @@
     app:cardElevation="5dp"
     app:cardCornerRadius="10dp"
     app:cardPreventCornerOverlap="false"
+    app:cardBackgroundColor="#9FA8DA"
     android:id="@+id/note_list_row_layout">
 
     <androidx.constraintlayout.widget.ConstraintLayout

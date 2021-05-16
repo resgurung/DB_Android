@@ -8,7 +8,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.db_note_feature.fragments.NoteAddFragmentDirections
-import co.deshbidesh.db_android.db_note_feature.fragments.NoteDetailFragmentDirections
 import kotlinx.android.synthetic.main.note_add_img_row_item.view.*
 
 class DBNoteAddImageRecyclerAdapter: RecyclerView.Adapter<DBNoteAddImageRecyclerAdapter.DBNoteAddImageViewHolder>() {

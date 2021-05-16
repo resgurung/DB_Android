@@ -1,9 +1,12 @@
 package co.deshbidesh.db_android.db_note_feature.fragments
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -67,7 +70,6 @@ class NoteListFragment : DBBaseFragment(){
             adapter?.let {
                 subscribeUI(it)
             }
-
         }
 
         return binding.root

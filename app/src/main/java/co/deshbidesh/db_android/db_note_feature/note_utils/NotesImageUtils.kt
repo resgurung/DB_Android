@@ -5,7 +5,14 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import java.io.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class NotesImageUtils {
 
@@ -29,8 +36,9 @@ class NotesImageUtils {
                     val selectedImg: Bitmap = BitmapFactory.decodeStream(inStream)
 
                     // Determine destination file path
+                    val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
                     val dirPath = activity.getExternalFilesDir("/images/")?.absolutePath
-                    val file = File(dirPath, "${System.currentTimeMillis()}.jpg")
+                    val file = File(dirPath, "img-${timeStamp}.jpg")
                     val finalFilePath = file.path
                     destFilePath.add(finalFilePath)
                     bitMapFileMap.put(selectedImg, file)
@@ -53,6 +61,22 @@ class NotesImageUtils {
             outputStream?.close()   // idempotent
             if(outputStream != null)
                 outputStream = null
+        }
+
+        @JvmStatic
+        fun createImageFile(activity: Activity, cameraImgList:ArrayList<String>)
+        : File? {
+            val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+            val storageDir: File? =  activity?.getExternalFilesDir("/images/")
+
+            return File.createTempFile(
+                "img-${timeStamp}",
+                ".jpg",
+                storageDir
+            ).apply {
+                val currentPhotoPath = absolutePath
+                cameraImgList.add(currentPhotoPath)
+            }
         }
 
         @JvmStatic
