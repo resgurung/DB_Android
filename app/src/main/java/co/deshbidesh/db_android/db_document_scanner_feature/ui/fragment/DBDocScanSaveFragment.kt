@@ -31,6 +31,9 @@ import co.deshbidesh.db_android.shared.utility.FileUtilsImpl
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DBDocScanSaveFragment : Fragment() {
@@ -38,6 +41,8 @@ class DBDocScanSaveFragment : Fragment() {
     companion object{
 
         const val TAG = "DBDocScanSaveFragment"
+
+        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
 
         val writeExternalStoragePermissions = arrayOf(DBPermissionConstant.WriteExternalStorage)
     }
@@ -190,9 +195,19 @@ class DBDocScanSaveFragment : Fragment() {
 
         val dir  = fileUtils.createDirectoryIfNotExist()
 
-        val file = fileUtils.makeFile(dir, "tempFile")
+        val file = fileUtils.makeFile(
+                dir,
+                SimpleDateFormat(
+                        FILENAME_FORMAT,
+                        Locale.UK
+                ).format(
+                        System.currentTimeMillis()
+                ) + ".jpg"
+        )
 
         writeImagesToExternalStorage(file, bitmap)
+
+        fileUtils.refreshGallery(file)
 
         return file.path
     }
