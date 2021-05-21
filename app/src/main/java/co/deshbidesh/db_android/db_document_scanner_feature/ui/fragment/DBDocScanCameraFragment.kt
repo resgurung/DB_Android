@@ -13,6 +13,7 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
@@ -56,11 +57,14 @@ class DBDocScanCameraFragment : Fragment() {
     private val arOverlayView: LiveData<ArOverlayView> = mutableArOverlayView
 
     var cameraRunning = false
-        private set
+        private set(value) {
+
+            field =  value
+
+            showTakeImageButton()
+    }
 
     private var imageAnalyzer: ThreadedImageAnalyzer? = null
-
-    //private var edgePoints: List<EdgePoint>? = null
 
     private var scannedObjectInfo: DBScannedObjectInfo? = null
 
@@ -76,8 +80,6 @@ class DBDocScanCameraFragment : Fragment() {
     private val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
     private val cameraProviderFuture by lazy { context?.let { ProcessCameraProvider.getInstance(it) } }
-
-    private val fileUtils: FileUtils by lazy { FileUtilsImpl(requireActivity()) }
 
     private val executor: Executor by lazy { Executors.newSingleThreadExecutor() }
 
@@ -128,6 +130,8 @@ class DBDocScanCameraFragment : Fragment() {
 
         binding.cameraCaptureButton.setOnClickListener {
 
+            cameraRunning = false
+            
             scannedObjectInfo?.let {
 
                 processImage(it)
@@ -139,6 +143,29 @@ class DBDocScanCameraFragment : Fragment() {
         }
 
         updateRoute(view)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        startCamera()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        if (cameraRunning) {
+
+            cameraProviderFuture?.get()?.unbindAll()
+
+            imageCapture = null
+
+            cameraRunning = false
+
+            Log.i("CameraFragment", "Stopping camera")
+        }
+
+        _binding = null
     }
 
     private fun updateRoute(view: View) {
@@ -163,27 +190,13 @@ class DBDocScanCameraFragment : Fragment() {
         sharedViewModel.setRoute(SharedViewModel.Route.CAMERA_FRAGMENT)
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun showTakeImageButton() {
 
-        startCamera()
-    }
+        view?.post {
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        if (cameraRunning) {
-
-            cameraProviderFuture?.get()?.unbindAll()
-
-            imageCapture = null
-
-            cameraRunning = false
-
-            Log.i("CameraFragment", "Stopping camera")
+            binding.cameraCaptureButton.isVisible = cameraRunning
         }
 
-        _binding = null
     }
 
     @SuppressLint("UnsafeExperimentalUsageError")
