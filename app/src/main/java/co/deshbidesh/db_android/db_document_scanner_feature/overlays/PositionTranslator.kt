@@ -1,7 +1,6 @@
 package co.deshbidesh.db_android.db_document_scanner_feature.overlays
 
 import android.graphics.RectF
-import android.util.Log
 import android.util.Size
 import kotlin.math.ceil
 
@@ -33,8 +32,6 @@ class PositionTranslator(
                 else -> throw IllegalArgumentException("Unsupported rotation. Must be 0, 90, 180 or 270")
             }
 
-            Log.d(TAG,"Mapping from source ${rotatedSize.width}x${rotatedSize.height} to ${targetWidth}x$targetHeight")
-
             // Calculate scale
             val scaleX = targetWidth / rotatedSize.width.toDouble()
             val scaleY = targetHeight / rotatedSize.height.toDouble()
@@ -46,9 +43,6 @@ class PositionTranslator(
             val offsetX = (targetWidth - scaledSize.width) / 2
             val offsetY = (targetHeight - scaledSize.height) / 2
 
-            Log.d(TAG,"Use scale=$scale, scaledSize: ${scaledSize.width}x${scaledSize.height}")
-            Log.d(TAG,"Use offsetX=$offsetX, offsetY=$offsetY")
-            Log.d(TAG,"Boundingbox=${arObject.boundingBox}")
             // Map bounding box
             val mappedBoundingBox = RectF().apply {
                 left = arObject.boundingBox.left * scaleF + offsetX

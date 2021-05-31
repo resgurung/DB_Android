@@ -1,8 +1,10 @@
 package co.deshbidesh.db_android.db_document_scanner_feature.overlays
 
 import android.content.Context
-import android.graphics.*
-import android.util.Log
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import androidx.annotation.ColorInt
 import co.deshbidesh.db_android.R
 

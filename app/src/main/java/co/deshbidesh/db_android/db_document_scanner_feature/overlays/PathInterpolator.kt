@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator
 import android.graphics.RectF
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.animation.LinearInterpolator
 
 

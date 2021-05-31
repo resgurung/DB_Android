@@ -13,7 +13,6 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
@@ -30,8 +29,7 @@ import co.deshbidesh.db_android.db_document_scanner_feature.overlays.*
 import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.DocumentAnalyzer
 import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.SharedViewModel
 import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.ThreadedImageAnalyzer
-import co.deshbidesh.db_android.shared.utility.FileUtils
-import co.deshbidesh.db_android.shared.utility.FileUtilsImpl
+import co.deshbidesh.db_android.shared.utility.DBCircularProgressBar
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -57,12 +55,12 @@ class DBDocScanCameraFragment : Fragment() {
     private val arOverlayView: LiveData<ArOverlayView> = mutableArOverlayView
 
     var cameraRunning = false
-        private set(value) {
+         set(value) {
 
-            field =  value
+             field = value
 
-            showTakeImageButton()
-    }
+             hideDialog()
+         }
 
     private var imageAnalyzer: ThreadedImageAnalyzer? = null
 
@@ -83,6 +81,8 @@ class DBDocScanCameraFragment : Fragment() {
 
     private val executor: Executor by lazy { Executors.newSingleThreadExecutor() }
 
+    private val loadingDialog: DBCircularProgressBar by lazy { DBCircularProgressBar(requireActivity()) }
+
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -97,11 +97,11 @@ class DBDocScanCameraFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loadingDialog.loadAlertDialog()
+
         mutableArOverlayView.postValue(binding.arOverlays) // background thread
 
         animator = BoundingBoxAnimator(NUMBER_OF_TIMES_LAST_POINTS_TO_BE_USED) { info ->
-
-            //edgePoints = points
 
             scannedObjectInfo = info
         }
@@ -128,10 +128,12 @@ class DBDocScanCameraFragment : Fragment() {
             it.add(boundingBoxArOverlay)
         }
 
+        binding.cameraCaptureButton.isEnabled = false
+
         binding.cameraCaptureButton.setOnClickListener {
 
-            cameraRunning = false
-            
+            binding.cameraCaptureButton.isEnabled = false
+
             scannedObjectInfo?.let {
 
                 processImage(it)
@@ -143,6 +145,28 @@ class DBDocScanCameraFragment : Fragment() {
         }
 
         updateRoute(view)
+    }
+
+    private fun updateRoute(view: View) {
+
+        when(sharedViewModel.getRoute()) {
+            SharedViewModel.Route.RESULT_FRAGMENT -> {
+
+                sharedViewModel.clearFirst()
+
+                sharedViewModel.clearSecond()
+
+            }
+            SharedViewModel.Route.INTERN_FRAGMENT -> {
+
+                sharedViewModel.clearFirst()
+
+                sharedViewModel.clearSecond()
+            }
+            else -> {}
+        }
+
+        sharedViewModel.setRoute(SharedViewModel.Route.CAMERA_FRAGMENT)
     }
 
     override fun onResume() {
@@ -168,34 +192,11 @@ class DBDocScanCameraFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateRoute(view: View) {
+    private fun hideDialog() {
 
-        when(sharedViewModel.getRoute()) {
-            SharedViewModel.Route.RESULT_FRAGMENT -> {
+        loadingDialog.hideAlertDialog()
 
-                sharedViewModel.clearFirst()
-
-                sharedViewModel.clearSecond()
-
-            }
-            SharedViewModel.Route.INTERN_FRAGMENT -> {
-
-                sharedViewModel.clearFirst()
-
-                sharedViewModel.clearSecond()
-            }
-            else -> {}
-        }
-
-        sharedViewModel.setRoute(SharedViewModel.Route.CAMERA_FRAGMENT)
-    }
-
-    private fun showTakeImageButton() {
-
-        view?.post {
-
-            binding.cameraCaptureButton.isVisible = cameraRunning
-        }
+        binding.cameraCaptureButton.isEnabled = true
 
     }
 
