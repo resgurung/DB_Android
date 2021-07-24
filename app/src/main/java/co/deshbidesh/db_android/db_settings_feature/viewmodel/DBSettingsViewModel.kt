@@ -2,6 +2,7 @@ package co.deshbidesh.db_android.db_settings_feature.viewmodel
 
 import android.content.Context
 import android.content.res.AssetManager
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,45 +20,6 @@ class DBSettingsViewModel(
         private val gson: Gson = Gson()
 ): ViewModel() {
 
-//    var settingsData: MutableLiveData<Response<DBSettingsData>> = MutableLiveData()
-
-//    var appSettings: MutableLiveData<Response<DBSetting>> = MutableLiveData()
-
-//    fun getSettingsData(){
-//        viewModelScope.launch {
-//            settingsData.value =dbSettingsRepository.getSettingsData()
-//        }
-//    }
-
-//    fun getSettingData(context: Context, settingData: (DBSetting) -> Unit) {
-//
-//        viewModelScope.launch(Dispatchers.IO) {
-//
-//            val jsonSettingData = DBPreferenceHelper.getStoredString(DBSettingConstants.SETTING_DATA, "")
-//
-//            if (!jsonSettingData.isNullOrEmpty()) {
-//
-//                val setting = gson.fromJson(jsonSettingData, DBSetting::class.java)
-//
-//                setting?.let {
-//
-//                    getSettingsDataFromNetwork(it.version.toInt())
-//
-//                    settingData(setting)
-//                }
-//
-//            } else {
-//
-//                getSettingsDataFromNetwork(0)
-//
-//                getSettingsDataFromAsset(context.assets) {
-//
-//                    settingData(it)
-//                }
-//            }
-//        }
-//    }
-
     fun getSettings(context: Context): DBSetting? {
 
         val jsonSettingData = DBPreferenceHelper.getStoredString(DBSettingConstants.SETTING_DATA, "")
@@ -70,6 +32,7 @@ class DBSettingsViewModel(
 
                 getSettingsFromNetwork(it.version.toInt())
 
+                Log.d("DBSettingsViewModel", "Getting data from preference")
                 return it
 
             } ?: kotlin.run {
@@ -105,37 +68,12 @@ class DBSettingsViewModel(
                     Log.d("Error", response.errorBody().toString() )
                 }
             } else {
-                // do nothing when 304
+
                 Log.d("304", "data not changed")
             }
         }
 
     }
-
-//
-//    private suspend fun getSettingsDataFromNetwork(version: Int) {
-//
-//        dbSettingsRepository.getAppSettings(version) { response ->
-//
-//            if (response.code() != 304) {
-//
-//                if (response.isSuccessful) {
-//
-//                    response.body()?.let {
-//
-//                        setSettingToPreferences(it)
-//                    }
-//
-//                } else {
-//
-//                    Log.d("Error", response.errorBody().toString() )
-//                }
-//            } else {
-//                // do nothing when 304
-//                Log.d("304", "data not changed")
-//            }
-//        }
-//    }
 
 
     fun setSettingToPreferences(setting: DBSetting) {
@@ -145,30 +83,9 @@ class DBSettingsViewModel(
         DBPreferenceHelper.storeString(DBSettingConstants.SETTING_DATA, jsonObj)
     }
 
-//    private fun getSettingsDataFromAsset(manager:AssetManager, listener: (DBSetting) -> Unit){
-//
-//        var inputStream: InputStream? = null
-//
-//        try {
-//            inputStream = manager.open("dbsettings.json")
-//
-//            val jsonString = inputStream.bufferedReader().use { it.readText() }
-//
-//            val dbSettingsData = gson.fromJson(jsonString, DBSetting::class.java)
-//
-//            listener(dbSettingsData)
-//
-//        } catch (e: IOException){
-//
-//            Log.d("Asset", e.toString() )
-//
-//        } finally {
-//
-//            inputStream?.close()
-//        }
-//    }
-
     private fun getSettingsDataFromResources(manager:AssetManager): DBSetting? {
+
+        Log.d("DBSettingsViewModel", "Getting data from file")
 
         var inputStream: InputStream? = null
 

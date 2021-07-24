@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentDbNewsDetailBinding
+import co.deshbidesh.db_android.shared.utility.DBHTMLHelper
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
@@ -53,16 +54,13 @@ class DBNewsDetailFragment : Fragment() {
 
         binding.postCategory.text = args.news.categories[0].name
 
-        val htmlContent =
-            "<!DOCTYPE html> " +
-                    "<html> " +
-                    "<head> </head>" +
-                    "<meta name= viewport content= width=device-width  initial-scale=1.0 > " +
-                    "<style>body{color: #0099CC;} img{display: inline;height: auto;max-width: 100%;} video{display: inline;width: 100%;poster=} p{height: auto;width: 100%; } iframe{width: 100%} </style> " +
-                    "<body>   ${args.news.content.replace("\"","")} </body></html>"
-
+        val htmlContent = DBHTMLHelper.htmlHelper(args.news.content)
 
         binding.postWebView.setBackgroundColor(Color.TRANSPARENT)
+
+        binding.postWebView.settings.javaScriptEnabled = true
+
+        binding.postWebView.settings.javaScriptCanOpenWindowsAutomatically = true
 
         binding.postWebView.loadDataWithBaseURL(
             null,

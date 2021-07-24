@@ -1,6 +1,7 @@
 package co.deshbidesh.db_android.db_settings_feature.ui
 
 import android.content.res.AssetManager
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +13,13 @@ import co.deshbidesh.db_android.db_network.domain.DBSettingsRepository
 import co.deshbidesh.db_android.db_settings_feature.factories.DBSettingsViewModelFactory
 import co.deshbidesh.db_android.db_settings_feature.viewmodel.DBSettingsViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
+import co.deshbidesh.db_android.shared.utility.DBHTMLHelper
 
 class DisclaimerViewFragment : DBBaseFragment() {
 
     private var _binding: FragmentDisclaimerViewBinding? = null
 
     private val binding get() = _binding!!
-
-    private lateinit var dbSettingsViewModel: DBSettingsViewModel
 
     private val args: DisclaimerViewFragmentArgs by navArgs()
 
@@ -34,20 +34,24 @@ class DisclaimerViewFragment : DBBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        context.let {
-
-            binding.settingsDisclaimerFragToolbar.setNavigationOnClickListener {
-                requireActivity().onBackPressed()
-            }
+        binding.settingsDisclaimerFragToolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
         }
 
-        val dbSettingsViewModelFactory = DBSettingsViewModelFactory(DBSettingsRepository())
-        dbSettingsViewModel = ViewModelProvider(this, dbSettingsViewModelFactory).get(DBSettingsViewModel::class.java)
+        val htmlContent = DBHTMLHelper.htmlHelper(args.disclaimer)
 
-        binding.disclaimerView.loadData(
-            args.disclaimer,
-            "text/html",
-            "utf-8"
+        binding.disclaimerView.setBackgroundColor(Color.TRANSPARENT)
+
+        binding.disclaimerView.settings.javaScriptEnabled = true
+
+        binding.disclaimerView.settings.javaScriptCanOpenWindowsAutomatically = true
+
+        binding.disclaimerView.loadDataWithBaseURL(
+            null,
+            htmlContent,
+            "text/html; charset=utf-8",
+            "UTF-8",
+            null
         )
     }
 

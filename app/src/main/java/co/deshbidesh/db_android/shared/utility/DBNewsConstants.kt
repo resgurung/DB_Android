@@ -14,7 +14,7 @@ class DBNewsConstants {
 
         const val IN_ORDER_OF = "order"
 
-        const val PAGE_SIZE = 8
+        const val PAGE_SIZE = 40
 
         fun lastUpdated(): Long {
             return System.currentTimeMillis()

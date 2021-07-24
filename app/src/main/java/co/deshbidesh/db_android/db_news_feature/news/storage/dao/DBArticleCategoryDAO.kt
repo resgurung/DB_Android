@@ -20,7 +20,7 @@ interface DBArticleCategoryDAO {
 
     @Transaction
     @Query("SELECT * FROM articles ORDER BY published_at DESC LIMIT 3")
-    suspend fun getHomeArticlesWithCategories(): List<ArticleWithCategories>
+    suspend fun getHomeArticlesWithCategories(): MutableList<ArticleWithCategories>
 
     @Transaction
     @Query("SELECT * FROM categories")

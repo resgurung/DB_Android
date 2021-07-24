@@ -43,12 +43,12 @@ interface DBNewsService {
      */
     @GET("db/v1/posts")
     suspend fun getArticles(
-        @Query(DBNewsConstants.POST_TYPE)
-        post: String = "",
         @Query(DBNewsConstants.POSTS_PER_PAGE)
         postPerPage: Int,
         @Query(DBNewsConstants.PAGE_NUMBER)
         paged: Int,
+        @Query(DBNewsConstants.POST_TYPE)
+        post: String = "",
         @Query(DBNewsConstants.ORDER_BY)
         orderBy: String = "",
         @Query(DBNewsConstants.IN_ORDER_OF)

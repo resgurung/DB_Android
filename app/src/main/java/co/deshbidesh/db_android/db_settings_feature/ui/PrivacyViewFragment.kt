@@ -1,6 +1,7 @@
 package co.deshbidesh.db_android.db_settings_feature.ui
 
 import android.content.res.AssetManager
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +13,13 @@ import co.deshbidesh.db_android.db_network.domain.DBSettingsRepository
 import co.deshbidesh.db_android.db_settings_feature.factories.DBSettingsViewModelFactory
 import co.deshbidesh.db_android.db_settings_feature.viewmodel.DBSettingsViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
+import co.deshbidesh.db_android.shared.utility.DBHTMLHelper
 
 class PrivacyViewFragment : DBBaseFragment() {
 
-    var _binding: FragmentPrivacyViewBinding? = null
+    private var _binding: FragmentPrivacyViewBinding? = null
 
     private val binding get() = _binding!!
-
-    private lateinit var dbSettingsViewModel: DBSettingsViewModel
 
     private val args: PrivacyViewFragmentArgs by navArgs()
 
@@ -27,7 +27,7 @@ class PrivacyViewFragment : DBBaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         _binding = FragmentPrivacyViewBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -37,23 +37,26 @@ class PrivacyViewFragment : DBBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        context.let {
-            binding.settingsPrivacyFragToolbar?.setNavigationOnClickListener {
-                requireActivity().onBackPressed()
-            }
+
+        binding.settingsPrivacyFragToolbar.setNavigationOnClickListener {
+
+            requireActivity().onBackPressed()
         }
 
-        val dbSettingsViewModelFactory = DBSettingsViewModelFactory(DBSettingsRepository())
+        val htmlContent = DBHTMLHelper.htmlHelper(args.privacy)
 
-        dbSettingsViewModel = ViewModelProvider(
-            this,
-            dbSettingsViewModelFactory
-        ).get(DBSettingsViewModel::class.java)
+        binding.privacyView.setBackgroundColor(Color.TRANSPARENT)
 
-        binding.privacyView.loadData(
-            args.privacy,
-            "text/html",
-            "utf-8"
+        binding.privacyView.settings.javaScriptEnabled = true
+
+        binding.privacyView.settings.javaScriptCanOpenWindowsAutomatically = true
+
+        binding.privacyView.loadDataWithBaseURL(
+            null,
+            htmlContent,
+            "text/html; charset=utf-8",
+            "UTF-8",
+            null
         )
     }
 

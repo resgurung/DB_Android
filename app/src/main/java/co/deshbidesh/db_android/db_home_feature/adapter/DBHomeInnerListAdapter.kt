@@ -31,16 +31,16 @@ class DBHomeInnerListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val imageView: ImageView = view.findViewById(R.id.newsImage)
 
-        fun bind(uiModel: DBNewsUiModel) {
+        fun bind(model: ArticleWithCategories) {
 
-            titleTV.text = uiModel.title
+            titleTV.text = model.article.title
 
-            descTV.text = uiModel.desc
+            descTV.text = model.article.description
 
-            publishedDate.text = uiModel.publishedAt
+            publishedDate.text = model.article.published_at
 
             Glide.with(itemView.context)
-                .load(uiModel.thumbnail)
+                .load(model.article.featured_image.thumbnail)
                 .placeholder(R.drawable.ic_loading_image_placeholder)
                 .error(R.drawable.ic_loading_broken_image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -48,7 +48,7 @@ class DBHomeInnerListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    private var newsItems: List<DBNewsUiModel> = emptyList()
+    private var newsItems: List<ArticleWithCategories> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -70,30 +70,33 @@ class DBHomeInnerListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             is InnerArticleViewHolder -> {
 
-                holder.bind(newsItems[position])
+                if (newsItems.isNotEmpty()) {
 
-//                holder.itemView.setOnClickListener { view ->
+                    holder.bind(newsItems[position])
 
-//                    val articleWithCategory = newsItems[position]
-//
-//                    val item = DBNewsResponseItem(
-//                        post_id = articleWithCategory.article.post_id,
-//                        author = articleWithCategory.article.author,
-//                        categories = articleWithCategory.categories.map { DBNewsCategory(it.category_id, it.name) },
-//                        content = articleWithCategory.article.content,
-//                        featured_image = articleWithCategory.article.featured_image,
-//                        format = articleWithCategory.article.format,
-//                        link = articleWithCategory.article.link,
-//                        published_at = articleWithCategory.article.published_at,
-//                        slug = articleWithCategory.article.slug,
-//                        title = articleWithCategory.article.title,
-//                        updated_at = articleWithCategory.article.updated_at,
-//                        description = articleWithCategory.article.description
-//                    )
-//                    val action = DBNewsListFragmentDirections.actionDBNewsListFragmentToNewsDetailFragment(item)
-//
-//                    view.findNavController().navigate(action)
-//                }
+                    holder.itemView.setOnClickListener { view ->
+
+                        val articleWithCategory = newsItems[position]
+
+                        val item = DBNewsResponseItem(
+                            post_id = articleWithCategory.article.post_id,
+                            author = articleWithCategory.article.author,
+                            categories = articleWithCategory.categories.map { DBNewsCategory(it.category_id, it.name) },
+                            content = articleWithCategory.article.content,
+                            featured_image = articleWithCategory.article.featured_image,
+                            format = articleWithCategory.article.format,
+                            link = articleWithCategory.article.link,
+                            published_at = articleWithCategory.article.published_at,
+                            slug = articleWithCategory.article.slug,
+                            title = articleWithCategory.article.title,
+                            updated_at = articleWithCategory.article.updated_at,
+                            description = articleWithCategory.article.description
+                        )
+                        val action = DBNewsListFragmentDirections.actionDBNewsListFragmentToNewsDetailFragment(item)
+
+                        view.findNavController().navigate(action)
+                    }
+                }
             }
         }
     }
@@ -103,7 +106,7 @@ class DBHomeInnerListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return 3
     }
 
-    fun loadData(newsItems: List<DBNewsUiModel>) {
+    fun loadData(newsItems: List<ArticleWithCategories>) {
 
         this.newsItems = newsItems
 

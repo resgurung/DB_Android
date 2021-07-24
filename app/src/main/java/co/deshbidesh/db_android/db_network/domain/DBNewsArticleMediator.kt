@@ -63,11 +63,12 @@ class DBNewsArticleMediator(
 
         try {
 
+            println("Sending request ........")
             val response = service.getArticles(
                 paged = page,
                 postPerPage = state.config.pageSize
             )
-
+            println("Receive response success: ${response.isSuccessful} ........")
             val endOfPaginationReached = response.body()?.isEmpty() ?: true
 
             database.withTransaction {
@@ -83,7 +84,10 @@ class DBNewsArticleMediator(
                 val nextKey = if (endOfPaginationReached) null else page + 1
 
                 response.body()?.let {
-                    insertToDB(it, prevKey, nextKey)
+                    println(" Writing to database start ......")
+                    insertToDB(database, it, prevKey, nextKey)
+
+                    println(" Writing to database finish ......")
                 }
 
             }
@@ -127,71 +131,76 @@ class DBNewsArticleMediator(
         }
     }
 
-    private suspend fun insertToDB(
-        newsResponse: DBNewsResponse,
-        prev: Int?,
-        next: Int?) {
+    companion object {
 
-        val keys: MutableList<NewsRemoteKey> = mutableListOf()
+        suspend fun insertToDB(
+            db: DBDatabase,
+            newsResponse: DBNewsResponse,
+            prev: Int?,
+            next: Int?) {
 
-        newsResponse.forEach { item ->
+            val keys: MutableList<NewsRemoteKey> = mutableListOf()
 
-            val articleId = database.articleDAO().insertOrUpdate(
-                NewsItemDB(
-                    n_id = 0,
-                    post_id = item.post_id,
-                    title = item.title,
-                    description = item.description,
-                    content = item.content,
-                    author = item.author,
-                    featured_image = item.featured_image,
-                    format = item.format,
-                    link = item.link,
-                    slug = item.slug,
-                    published_at = item.published_at,
-                    updated_at = item.updated_at
+            newsResponse.forEach { item ->
+
+                val articleId = db.articleDAO().insertOrUpdate(
+                    NewsItemDB(
+                        n_id = 0,
+                        post_id = item.post_id,
+                        title = item.title,
+                        description = item.description,
+                        content = item.content,
+                        author = item.author,
+                        featured_image = item.featured_image,
+                        format = item.format,
+                        link = item.link,
+                        slug = item.slug,
+                        published_at = item.published_at,
+                        updated_at = item.updated_at
+                    )
                 )
-            )
 
-            keys.add(NewsRemoteKey(articleId, prev, next))
+                keys.add(NewsRemoteKey(articleId, prev, next))
 
-            val categoryIds: MutableList<Long> = mutableListOf()
+                val categoryIds: MutableList<Long> = mutableListOf()
 
-            if (item.categories.isNotEmpty()) {
+                if (item.categories.isNotEmpty()) {
 
-                item.categories.forEach { category ->
+                    item.categories.forEach { category ->
 
-                    val cat = CategoryDB(
-                        c_id = 0,
-                        category_id = category.category_id,
-                        name = category.name
-                    )
-
-                    val id = database.categoryDAO().insertOrUpdate(cat)
-
-                    categoryIds.add(id)
-                }
-            }
-
-            if (categoryIds.isNotEmpty()) {
-
-                categoryIds.forEach {  id ->
-
-                    database.articleCategoryJoinDAO().insertOrUpdate(
-                        ArticleCategoryJoin(
-                            n_id = articleId,
-                            c_id = id
+                        val cat = CategoryDB(
+                            c_id = 0,
+                            category_id = category.category_id,
+                            name = category.name
                         )
-                    )
+
+                        val id = db.categoryDAO().insertOrUpdate(cat)
+
+                        categoryIds.add(id)
+                    }
                 }
+
+                if (categoryIds.isNotEmpty()) {
+
+                    categoryIds.forEach {  id ->
+
+                        db.articleCategoryJoinDAO().insertOrUpdate(
+                            ArticleCategoryJoin(
+                                n_id = articleId,
+                                c_id = id
+                            )
+                        )
+                    }
+                }
+
+                categoryIds.clear()
             }
 
-            categoryIds.clear()
+            db.remoteKeyDAO().insertAllRemoteKey(keys)
+
+            keys.clear()
+
         }
-
-        database.remoteKeyDAO().insertAllRemoteKey(keys)
-
-        keys.clear()
-
     }
 }
+

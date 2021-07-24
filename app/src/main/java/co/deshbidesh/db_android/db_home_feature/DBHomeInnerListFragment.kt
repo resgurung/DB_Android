@@ -5,36 +5,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
-import androidx.paging.LoadState
-import androidx.paging.map
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentDbHomeInnerListBinding
 import co.deshbidesh.db_android.db_database.database.DBDatabase
 import co.deshbidesh.db_android.db_home_feature.adapter.DBHomeInnerListAdapter
 import co.deshbidesh.db_android.db_network.domain.DBNewsRepository
 import co.deshbidesh.db_android.db_news_feature.news.models.DBNewsUiModel
-import co.deshbidesh.db_android.db_news_feature.news.ui.adapter.DBNewsArticlePagingAdapter
 import co.deshbidesh.db_android.db_news_feature.news.viewmodel.DBNewsArticleViewModel
-import co.deshbidesh.db_android.db_news_feature.news.viewmodel.DBNewsArticleViewModelFactory
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 
 @ExperimentalPagingApi
 class DBHomeInnerListFragment : Fragment() {
-
-    private lateinit var viewModelFactory: DBNewsArticleViewModelFactory
-
-    private lateinit var viewModel: DBNewsArticleViewModel
 
     private var _binding: FragmentDbHomeInnerListBinding? = null
 
@@ -42,7 +29,7 @@ class DBHomeInnerListFragment : Fragment() {
 
     private lateinit var adapter: DBHomeInnerListAdapter
 
-    private lateinit var newsListPagingAdapter: DBNewsArticlePagingAdapter
+    private val sharedNewsViewModel: DBNewsArticleViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,9 +44,9 @@ class DBHomeInnerListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModelFactory = DBNewsArticleViewModelFactory(DBNewsRepository(DBDatabase.getDatabase(requireContext())))
-
-        viewModel = ViewModelProvider(this, viewModelFactory).get(DBNewsArticleViewModel::class.java)
+        if (sharedNewsViewModel.repository == null) {
+            sharedNewsViewModel.repository = DBNewsRepository(DBDatabase.getDatabase(requireContext()))
+        }
 
         // add dividers between RecyclerView's row items
         val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
@@ -70,11 +57,11 @@ class DBHomeInnerListFragment : Fragment() {
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         binding.homeInnerNewsList.layoutManager = layoutManager//GridLayoutManager(context, 1)
 
-
-
         binding.homeInnerNewsList.adapter = adapter
 
         binding.homeInnerNewsList.addItemDecoration(decoration)
+
+        showProgressBar(true)
 
         subscribeUI()
     }
@@ -85,33 +72,28 @@ class DBHomeInnerListFragment : Fragment() {
         _binding = null
     }
 
+    private fun showProgressBar(show: Boolean) {
+
+        binding.progressBar.isVisible = show
+
+        binding.homeInnerNewsList.isVisible = !show
+    }
+
     private fun subscribeUI() {
 
         lifecycleScope.launch {
 
             val itemList:MutableList<DBNewsUiModel> = ArrayList()
 
-            viewModel.getRecentArticleWithCategory() { ll ->
-                println("--------- ll ----------")
-                println(ll)
-                ll.map {
+            sharedNewsViewModel.getRecentArticleWithCategory() { list ->
 
-                    println("------------it -----------")
-                    println(it)
-                    itemList.add(
-                        DBNewsUiModel(
-                            it.article.n_id,
-                            it.article.post_id,
-                            it.article.title,
-                            it.article.description,
-                            it.article.published_at,
-                            it.article.featured_image.thumbnail
-                        )
-                    )
+                activity?.runOnUiThread {
+
+                    adapter.loadData(list)
+
+                    showProgressBar(false)
                 }
-                println("--------- itemList ----------")
-                println(itemList)
-                adapter.loadData(itemList)
+
             }
 
         }

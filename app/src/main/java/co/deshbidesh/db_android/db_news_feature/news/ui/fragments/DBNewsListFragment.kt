@@ -1,19 +1,17 @@
 package co.deshbidesh.db_android.db_news_feature.news.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentDbNewsListBinding
 
 import co.deshbidesh.db_android.db_database.database.DBDatabase
@@ -21,8 +19,8 @@ import co.deshbidesh.db_android.db_network.domain.DBNewsRepository
 import co.deshbidesh.db_android.db_news_feature.news.ui.adapter.DBNewsArticlePagingAdapter
 import co.deshbidesh.db_android.db_news_feature.news.ui.adapter.DBNewsLoadStateAdapter
 import co.deshbidesh.db_android.db_news_feature.news.viewmodel.DBNewsArticleViewModel
-import co.deshbidesh.db_android.db_news_feature.news.viewmodel.DBNewsArticleViewModelFactory
 import co.deshbidesh.db_android.shared.DBBaseFragment
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -36,11 +34,11 @@ class DBNewsListFragment : DBBaseFragment() {
 
     private val binding get() = _binding!!
 
-    private lateinit var viewModelFactory: DBNewsArticleViewModelFactory
-
-    private lateinit var viewModel: DBNewsArticleViewModel
-
     private lateinit var newsListPagingAdapter: DBNewsArticlePagingAdapter
+
+    private var searchJob: Job? = null
+
+    private val sharedNewsViewModel: DBNewsArticleViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,16 +53,18 @@ class DBNewsListFragment : DBBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        searchJob?.cancel()
+
+        if (sharedNewsViewModel.repository == null) {
+            sharedNewsViewModel.repository = DBNewsRepository(DBDatabase.getDatabase(requireContext()))
+        }
+
         binding.newsListToolbar.setNavigationOnClickListener {
 
             requireActivity().onBackPressed()
         }
 
         newsListPagingAdapter = DBNewsArticlePagingAdapter()
-
-        viewModelFactory = DBNewsArticleViewModelFactory(DBNewsRepository(DBDatabase.getDatabase(requireContext())))
-
-        viewModel = ViewModelProvider(this, viewModelFactory).get(DBNewsArticleViewModel::class.java)
 
         // add dividers between RecyclerView's row items
         val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
@@ -117,11 +117,11 @@ class DBNewsListFragment : DBBaseFragment() {
 
         lifecycleScope.launch {
 
-            viewModel.getPagedList.distinctUntilChanged().collectLatest { it ->
+            sharedNewsViewModel.getPagedList?.distinctUntilChanged()?.collectLatest { it ->
 
-                it.let {
+                it.let { data ->
 
-                    newsListPagingAdapter.submitData(it)
+                    newsListPagingAdapter.submitData(data)
                 }
             }
         }
@@ -135,6 +135,10 @@ class DBNewsListFragment : DBBaseFragment() {
             binding.emptyList.visibility = View.GONE
             binding.list.visibility = View.VISIBLE
         }
+    }
+
+    private fun searchNewsDatabase() {
+
     }
 
 }

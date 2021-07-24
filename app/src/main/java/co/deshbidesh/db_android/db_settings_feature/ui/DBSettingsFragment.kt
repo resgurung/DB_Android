@@ -3,6 +3,7 @@ package co.deshbidesh.db_android.db_settings_feature.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.preference.Preference
@@ -12,6 +13,9 @@ import co.deshbidesh.db_android.db_network.domain.DBSettingsRepository
 import co.deshbidesh.db_android.db_settings_feature.factories.DBSettingsViewModelFactory
 import co.deshbidesh.db_android.db_settings_feature.models.DBSetting
 import co.deshbidesh.db_android.db_settings_feature.viewmodel.DBSettingsViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class DBSettingsFragment : PreferenceFragmentCompat() {
@@ -43,112 +47,121 @@ class DBSettingsFragment : PreferenceFragmentCompat() {
 
         dbSettingsViewModel = ViewModelProvider(this, dbSettingsViewModelFactory).get(DBSettingsViewModel::class.java)
 
-        settings = dbSettingsViewModel.getSettings(requireContext())
+        GlobalScope.launch(Dispatchers.IO) {
 
+            settings = dbSettingsViewModel.getSettings(requireContext())
+        }
     }
 
     private fun updateUI() {
 
-        val appTitle: Preference? = findPreference(TITLE)
-        if (appTitle != null) {
-            appTitle.title = settings?.title ?: "Desh Bidesh"
-            appTitle.summary = settings?.subtitle ?: "Unity in Diversity"
-        }
+        activity?.runOnUiThread {
 
-        val appEmail: Preference? = findPreference(EMAIL)
-        if (appEmail != null) {
-            appEmail.summary = settings?.email ?: "informationdeshbidesh@gmail.com"
-        }
-
-        val disclaimerFrag: Preference? = findPreference(DISCLAIMER_FRAG)
-        disclaimerFrag?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-
-            activity?.runOnUiThread {
-
-                val action = DBSettingsFragmentDirections.actionDBSettingsFragmentToDisclaimerViewFragment(settings?.legal_disclosure ?: "")
-
-                view?.findNavController()?.navigate(action)
+            val appTitle: Preference? = findPreference(TITLE)
+            if (appTitle != null) {
+                appTitle.title = settings?.title ?: "Desh Bidesh"
+                appTitle.summary = settings?.subtitle ?: "Unity in Diversity"
             }
-            true
-        }
 
-        val privacyFrag: Preference? = findPreference(PRIVACY_FRAG)
-        privacyFrag?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-
-            activity?.runOnUiThread {
-
-                val action = DBSettingsFragmentDirections.actionDBSettingsFragmentToPrivacyViewFragment(settings?.privacy_policy ?: "")
-
-                view?.findNavController()?.navigate(action)
+            val appEmail: Preference? = findPreference(EMAIL)
+            if (appEmail != null) {
+                appEmail.summary = settings?.email ?: "informationdeshbidesh@gmail.com"
             }
-            true
-        }
 
-        val facebook: Preference? = findPreference(FACEBOOK)
+            val disclaimerFrag: Preference? = findPreference(DISCLAIMER_FRAG)
+            disclaimerFrag?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
 
-        if (facebook != null) {
+                    val action =
+                        DBSettingsFragmentDirections.actionDBSettingsFragmentToDisclaimerViewFragment(
+                            settings?.legal_disclosure ?: ""
+                        )
 
-            facebook.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(
-                        settings?.facebook ?: "https://www.facebook.com/Desh-Bidesh-103355211335288"
-                    )
-                )
-                startActivity(browserIntent)
+                    view?.findNavController()?.navigate(action)
 
                 true
             }
-        }
 
-        val twitter: Preference? = findPreference(TWITTER)
+            val privacyFrag: Preference? = findPreference(PRIVACY_FRAG)
+            privacyFrag?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
 
-        if (twitter != null) {
+                    val action =
+                        DBSettingsFragmentDirections.actionDBSettingsFragmentToPrivacyViewFragment(
+                            settings?.privacy_policy ?: ""
+                        )
 
-            twitter.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(
-                        settings?.twitter ?: "https://twitter.com/DeshBidesh4"
-                    )
-                )
-                startActivity(browserIntent)
+                    view?.findNavController()?.navigate(action)
 
                 true
             }
-        }
 
-        val instagram: Preference? = findPreference(INSTAGRAM)
+            val facebook: Preference? = findPreference(FACEBOOK)
 
-        if (instagram != null) {
+            if (facebook != null) {
 
-            instagram.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(
-                        settings?.instagram ?: "https://www.instagram.com/deshbideshapp"
+                facebook.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(
+                            settings?.facebook
+                                ?: "https://www.facebook.com/Desh-Bidesh-103355211335288"
+                        )
                     )
-                )
-                startActivity(browserIntent)
+                    startActivity(browserIntent)
 
-                true
+                    true
+                }
             }
-        }
 
-        val youtube: Preference? = findPreference(YOUTUBE)
+            val twitter: Preference? = findPreference(TWITTER)
 
-        if (youtube != null) {
+            if (twitter != null) {
 
-            youtube.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(
-                        settings?.youtube ?: "https://www.youtube.com/channel/UC22Tp-7tetG-CwbnNPPkeWQ"
+                twitter.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(
+                            settings?.twitter ?: "https://twitter.com/DeshBidesh4"
+                        )
                     )
-                )
-                startActivity(browserIntent)
+                    startActivity(browserIntent)
 
-                true
+                    true
+                }
+            }
+
+            val instagram: Preference? = findPreference(INSTAGRAM)
+
+            if (instagram != null) {
+
+                instagram.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(
+                            settings?.instagram ?: "https://www.instagram.com/deshbideshapp"
+                        )
+                    )
+                    startActivity(browserIntent)
+
+                    true
+                }
+            }
+
+            val youtube: Preference? = findPreference(YOUTUBE)
+
+            if (youtube != null) {
+
+                youtube.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(
+                            settings?.youtube
+                                ?: "https://www.youtube.com/channel/UC22Tp-7tetG-CwbnNPPkeWQ"
+                        )
+                    )
+                    startActivity(browserIntent)
+
+                    true
+                }
             }
         }
     }
