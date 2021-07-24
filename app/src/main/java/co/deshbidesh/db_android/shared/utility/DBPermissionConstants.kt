@@ -2,7 +2,7 @@ package co.deshbidesh.db_android.shared.utility
 
 import android.Manifest
 
-class DBPermissionConstant {
+class DBPermissionConstants {
 
     companion object {
 

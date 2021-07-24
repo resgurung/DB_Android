@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "446278936234",
+    "firebase_url": "https://desh-bidesh.firebaseio.com",
+    "project_id": "desh-bidesh",
+    "storage_bucket": "desh-bidesh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446278936234:android:8f7e79292794794afc52d3",
+        "android_client_info": {
+          "package_name": "co.deshbidesh.db_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446278936234-9sqjk3rldsb2p9rao3i81neut1bbmiqu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvG_zjih4J4fKKy4oaESgbHOtbjhjnSo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "446278936234-9sqjk3rldsb2p9rao3i81neut1bbmiqu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "446278936234-48sif9rg64qsa27mafubj5qktrmukrau.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.desh-bidesh.haudae"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

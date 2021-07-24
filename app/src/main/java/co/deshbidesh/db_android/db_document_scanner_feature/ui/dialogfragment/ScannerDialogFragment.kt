@@ -14,7 +14,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.db_document_scanner_feature.model.DBImageThresholdType
-import co.deshbidesh.db_android.shared.utility.DBDocScanConstant
+import co.deshbidesh.db_android.shared.utility.DBDocScanConstants
 import co.deshbidesh.db_android.shared.utility.DBPreferenceHelper
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
@@ -57,22 +57,22 @@ class ScannerDialogFragment : DialogFragment() {
     private val imageProcessingType: DBImageThresholdType? by lazy{
         DBImageThresholdType.ofRaw(
             DBPreferenceHelper.getStoredInt(
-                DBDocScanConstant.DBIMAGE_PROCESSING_KEY,
-                DBDocScanConstant.DBIMAGE_PROCESSING_DEFAULT_VALUE))
+                DBDocScanConstants.DBIMAGE_PROCESSING_KEY,
+                DBDocScanConstants.DBIMAGE_PROCESSING_DEFAULT_VALUE))
     }
 
-    var binaryNum: Float = DBPreferenceHelper.getStoredFloat(DBDocScanConstant.BINARY_THRESHOLD_SETTING_KEY,
-        DBDocScanConstant.BINARY_THRESHOLD_SETTING_VALUE)
+    var binaryNum: Float = DBPreferenceHelper.getStoredFloat(DBDocScanConstants.BINARY_THRESHOLD_SETTING_KEY,
+        DBDocScanConstants.BINARY_THRESHOLD_SETTING_VALUE)
 
-    var otsuPair = Pair(DBPreferenceHelper.getStoredFloat(DBDocScanConstant.OTSU_MIN_KEY,
-        DBDocScanConstant.OTSU_MIN_VALUE),
-        DBPreferenceHelper.getStoredFloat(DBDocScanConstant.OTSU_MAX_KEY, DBDocScanConstant.OTSU_MAX_VALUE))
+    var otsuPair = Pair(DBPreferenceHelper.getStoredFloat(DBDocScanConstants.OTSU_MIN_KEY,
+        DBDocScanConstants.OTSU_MIN_VALUE),
+        DBPreferenceHelper.getStoredFloat(DBDocScanConstants.OTSU_MAX_KEY, DBDocScanConstants.OTSU_MAX_VALUE))
 
-    var blockSize = DBPreferenceHelper.getStoredInt(DBDocScanConstant.ADAPTIVE_BLOCKSIZE_KEY,
-        DBDocScanConstant.ADAPTIVE_BLOCKSIZE_DEFAULT_VALUE)
+    var blockSize = DBPreferenceHelper.getStoredInt(DBDocScanConstants.ADAPTIVE_BLOCKSIZE_KEY,
+        DBDocScanConstants.ADAPTIVE_BLOCKSIZE_DEFAULT_VALUE)
 
-    var meanOffset: Float = DBPreferenceHelper.getStoredFloat(DBDocScanConstant.ADAPTIVE_OFFSET_FROM_MEAN_KEY,
-        DBDocScanConstant.ADAPTIVE_OFFSET_FROM_MEAN_DEFAULT_VALUE)
+    var meanOffset: Float = DBPreferenceHelper.getStoredFloat(DBDocScanConstants.ADAPTIVE_OFFSET_FROM_MEAN_KEY,
+        DBDocScanConstants.ADAPTIVE_OFFSET_FROM_MEAN_DEFAULT_VALUE)
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -148,7 +148,7 @@ class ScannerDialogFragment : DialogFragment() {
 
                     DBImageThresholdType.BINARY.toRaw()?.let {
 
-                        DBPreferenceHelper.storeInt(DBDocScanConstant.DBIMAGE_PROCESSING_KEY, it)
+                        DBPreferenceHelper.storeInt(DBDocScanConstants.DBIMAGE_PROCESSING_KEY, it)
                     }
 
                     setupBinary()
@@ -159,7 +159,7 @@ class ScannerDialogFragment : DialogFragment() {
 
                     DBImageThresholdType.ADAPTIVE.toRaw()?.let {
 
-                        DBPreferenceHelper.storeInt(DBDocScanConstant.DBIMAGE_PROCESSING_KEY, it)
+                        DBPreferenceHelper.storeInt(DBDocScanConstants.DBIMAGE_PROCESSING_KEY, it)
                     }
 
                     setupAdaptive()
@@ -170,7 +170,7 @@ class ScannerDialogFragment : DialogFragment() {
 
                     DBImageThresholdType.OTSU.toRaw()?.let {
 
-                        DBPreferenceHelper.storeInt(DBDocScanConstant.DBIMAGE_PROCESSING_KEY, it)
+                        DBPreferenceHelper.storeInt(DBDocScanConstants.DBIMAGE_PROCESSING_KEY, it)
                     }
 
                     setupOtsu()
@@ -237,7 +237,7 @@ class ScannerDialogFragment : DialogFragment() {
 
                 if (slider.value != binaryNum) {
 
-                    DBPreferenceHelper.storeFloat(DBDocScanConstant.BINARY_THRESHOLD_SETTING_KEY, slider.value)
+                    DBPreferenceHelper.storeFloat(DBDocScanConstants.BINARY_THRESHOLD_SETTING_KEY, slider.value)
 
                     binaryNum = slider.value
 
@@ -266,9 +266,9 @@ class ScannerDialogFragment : DialogFragment() {
 
                     if (min != otsuPair.first || max != otsuPair.second) {
 
-                        DBPreferenceHelper.storeFloat(DBDocScanConstant.OTSU_MIN_KEY, min)
+                        DBPreferenceHelper.storeFloat(DBDocScanConstants.OTSU_MIN_KEY, min)
 
-                        DBPreferenceHelper.storeFloat(DBDocScanConstant.OTSU_MAX_KEY, max)
+                        DBPreferenceHelper.storeFloat(DBDocScanConstants.OTSU_MAX_KEY, max)
 
                         otsuPair = Pair(min, max)
 
@@ -314,7 +314,7 @@ class ScannerDialogFragment : DialogFragment() {
                         number = 81
                     }
 
-                    DBPreferenceHelper.storeInt(DBDocScanConstant.ADAPTIVE_BLOCKSIZE_KEY, number)
+                    DBPreferenceHelper.storeInt(DBDocScanConstants.ADAPTIVE_BLOCKSIZE_KEY, number)
 
                     blockSlider?.value = number.toFloat()
 
@@ -334,7 +334,7 @@ class ScannerDialogFragment : DialogFragment() {
             override fun onStopTrackingTouch(slider: Slider) {
                 if (slider.value != binaryNum) {
 
-                    DBPreferenceHelper.storeFloat(DBDocScanConstant.ADAPTIVE_OFFSET_FROM_MEAN_KEY, slider.value)
+                    DBPreferenceHelper.storeFloat(DBDocScanConstants.ADAPTIVE_OFFSET_FROM_MEAN_KEY, slider.value)
 
                     meanOffset = slider.value
 

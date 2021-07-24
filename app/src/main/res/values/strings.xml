@@ -13,6 +13,9 @@
     <string name="closeButtonText">close</string>
 
     <!-- Preference Contact  -->
+    <string name="contact_app_title">Title</string>
+    <string name="contact_app_subtitle">Subtitle</string>
+
     <string name="contact_header">Contact</string>
     <string name="contact_name">Manager</string>
     <string name="contact_email">Email</string>
@@ -25,5 +28,14 @@
 
     <!-- Preference Social -->
     <string name="social_header">Find us</string>
+    <string name="default_news_title">News title</string>
+    <string name="default_news_description">News description</string>
+    <string name="default_date">Default date</string>
+
+    <string name="search_deshbidesh_news">Search</string>
+    <string name="retry">retry</string>
+    <string name="no_results">no_results</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

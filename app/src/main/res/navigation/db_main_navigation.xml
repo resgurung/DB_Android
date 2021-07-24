@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_homeFragment_to_noteListFragment"
             app:destination="@id/noteListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_DBNewsListFragment"
+            app:destination="@id/DBNewsListFragment" />
     </fragment>
 
     <fragment
@@ -98,6 +101,9 @@
         <action
             android:id="@+id/action_disclaimerViewFragment_to_DBSettingsFragment"
             app:destination="@id/DBSettingsFragment" />
+        <argument
+            android:name="disclaimer"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/privacyViewFragment"
@@ -107,17 +113,44 @@
         <action
             android:id="@+id/action_privacyViewFragment_to_DBSettingsFragment"
             app:destination="@id/DBSettingsFragment" />
+        <argument
+            android:name="privacy"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/DBSettingsFragment"
         android:name="co.deshbidesh.db_android.db_settings_feature.ui.DBSettingsFragment"
-        android:label="DBSettingsFragment" >
+        android:label="DBSettingsFragment">
         <action
             android:id="@+id/action_DBSettingsFragment_to_disclaimerViewFragment"
             app:destination="@id/disclaimerViewFragment" />
         <action
             android:id="@+id/action_DBSettingsFragment_to_privacyViewFragment"
             app:destination="@id/privacyViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/DBNewsListFragment"
+        android:name="co.deshbidesh.db_android.db_news_feature.news.ui.fragments.DBNewsListFragment"
+        android:label="DBNewsListFragment"
+        tools:layout="@layout/fragment_db_news_list">
+        <action
+            android:id="@+id/action_DBNewsListFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_DBNewsListFragment_to_newsDetailFragment"
+            app:destination="@id/newsDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsDetailFragment"
+        android:name="co.deshbidesh.db_android.db_news_feature.news.ui.fragments.DBNewsDetailFragment"
+        android:label="NewsDetailFragment"
+        tools:layout="@layout/fragment_db_news_detail">
+        <action
+            android:id="@+id/action_newsDetailFragment_to_DBNewsListFragment"
+            app:destination="@id/DBNewsListFragment" />
+        <argument
+            android:name="news"
+            app:argType="co.deshbidesh.db_android.db_news_feature.news.models.DBNewsResponseItem" />
     </fragment>
 
 </navigation>

@@ -30,7 +30,7 @@ import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteAddViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
 import co.deshbidesh.db_android.shared.DBHelper
 import co.deshbidesh.db_android.shared.hideKeyboard
-import co.deshbidesh.db_android.shared.utility.DBPermissionConstant
+import co.deshbidesh.db_android.shared.utility.DBPermissionConstants
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.io.File
 import java.io.IOException
@@ -300,13 +300,13 @@ class NoteAddFragment : DBBaseFragment() {
 
     // Storage permission
     private fun askStoragePermission(): Boolean {
-        if (ContextCompat.checkSelfPermission(requireContext(), DBPermissionConstant.ReadExternalStorage )
+        if (ContextCompat.checkSelfPermission(requireContext(), DBPermissionConstants.ReadExternalStorage )
             == PackageManager.PERMISSION_GRANTED){
             return true
 
         } else {
-            val permissions = arrayOf(DBPermissionConstant.ReadExternalStorage)
-            requestPermissions(permissions, DBPermissionConstant.readExternalStoragePermissionCode)
+            val permissions = arrayOf(DBPermissionConstants.ReadExternalStorage)
+            requestPermissions(permissions, DBPermissionConstants.readExternalStoragePermissionCode)
         }
 
         return false
@@ -315,14 +315,14 @@ class NoteAddFragment : DBBaseFragment() {
 
     // Camera permission
     private fun askCameraPermission(): Boolean {
-        if (ContextCompat.checkSelfPermission(requireContext(), DBPermissionConstant.CameraPermission)
+        if (ContextCompat.checkSelfPermission(requireContext(), DBPermissionConstants.CameraPermission)
             == PackageManager.PERMISSION_GRANTED) {
             return true
 
         } else {
 
-            val permissions = arrayOf(DBPermissionConstant.CameraPermission)
-            requestPermissions(permissions, DBPermissionConstant.cameraPermissionCode)
+            val permissions = arrayOf(DBPermissionConstants.CameraPermission)
+            requestPermissions(permissions, DBPermissionConstants.cameraPermissionCode)
         }
 
         return false

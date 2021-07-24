@@ -1,6 +1,6 @@
 package co.deshbidesh.db_android.db_network.db_retrofit
 
-import co.deshbidesh.db_android.db_settings_feature.settings_utils.DBSettingsConstant
+import co.deshbidesh.db_android.shared.utility.DBApiConstants
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -11,7 +11,7 @@ class DBInterceptor: Interceptor {
         val request: Request = chain.request()
                 .newBuilder()
                 .addHeader("Content-Type", "application/json")
-                .addHeader("x-api-key", DBSettingsConstant.KEY)
+                .addHeader("x-api-key", DBApiConstants.KEY)
                 .build()
 
         return chain.proceed(request)

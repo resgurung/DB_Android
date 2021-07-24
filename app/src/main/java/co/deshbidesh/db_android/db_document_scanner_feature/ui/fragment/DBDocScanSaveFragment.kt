@@ -25,7 +25,7 @@ import co.deshbidesh.db_android.shared.DBHelper
 import co.deshbidesh.db_android.shared.extensions.hasPermission
 import co.deshbidesh.db_android.shared.extensions.showAlert
 import co.deshbidesh.db_android.shared.hideKeyboard
-import co.deshbidesh.db_android.shared.utility.DBPermissionConstant
+import co.deshbidesh.db_android.shared.utility.DBPermissionConstants
 import co.deshbidesh.db_android.shared.utility.FileUtils
 import co.deshbidesh.db_android.shared.utility.FileUtilsImpl
 import java.io.File
@@ -44,7 +44,7 @@ class DBDocScanSaveFragment : Fragment() {
 
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
 
-        val writeExternalStoragePermissions = arrayOf(DBPermissionConstant.WriteExternalStorage)
+        val writeExternalStoragePermissions = arrayOf(DBPermissionConstants.WriteExternalStorage)
     }
 
     private var _binding: FragmentDbDocScanSaveBinding? = null
@@ -232,7 +232,7 @@ class DBDocScanSaveFragment : Fragment() {
 
         when(requestCode) {
 
-            DBPermissionConstant.writeExternalStoragePermissionCode -> {
+            DBPermissionConstants.writeExternalStoragePermissionCode -> {
 
                 if (permission(grantResults)) {
 
@@ -279,7 +279,7 @@ class DBDocScanSaveFragment : Fragment() {
 
             requestPermissions(
                     writeExternalStoragePermissions,
-                    DBPermissionConstant.writeExternalStoragePermissionCode
+                    DBPermissionConstants.writeExternalStoragePermissionCode
             )
         }
     }

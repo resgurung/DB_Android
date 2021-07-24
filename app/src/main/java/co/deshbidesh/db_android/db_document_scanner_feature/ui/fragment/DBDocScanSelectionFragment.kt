@@ -17,7 +17,7 @@ import co.deshbidesh.db_android.databinding.FragmentDbDocScanSelectionBinding
 import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.SharedViewModel
 import co.deshbidesh.db_android.shared.extensions.hasPermission
 import co.deshbidesh.db_android.shared.extensions.showAlert
-import co.deshbidesh.db_android.shared.utility.DBPermissionConstant
+import co.deshbidesh.db_android.shared.utility.DBPermissionConstants
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
@@ -30,9 +30,9 @@ class DBDocScanSelectionFragment : Fragment() {
 
         const val TAG = "DScanSelectionFragment"
 
-        val cameraPermissions = arrayOf(DBPermissionConstant.CameraPermission)
+        val cameraPermissions = arrayOf(DBPermissionConstants.CameraPermission)
 
-        val externalStoragePermissions = arrayOf(DBPermissionConstant.ReadExternalStorage)
+        val externalStoragePermissions = arrayOf(DBPermissionConstants.ReadExternalStorage)
     }
 
     private val loader = object: BaseLoaderCallback(context) {
@@ -110,7 +110,7 @@ class DBDocScanSelectionFragment : Fragment() {
             data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == DBPermissionConstant.readExternalStoragePermissionCode
+        if (requestCode == DBPermissionConstants.readExternalStoragePermissionCode
                 && resultCode == Activity.RESULT_OK) {
 
             val uri: Uri? = data?.data
@@ -142,15 +142,15 @@ class DBDocScanSelectionFragment : Fragment() {
 
         when(requestCode) {
 
-            DBPermissionConstant.readExternalStoragePermissionCode -> {
+            DBPermissionConstants.readExternalStoragePermissionCode -> {
 
                 if (permission(grantResults)) {
 
-                    openMediaGallery(DBPermissionConstant.readExternalStoragePermissionCode)
+                    openMediaGallery(DBPermissionConstants.readExternalStoragePermissionCode)
                 }
 
             }
-            DBPermissionConstant.cameraPermissionCode -> {
+            DBPermissionConstants.cameraPermissionCode -> {
 
                 if (permission(grantResults)) {
 
@@ -239,13 +239,13 @@ class DBDocScanSelectionFragment : Fragment() {
 
         if (activity?.hasPermission(*externalStoragePermissions) == true) {
 
-            openMediaGallery(DBPermissionConstant.readExternalStoragePermissionCode)
+            openMediaGallery(DBPermissionConstants.readExternalStoragePermissionCode)
 
         } else {
 
             requestPermissions(
                     externalStoragePermissions,
-                    DBPermissionConstant.readExternalStoragePermissionCode
+                    DBPermissionConstants.readExternalStoragePermissionCode
             )
         }
     }
@@ -260,7 +260,7 @@ class DBDocScanSelectionFragment : Fragment() {
 
             requestPermissions(
                     cameraPermissions,
-                    DBPermissionConstant.cameraPermissionCode
+                    DBPermissionConstants.cameraPermissionCode
             )
         }
     }

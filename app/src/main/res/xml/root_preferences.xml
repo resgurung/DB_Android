@@ -1,20 +1,25 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory>
+    <!--
+    <PreferenceCategory
+        app:layout="@layout/layout_db_settings_image"
+        app:key="image_layout">
+
+    </PreferenceCategory>
+    -->
+
+    <PreferenceCategory app:title="">
 
         <Preference
-            app:layout="@layout/layout_db_settings_image"/>
+            app:key="app_title"
+            app:title="Desh Bidesh"
+            app:summary="Unity in Diversity"
+            app:icon="@mipmap/logo"/>
 
     </PreferenceCategory>
 
-
     <PreferenceCategory app:title="@string/contact_header">
-
-        <Preference
-            app:key="contactName"
-            app:title="@string/contact_name"
-            app:summary="Sumish Hirachan" />
 
         <Preference
             app:key="contactEmail"
@@ -40,39 +45,48 @@
     <PreferenceCategory app:title="@string/social_header">
 
         <Preference
-            app:layout="@layout/layout_db_settings_findus_fb">
-
+            app:layout="@layout/layout_db_settings_findus_fb"
+            app:key = "facebook">
+            <!--
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://www.facebook.com/Desh-Bidesh-103355211335288"
                 />
+                -->
         </Preference>
 
         <Preference
-            app:layout="@layout/layout_db_settings_findus_tw">
-
+            app:layout="@layout/layout_db_settings_findus_tw"
+            app:key = "twitter">
+            <!--
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://twitter.com/DeshBidesh4"
                 />
+                -->
         </Preference>
 
         <Preference
-            app:layout="@layout/layout_db_settings_findus_ig">
-
+            app:layout="@layout/layout_db_settings_findus_ig"
+            app:key = "instagram">
+            <!--
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://www.instagram.com/deshbideshapp"
                 />
+                -->
         </Preference>
 
         <Preference
-            app:layout="@layout/layout_db_settings_findus_yt">
+            app:layout="@layout/layout_db_settings_findus_yt"
+            app:key = "youtube">
 
+            <!--
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://www.youtube.com/channel/UC22Tp-7tetG-CwbnNPPkeWQ"
                 />
+                -->
         </Preference>
 
         <Preference

@@ -22,18 +22,62 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/home_news_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_weight="1"
+                android:text="News"/>
+
+            <ImageButton
+                android:id="@+id/home_news_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_arrow_right_alt"/>
+        </LinearLayout>
+
+        <fragment
+            android:id="@+id/inner_home_fragment"
+            android:name="co.deshbidesh.db_android.db_home_feature.DBHomeInnerListFragment"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="0.64"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/home_utility_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_weight="1"
+                android:text="Utility"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.36"
+            android:orientation="horizontal">
+
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/home_note_card"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
                 android:layout_margin="8dp"
                 card_view:cardCornerRadius="8dp"
-                android:layout_weight="1"
-                card_view:cardBackgroundColor="@color/white"
+                card_view:cardBackgroundColor="@android:color/holo_blue_dark"
                 card_view:cardElevation="5dp">
 
                 <LinearLayout
@@ -46,12 +90,19 @@
                         android:id="@+id/calendar_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="My Notes"
-                        android:textSize="30sp"/>
+                        android:text="Notes"
+                        android:singleLine="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="22sp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/black" />
 
                     <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_note" />
@@ -63,12 +114,12 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/home_doc_scanner_card"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
                 android:layout_margin="8dp"
-                android:layout_weight="1"
                 card_view:cardCornerRadius="8dp"
-                card_view:cardBackgroundColor="@color/white"
+                card_view:cardBackgroundColor="@android:color/holo_blue_dark"
                 card_view:cardElevation="5dp">
 
                 <LinearLayout
@@ -81,11 +132,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Doc Scanner"
-                        android:textSize="30sp"/>
+                        android:singleLine="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="22sp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/black" />
 
                     <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_doc_scan" />

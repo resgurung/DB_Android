@@ -1,7 +1,8 @@
 package co.deshbidesh.db_android.db_network.db_retrofit
 
+import co.deshbidesh.db_android.db_network.db_services.DBNewsService
 import co.deshbidesh.db_android.db_network.db_services.SettingsService
-import co.deshbidesh.db_android.db_settings_feature.settings_utils.DBSettingsConstant
+import co.deshbidesh.db_android.shared.utility.DBApiConstants
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,13 +17,17 @@ object DBRetrofitInstance {
     // Singleton
     private val dbRetrofit by lazy {
         Retrofit.Builder()
-                .baseUrl(DBSettingsConstant.BASE_URL)
+                .baseUrl(DBApiConstants.BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
     }
 
-    val dbApi: SettingsService by lazy {
+    val dbSettingsApi: SettingsService by lazy {
         dbRetrofit.create(SettingsService::class.java)
+    }
+
+    val dbNewsApi: DBNewsService by lazy {
+        dbRetrofit.create(DBNewsService::class.java)
     }
 }

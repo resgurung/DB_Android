@@ -1,6 +1,6 @@
 package co.deshbidesh.db_android.shared.utility
 
-class DBDocScanConstant {
+class DBDocScanConstants {
 
     companion object {
 
@@ -35,32 +35,32 @@ class DBDocScanConstant {
                 DBPreferenceHelper.firstRun = true
 
                 DBPreferenceHelper.storeFloat(
-                    DBDocScanConstant.BINARY_THRESHOLD_SETTING_KEY,
-                    DBDocScanConstant.BINARY_THRESHOLD_SETTING_VALUE)
+                    DBDocScanConstants.BINARY_THRESHOLD_SETTING_KEY,
+                    DBDocScanConstants.BINARY_THRESHOLD_SETTING_VALUE)
 
                 DBPreferenceHelper.storeFloat(
-                    DBDocScanConstant.OTSU_MIN_KEY,
-                    DBDocScanConstant.OTSU_MIN_VALUE)
+                    DBDocScanConstants.OTSU_MIN_KEY,
+                    DBDocScanConstants.OTSU_MIN_VALUE)
 
                 DBPreferenceHelper.storeFloat(
-                    DBDocScanConstant.OTSU_MAX_KEY,
-                    DBDocScanConstant.OTSU_MAX_VALUE)
+                    DBDocScanConstants.OTSU_MAX_KEY,
+                    DBDocScanConstants.OTSU_MAX_VALUE)
 
                 DBPreferenceHelper.storeBoolean(
-                    DBDocScanConstant.IS_BINARY_KEY,
-                    DBDocScanConstant.IS_BINARY_VALUE)
+                    DBDocScanConstants.IS_BINARY_KEY,
+                    DBDocScanConstants.IS_BINARY_VALUE)
 
                 DBPreferenceHelper.storeInt(
-                    DBDocScanConstant.DBIMAGE_PROCESSING_KEY,
-                    DBDocScanConstant.DBIMAGE_PROCESSING_DEFAULT_VALUE)
+                    DBDocScanConstants.DBIMAGE_PROCESSING_KEY,
+                    DBDocScanConstants.DBIMAGE_PROCESSING_DEFAULT_VALUE)
 
                 DBPreferenceHelper.storeInt(
-                    DBDocScanConstant.ADAPTIVE_BLOCKSIZE_KEY,
-                    DBDocScanConstant.ADAPTIVE_BLOCKSIZE_DEFAULT_VALUE)
+                    DBDocScanConstants.ADAPTIVE_BLOCKSIZE_KEY,
+                    DBDocScanConstants.ADAPTIVE_BLOCKSIZE_DEFAULT_VALUE)
 
                 DBPreferenceHelper.storeFloat(
-                    DBDocScanConstant.ADAPTIVE_OFFSET_FROM_MEAN_KEY,
-                    DBDocScanConstant.ADAPTIVE_OFFSET_FROM_MEAN_DEFAULT_VALUE)
+                    DBDocScanConstants.ADAPTIVE_OFFSET_FROM_MEAN_KEY,
+                    DBDocScanConstants.ADAPTIVE_OFFSET_FROM_MEAN_DEFAULT_VALUE)
 
             }
         }
