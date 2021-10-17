@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 
 class DBNewsRepository(
     val database:   DBDatabase,
-    val service:    DBNewsService? = DBRetrofitInstance.dbNewsApi,
+    private val service:    DBNewsService? = DBRetrofitInstance.dbNewsApi,
     private val query:      DBNewsQuery? = null
 ) {
 

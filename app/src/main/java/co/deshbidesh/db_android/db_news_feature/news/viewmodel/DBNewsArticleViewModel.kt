@@ -1,5 +1,6 @@
 package co.deshbidesh.db_android.db_news_feature.news.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
@@ -13,59 +14,67 @@ import co.deshbidesh.db_android.db_news_feature.news.models.DBNewsUiModel
 import co.deshbidesh.db_android.db_news_feature.news.storage.relations.ArticleWithCategories
 import co.deshbidesh.db_android.shared.utility.DBNewsConstants
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
-class DBNewsArticleViewModel(): ViewModel() {
+class DBNewsArticleViewModel(val repository: DBNewsRepository) : ViewModel() {
 
-    var repository: DBNewsRepository? = null
-
-    @ExperimentalPagingApi
-    val getPagedList: Flow<PagingData<ArticleWithCategories>>? = repository
-        ?.getArticles()
-        ?.cachedIn(viewModelScope)
-
+    //var repository: DBNewsRepository? = null
 
     @ExperimentalPagingApi
-    fun getRecentArticleWithCategory(callback: (List<ArticleWithCategories>) -> Unit ) {
+    val getPagedList: Flow<PagingData<ArticleWithCategories>> = repository
+        .getArticles()
+        .cachedIn(viewModelScope)
 
-        repository?.let { repos ->
-
-            viewModelScope.launch(Dispatchers.IO) {
-
-                val itemList: MutableList<ArticleWithCategories> =
-                    repos.database.articleCategoryJoinDAO().getHomeArticlesWithCategories()
-
-                if (itemList.isEmpty()) {
-
-                    val response = repos.service?.getArticles(DBNewsConstants.PAGE_SIZE,1)
-
-                    if (response?.isSuccessful == true) {
-
-                        response.body()?.let { news ->
-
-                            DBNewsArticleMediator.insertToDB(repos.database, news, 0, 2)
+    @ExperimentalCoroutinesApi()
+    val pagedSharedFlow = MutableSharedFlow<PagingData<ArticleWithCategories>>()
 
 
-                            val itemList: MutableList<ArticleWithCategories> =
-                                repos.database.articleCategoryJoinDAO().getHomeArticlesWithCategories()
 
-                            callback(itemList)
-                        } ?: run {
-
-                            callback(ArrayList())
-                        }
-                    }
-
-                } else {
-
-                    callback(itemList)
-                }
-
-            }
-        }
-
-    }
+//
+//    @ExperimentalPagingApi
+//    fun getRecentArticleWithCategory(callback: (List<ArticleWithCategories>) -> Unit ) {
+//
+//        Log.d("DBNewsArticleViewModel", "------------- getRecentArticleWithCategory ----------------")
+//
+//        repository?.let { repos ->
+//
+//            viewModelScope.launch(Dispatchers.IO) {
+//
+//                val itemList: MutableList<ArticleWithCategories> =
+//                    repos.database.articleCategoryJoinDAO().getHomeArticlesWithCategories()
+//
+//                if (itemList.isEmpty()) {
+//
+//                    val response = repos.service?.getArticles(DBNewsConstants.PAGE_SIZE,1)
+//
+//                    if (response?.isSuccessful == true) {
+//
+//                        response.body()?.let { news ->
+//
+//                            DBNewsArticleMediator.insertToDB(repos.database, news, 0, 2)
+//
+//
+//                            val itemList: MutableList<ArticleWithCategories> =
+//                                repos.database.articleCategoryJoinDAO().getHomeArticlesWithCategories()
+//
+//                            callback(itemList)
+//                        } ?: run {
+//
+//                            callback(ArrayList())
+//                        }
+//                    }
+//
+//                } else {
+//
+//                    callback(itemList)
+//                }
+//
+//            }
+//        }
+//
+//    }
 
 }

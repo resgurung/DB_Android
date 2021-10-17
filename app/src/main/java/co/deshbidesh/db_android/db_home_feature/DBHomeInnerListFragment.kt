@@ -29,7 +29,7 @@ class DBHomeInnerListFragment : Fragment() {
 
     private lateinit var adapter: DBHomeInnerListAdapter
 
-    private val sharedNewsViewModel: DBNewsArticleViewModel by activityViewModels()
+    //private val sharedNewsViewModel: DBNewsArticleViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,9 +44,9 @@ class DBHomeInnerListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (sharedNewsViewModel.repository == null) {
-            sharedNewsViewModel.repository = DBNewsRepository(DBDatabase.getDatabase(requireContext()))
-        }
+//        if (sharedNewsViewModel.repository == null) {
+//            sharedNewsViewModel.repository = DBNewsRepository(DBDatabase.getDatabase(requireContext()))
+//        }
 
         // add dividers between RecyclerView's row items
         val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
@@ -63,7 +63,7 @@ class DBHomeInnerListFragment : Fragment() {
 
         showProgressBar(true)
 
-        subscribeUI()
+        //subscribeUI()
     }
 
     override fun onDestroy() {
@@ -81,22 +81,22 @@ class DBHomeInnerListFragment : Fragment() {
 
     private fun subscribeUI() {
 
-        lifecycleScope.launch {
-
-            val itemList:MutableList<DBNewsUiModel> = ArrayList()
-
-            sharedNewsViewModel.getRecentArticleWithCategory() { list ->
-
-                activity?.runOnUiThread {
-
-                    adapter.loadData(list)
-
-                    showProgressBar(false)
-                }
-
-            }
-
-        }
+//        lifecycleScope.launch {
+//
+//            val itemList:MutableList<DBNewsUiModel> = ArrayList()
+//
+//            sharedNewsViewModel.getRecentArticleWithCategory() { list ->
+//
+//                activity?.runOnUiThread {
+//
+//                    adapter.loadData(list)
+//
+//                    showProgressBar(false)
+//                }
+//
+//            }
+//
+//        }
     }
 
 }

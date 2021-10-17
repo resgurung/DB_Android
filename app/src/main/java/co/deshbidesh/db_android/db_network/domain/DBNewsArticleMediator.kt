@@ -156,7 +156,9 @@ class DBNewsArticleMediator(
                         link = item.link,
                         slug = item.slug,
                         published_at = item.published_at,
-                        updated_at = item.updated_at
+                        updated_at = item.updated_at,
+                        featured = item.featured?.let { it } ?: false,
+                        videoURL = item.videoURL
                     )
                 )
 

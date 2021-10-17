@@ -41,12 +41,25 @@
                 android:src="@drawable/ic_arrow_right_alt"/>
         </LinearLayout>
 
+
         <fragment
             android:id="@+id/inner_home_fragment"
             android:name="co.deshbidesh.db_android.db_home_feature.DBHomeInnerListFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.64"/>
+
+
+        <!--
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/image_slider"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.64"
+            app:iss_auto_cycle="true"
+            app:iss_period="1000"
+            app:iss_delay="0"/>
+        -->
 
         <LinearLayout
             android:layout_width="match_parent"

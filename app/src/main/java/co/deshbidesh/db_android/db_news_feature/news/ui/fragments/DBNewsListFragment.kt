@@ -1,6 +1,7 @@
 package co.deshbidesh.db_android.db_news_feature.news.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,9 @@ class DBNewsListFragment : DBBaseFragment() {
 
     private var searchJob: Job? = null
 
-    private val sharedNewsViewModel: DBNewsArticleViewModel by activityViewModels()
+    //private val sharedNewsViewModel: DBNewsArticleViewModel by activityViewModels()
+
+    private lateinit var articleViewModel: DBNewsArticleViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,18 +56,21 @@ class DBNewsListFragment : DBBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("DBNewsListFragment", "------------- onViewCreated news list ----------------")
         searchJob?.cancel()
 
-        if (sharedNewsViewModel.repository == null) {
-            sharedNewsViewModel.repository = DBNewsRepository(DBDatabase.getDatabase(requireContext()))
-        }
+//        if (sharedNewsViewModel.repository == null) {
+//            sharedNewsViewModel.repository = DBNewsRepository(DBDatabase.getDatabase(requireContext()))
+//        }
+
+        articleViewModel = DBNewsArticleViewModel(DBNewsRepository(DBDatabase.getDatabase(requireContext())))
+
+        //articleViewModel.repository = DBNewsRepository(DBDatabase.getDatabase(requireContext()))
 
         binding.newsListToolbar.setNavigationOnClickListener {
 
             requireActivity().onBackPressed()
         }
-
-        newsListPagingAdapter = DBNewsArticlePagingAdapter()
 
         // add dividers between RecyclerView's row items
         val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
@@ -72,6 +78,8 @@ class DBNewsListFragment : DBBaseFragment() {
         binding.list.layoutManager = GridLayoutManager(context, 1)
 
         binding.list.addItemDecoration(decoration)
+
+        newsListPagingAdapter = DBNewsArticlePagingAdapter()
 
         binding.list.adapter = newsListPagingAdapter.withLoadStateFooter(
             footer = DBNewsLoadStateAdapter { newsListPagingAdapter.retry() }
@@ -117,7 +125,9 @@ class DBNewsListFragment : DBBaseFragment() {
 
         lifecycleScope.launch {
 
-            sharedNewsViewModel.getPagedList?.distinctUntilChanged()?.collectLatest { it ->
+            Log.d("DBNewsListFragment", "------------- subscribeUI() ----------------")
+
+            articleViewModel.getPagedList?.distinctUntilChanged()?.collectLatest { it ->
 
                 it.let { data ->
 

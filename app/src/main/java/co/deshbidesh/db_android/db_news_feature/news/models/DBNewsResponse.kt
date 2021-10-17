@@ -1,6 +1,7 @@
 package co.deshbidesh.db_android.db_news_feature.news.models
 
 import java.io.Serializable
+import java.util.*
 
 class DBNewsResponse: ArrayList<DBNewsResponseItem>()
 
@@ -27,6 +28,10 @@ data class DBNewsResponseItem(
 
     val updated_at: String,
 
-    val description: String
+    val description: String,
+
+    val featured: Boolean?,
+
+    val videoURL: String?
 
 ): Serializable

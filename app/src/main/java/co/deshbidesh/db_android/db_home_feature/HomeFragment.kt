@@ -15,6 +15,8 @@ import co.deshbidesh.db_android.databinding.FragmentHomeBinding
 import co.deshbidesh.db_android.main.DBDocScanActivity
 import co.deshbidesh.db_android.shared.DBAppBarConfiguration
 import co.deshbidesh.db_android.shared.DBBaseFragment
+import com.denzcoskun.imageslider.ImageSlider
+import com.denzcoskun.imageslider.models.SlideModel
 
 
 class HomeFragment : DBBaseFragment() {
@@ -26,6 +28,8 @@ class HomeFragment : DBBaseFragment() {
     private var _binding: FragmentHomeBinding? = null
 
     private val binding get() = _binding!!
+
+    //private val imageList = ArrayList<SlideModel>() // Create image list
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,6 +70,16 @@ class HomeFragment : DBBaseFragment() {
         navController = NavHostFragment.findNavController(this);
 
         NavigationUI.setupWithNavController(toolBar, navController, DBAppBarConfiguration.configuration())
+
+        // imageList.add(SlideModel("String Url" or R.drawable)
+        // imageList.add(SlideModel("String Url" or R.drawable, "title") You can add title
+
+//        imageList.add(SlideModel("https://bit.ly/2YoJ77H", "The animal population decreased by 58 percent in 42 years."))
+//        imageList.add(SlideModel("https://bit.ly/2BteuF2", "Elephants and tigers may become extinct."))
+//        imageList.add(SlideModel("https://bit.ly/3fLJf72", "And people do that."))
+//
+//        val imageSlider = view.findViewById<ImageSlider>(R.id.image_slider)
+//        imageSlider.setImageList(imageList)
     }
 
     override fun onDestroy() {

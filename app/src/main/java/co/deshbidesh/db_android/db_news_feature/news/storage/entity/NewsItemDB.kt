@@ -32,5 +32,9 @@ data class NewsItemDB(
 
     val published_at: String,
 
-    val updated_at: String
+    val updated_at: String,
+
+    val featured: Boolean,
+
+    val videoURL: String?
 )

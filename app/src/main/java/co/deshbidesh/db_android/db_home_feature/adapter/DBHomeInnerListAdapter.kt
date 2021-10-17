@@ -90,7 +90,10 @@ class DBHomeInnerListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             slug = articleWithCategory.article.slug,
                             title = articleWithCategory.article.title,
                             updated_at = articleWithCategory.article.updated_at,
-                            description = articleWithCategory.article.description
+                            description = articleWithCategory.article.description,
+                            featured = articleWithCategory.article.featured,
+                            videoURL = articleWithCategory.article.videoURL
+
                         )
                         val action = DBNewsListFragmentDirections.actionDBNewsListFragmentToNewsDetailFragment(item)
 
