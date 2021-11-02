@@ -2,7 +2,7 @@ package co.deshbidesh.db_android.db_note_feature.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
+import co.deshbidesh.db_android.db_note_feature.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.models.DBNote
 import co.deshbidesh.db_android.shared.DBHelper
 import kotlinx.coroutines.Dispatchers
@@ -10,8 +10,7 @@ import kotlinx.coroutines.launch
 
 class DBNoteEditViewModel(
     private val repository: DBNoteRepository,
-    private val note: DBNote,
-    private val utility: DBHelper
+    private val note: DBNote
 ): ViewModel() {
 
     lateinit var title: String
@@ -24,7 +23,7 @@ class DBNoteEditViewModel(
 
         note.content = content
 
-        note.description = utility.generateDescriptionFromContent(content)
+        note.description = DBHelper.generateDescriptionFromContent(content)
 
         viewModelScope.launch(Dispatchers.IO) {
 

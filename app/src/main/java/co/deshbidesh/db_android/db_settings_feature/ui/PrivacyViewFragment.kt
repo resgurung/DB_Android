@@ -13,6 +13,7 @@ import co.deshbidesh.db_android.db_network.domain.DBSettingsRepository
 import co.deshbidesh.db_android.db_settings_feature.factories.DBSettingsViewModelFactory
 import co.deshbidesh.db_android.db_settings_feature.viewmodel.DBSettingsViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
+import co.deshbidesh.db_android.shared.DBHelper
 import co.deshbidesh.db_android.shared.utility.DBHTMLHelper
 
 class PrivacyViewFragment : DBBaseFragment() {
@@ -58,6 +59,8 @@ class PrivacyViewFragment : DBBaseFragment() {
             "UTF-8",
             null
         )
+
+        DBHelper.webSettingForDarkMode(requireContext(), binding.privacyView)
     }
 
     override fun onDestroy() {

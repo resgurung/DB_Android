@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="co.deshbidesh.db_android.db_home_feature.HomeFragment"
+        android:name="co.deshbidesh.db_android.db_home_feature.ui.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -130,7 +130,7 @@
     </fragment>
     <fragment
         android:id="@+id/DBNewsListFragment"
-        android:name="co.deshbidesh.db_android.db_news_feature.news.ui.fragments.DBNewsListFragment"
+        android:name="co.deshbidesh.db_android.db_news_feature.news.presentation.ui.fragments.DBNewsListFragment"
         android:label="DBNewsListFragment"
         tools:layout="@layout/fragment_db_news_list">
         <action
@@ -142,7 +142,7 @@
     </fragment>
     <fragment
         android:id="@+id/newsDetailFragment"
-        android:name="co.deshbidesh.db_android.db_news_feature.news.ui.fragments.DBNewsDetailFragment"
+        android:name="co.deshbidesh.db_android.db_news_feature.news.presentation.ui.fragments.DBNewsDetailFragment"
         android:label="NewsDetailFragment"
         tools:layout="@layout/fragment_db_news_detail">
         <action
@@ -150,7 +150,7 @@
             app:destination="@id/DBNewsListFragment" />
         <argument
             android:name="news"
-            app:argType="co.deshbidesh.db_android.db_news_feature.news.models.DBNewsResponseItem" />
+            app:argType="co.deshbidesh.db_android.db_news_feature.news.domain.models.DBNewsResponseItem" />
     </fragment>
 
 </navigation>

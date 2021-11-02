@@ -5,16 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import co.deshbidesh.db_android.R
-import co.deshbidesh.db_android.db_news_feature.news.models.DBNewsCategory
-import co.deshbidesh.db_android.db_news_feature.news.models.DBNewsResponseItem
-import co.deshbidesh.db_android.db_news_feature.news.models.DBNewsUiModel
-import co.deshbidesh.db_android.db_news_feature.news.storage.relations.ArticleWithCategories
-import co.deshbidesh.db_android.db_news_feature.news.ui.fragments.DBNewsListFragmentDirections
+import co.deshbidesh.db_android.db_news_feature.news.domain.models.DBNewsCategory
+import co.deshbidesh.db_android.db_news_feature.news.domain.models.DBNewsResponseItem
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.relations.ArticleWithCategories
+import co.deshbidesh.db_android.db_news_feature.news.presentation.ui.fragments.DBNewsListFragmentDirections
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 

@@ -7,24 +7,21 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import co.deshbidesh.db_android.R
+import co.deshbidesh.db_android.databinding.LayoutNoteListItemBinding
 import co.deshbidesh.db_android.db_note_feature.fragments.NoteListFragmentDirections
 import co.deshbidesh.db_android.db_note_feature.models.DBNote
-import kotlinx.android.synthetic.main.layout_note_list_item.view.*
+
 
 class DBNoteRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // inner note view holder class
-    class NoteViewHolder(view: View): RecyclerView.ViewHolder(view) {
-
-        private val titleTV: TextView = view.findViewById(R.id.note_list_item_title)
-
-        private val descTV: TextView = view.findViewById(R.id.note_list_item_description)
+    inner class NoteViewHolder(val binding: LayoutNoteListItemBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(note: DBNote) {
 
-            titleTV.text = note.title
+            binding.noteListItemTitle.text = note.title
 
-            descTV.text = note.description
+            binding.noteListItemDescription.text = note.description
         }
     }
 
@@ -32,10 +29,11 @@ class DBNoteRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        return NoteViewHolder (
+        val inflater = LayoutInflater.from(parent.context)
 
-            LayoutInflater.from(parent.context).inflate(R.layout.layout_note_list_item, parent, false)
-        )
+        val binding = LayoutNoteListItemBinding.inflate(inflater, parent, false)
+
+        return NoteViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -46,7 +44,7 @@ class DBNoteRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 holder.bind(noteItems[position])
 
-                holder.itemView.note_list_row_layout.setOnClickListener { view ->
+                holder.itemView.setOnClickListener { view ->
 
                     val action = NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment(noteItems[position])
 

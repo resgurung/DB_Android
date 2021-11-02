@@ -1,3 +1,4 @@
 include ':opencv450'
+include ':nativetemplates'
 include ':app'
 rootProject.name = "DB_Android"

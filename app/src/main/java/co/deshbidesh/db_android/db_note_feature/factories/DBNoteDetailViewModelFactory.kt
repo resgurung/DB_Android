@@ -2,8 +2,8 @@ package co.deshbidesh.db_android.db_note_feature.factories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import co.deshbidesh.db_android.db_database.repository.DBImageRepository
-import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
+import co.deshbidesh.db_android.db_note_feature.repository.DBImageRepository
+import co.deshbidesh.db_android.db_note_feature.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.models.DBNote
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteDetailViewModel
 import co.deshbidesh.db_android.shared.DBHelper
@@ -19,7 +19,7 @@ class DBNoteDetailViewModelFactory(
 
         if (modelClass.isAssignableFrom(DBNoteDetailViewModel::class.java)) {
 
-            return DBNoteDetailViewModel(noteRepository, imageRepository, utility, note) as T
+            return DBNoteDetailViewModel(noteRepository, imageRepository, note) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class")

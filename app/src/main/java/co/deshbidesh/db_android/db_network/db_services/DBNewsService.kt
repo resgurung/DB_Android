@@ -1,6 +1,6 @@
 package co.deshbidesh.db_android.db_network.db_services
 
-import co.deshbidesh.db_android.db_news_feature.news.models.DBNewsResponse
+import co.deshbidesh.db_android.db_news_feature.news.domain.models.DBNewsResponse
 import co.deshbidesh.db_android.shared.utility.DBNewsConstants
 import retrofit2.Response
 import retrofit2.http.GET

@@ -15,11 +15,12 @@ import androidx.navigation.fragment.navArgs
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentDbDocScanSaveBinding
 import co.deshbidesh.db_android.db_database.database.DBDatabase
-import co.deshbidesh.db_android.db_database.repository.DBImageRepository
-import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
+import co.deshbidesh.db_android.db_note_feature.repository.DBImageRepository
+import co.deshbidesh.db_android.db_note_feature.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_document_scanner_feature.model.DBDocScanSaveObject
 import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.SharedViewModel
 import co.deshbidesh.db_android.db_note_feature.factories.DBNoteAddViewModelFactory
+import co.deshbidesh.db_android.db_note_feature.note_utils.NotesImageUtils
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteAddViewModel
 import co.deshbidesh.db_android.shared.DBHelper
 import co.deshbidesh.db_android.shared.extensions.hasPermission
@@ -41,8 +42,6 @@ class DBDocScanSaveFragment : Fragment() {
     companion object{
 
         const val TAG = "DBDocScanSaveFragment"
-
-        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
 
         val writeExternalStoragePermissions = arrayOf(DBPermissionConstants.WriteExternalStorage)
     }
@@ -198,30 +197,30 @@ class DBDocScanSaveFragment : Fragment() {
         val file = fileUtils.makeFile(
                 dir,
                 SimpleDateFormat(
-                        FILENAME_FORMAT,
+                    NotesImageUtils.FILENAME_FORMAT,
                         Locale.UK
                 ).format(
                         System.currentTimeMillis()
                 ) + ".jpg"
         )
 
-        writeImagesToExternalStorage(file, bitmap)
+        NotesImageUtils.writeImageToExternalStorage(file, bitmap)
 
         fileUtils.refreshGallery(file)
 
         return file.path
     }
 
-    private fun writeImagesToExternalStorage(file: File, bitmap: Bitmap) {
-
-        val outputStream: OutputStream = FileOutputStream(file)
-
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream) // 90 is optimal
-
-        outputStream.flush()
-
-        outputStream.close()
-    }
+//    private fun writeImagesToExternalStorage(file: File, bitmap: Bitmap) {
+//
+//        val outputStream: OutputStream = FileOutputStream(file)
+//
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream) // 90 is optimal
+//
+//        outputStream.flush()
+//
+//        outputStream.close()
+//    }
 
     override fun onRequestPermissionsResult(
             requestCode: Int,

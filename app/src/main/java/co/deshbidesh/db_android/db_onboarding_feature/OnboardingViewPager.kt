@@ -1,27 +1,26 @@
 package co.deshbidesh.db_android.db_onboarding_feature
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import co.deshbidesh.db_android.databinding.FragmentOnboardingViewPagerBinding
 import co.deshbidesh.db_android.db_onboarding_feature.adapters.DBOnboardingViewPagerAdapter
 import co.deshbidesh.db_android.db_onboarding_feature.screens.FirstScreen
-import co.deshbidesh.db_android.db_onboarding_feature.screens.FourthScreen
 import co.deshbidesh.db_android.db_onboarding_feature.screens.SecondScreen
-import co.deshbidesh.db_android.db_onboarding_feature.screens.ThirdScreen
-import co.deshbidesh.db_android.R
-import kotlinx.android.synthetic.main.fragment_onboarding_view_pager.view.*
 
 
 class OnboardingViewPager : Fragment() {
+
+    private var binding: FragmentOnboardingViewPagerBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_onboarding_view_pager, container, false)
+
+        binding = FragmentOnboardingViewPagerBinding.inflate(inflater, container, false)
 
         val fragmentList = arrayListOf(
             FirstScreen(),
@@ -36,10 +35,13 @@ class OnboardingViewPager : Fragment() {
             lifecycle
         )
 
-        view.onboarding_view_pager.adapter = adapter
+        binding?.onboardingViewPager?.adapter = adapter
 
-        return view
+        return binding?.root
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
 }

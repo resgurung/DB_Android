@@ -12,9 +12,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import co.deshbidesh.db_android.R
+import co.deshbidesh.db_android.application.DBApplication
 import co.deshbidesh.db_android.databinding.FragmentNoteListBinding
 import co.deshbidesh.db_android.db_database.database.DBDatabase
-import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
+import co.deshbidesh.db_android.db_note_feature.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.adapters.DBNoteListPagingDataAdapter
 import co.deshbidesh.db_android.db_note_feature.factories.DBNoteListViewModelFactory
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteListViewModel
@@ -29,6 +30,10 @@ class NoteListFragment : DBBaseFragment(){
 
     override var bottomNavigationViewVisibility = View.GONE
 
+    private var _binding: FragmentNoteListBinding? = null
+
+    private val binding get() = _binding!!
+
     private lateinit var listViewModel: DBNoteListViewModel
 
     private lateinit var listViewModelFactory: DBNoteListViewModelFactory
@@ -40,39 +45,49 @@ class NoteListFragment : DBBaseFragment(){
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding = FragmentNoteListBinding.inflate(inflater, container, false)
-
-        context.let {
-
-            binding.noteListToolbar.setNavigationOnClickListener {
-
-                requireActivity().onBackPressed()
-            }
-
-            binding.noteListFab.setOnClickListener {
-
-                findNavController().navigate(R.id.action_noteListFragment_to_noteAddFragment)
-            }
-
-            binding.noteListRecycleview.addItemDecoration(EqualSpaceItemDecorator(10))
-
-            // Layout for portrait and landscape
-            binding.noteListRecycleview.layoutManager = GridLayoutManager(it, resources.getInteger(R.integer.grid_column_count))
-
-            adapter = DBNoteListPagingDataAdapter()
-
-            binding.noteListRecycleview.adapter = adapter
-
-            listViewModelFactory = DBNoteListViewModelFactory(DBNoteRepository(DBDatabase.getDatabase(it!!).noteDAO()))
-
-            listViewModel = ViewModelProvider(this, listViewModelFactory).get(DBNoteListViewModel::class.java)
-
-            adapter?.let {
-                subscribeUI(it)
-            }
-        }
+        _binding = FragmentNoteListBinding.inflate(inflater, container, false)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.noteListToolbar.setNavigationOnClickListener {
+
+            requireActivity().onBackPressed()
+        }
+
+        binding.noteListFab.setOnClickListener {
+
+            findNavController().navigate(R.id.action_noteListFragment_to_noteAddFragment)
+        }
+
+        binding.noteListRecycleview.addItemDecoration(EqualSpaceItemDecorator(10))
+
+        // Layout for portrait and landscape
+        binding.noteListRecycleview.layoutManager =
+            GridLayoutManager(requireContext(), resources.getInteger(R.integer.grid_column_count))
+
+        adapter = DBNoteListPagingDataAdapter()
+
+        binding.noteListRecycleview.adapter = adapter
+
+        listViewModelFactory =
+            DBNoteListViewModelFactory(DBNoteRepository( DBDatabase.getDatabase(requireContext()).noteDAO()))
+
+        listViewModel =
+            ViewModelProvider(this, listViewModelFactory).get(DBNoteListViewModel::class.java)
+
+        adapter?.let {
+            subscribeUI(it)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        _binding = null
     }
 
     private fun subscribeUI(adapter: DBNoteListPagingDataAdapter) {

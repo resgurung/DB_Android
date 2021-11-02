@@ -9,8 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".db_home_feature.HomeFragment">
-
+        tools:context=".db_home_feature.ui.HomeFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/home_fragment_toolbar"
@@ -20,66 +19,89 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="8dp">
-
-            <TextView
-                android:id="@+id/home_news_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:text="News"/>
-
-            <ImageButton
-                android:id="@+id/home_news_button"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_arrow_right_alt"/>
-        </LinearLayout>
-
-
-        <fragment
-            android:id="@+id/inner_home_fragment"
-            android:name="co.deshbidesh.db_android.db_home_feature.DBHomeInnerListFragment"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.64"/>
+            android:layout_weight="0.35"
+            android:layout_margin="4dp">
 
+            <fragment
+                android:id="@+id/inner_home_fragment"
+                android:name="co.deshbidesh.db_android.db_home_feature.ui.DBHomeInnerListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-        <!--
-        <com.denzcoskun.imageslider.ImageSlider
-            android:id="@+id/image_slider"
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/home_adView"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.64"
-            app:iss_auto_cycle="true"
-            app:iss_period="1000"
-            app:iss_delay="0"/>
-        -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_gravity="center"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/home_screen_banner_id"
+            android:layout_margin="4dp">
+        </com.google.android.gms.ads.AdView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.07"
             android:layout_margin="8dp">
 
-            <TextView
-                android:id="@+id/home_utility_text"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:text="Utility"/>
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_margin="4dp">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/home_news_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    android:text="News" />
+
+                <ImageButton
+                    android:id="@+id/home_news_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_arrow_forward_24"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.07"
+            android:layout_margin="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_margin="4dp">
+
+                <TextView
+                    android:id="@+id/home_utility_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    android:text="Utility"/>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.36"
+            android:layout_weight="0.30"
             android:orientation="horizontal">
 
 
@@ -90,7 +112,6 @@
                 android:layout_weight=".5"
                 android:layout_margin="8dp"
                 card_view:cardCornerRadius="8dp"
-                card_view:cardBackgroundColor="@android:color/holo_blue_dark"
                 card_view:cardElevation="5dp">
 
                 <LinearLayout
@@ -104,14 +125,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Notes"
-                        android:singleLine="true"
-                        android:textColor="@android:color/white"
-                        android:textSize="22sp"/>
+                        android:maxLines="1"
+                        android:layout_margin="4dp"
+                        android:textSize="20sp"/>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@android:color/black" />
+                        android:layout_height="2dp"
+                        android:background="@color/browser_actions_divider_color" />
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -132,7 +153,6 @@
                 android:layout_weight=".5"
                 android:layout_margin="8dp"
                 card_view:cardCornerRadius="8dp"
-                card_view:cardBackgroundColor="@android:color/holo_blue_dark"
                 card_view:cardElevation="5dp">
 
                 <LinearLayout
@@ -145,14 +165,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Doc Scanner"
-                        android:singleLine="true"
-                        android:textColor="@android:color/white"
-                        android:textSize="22sp"/>
+                        android:maxLines="1"
+                        android:layout_margin="4dp"
+                        android:textSize="20sp"/>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@android:color/black" />
+                        android:layout_height="2dp"
+                        android:background="@color/browser_actions_divider_color" />
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -168,4 +188,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </layout>

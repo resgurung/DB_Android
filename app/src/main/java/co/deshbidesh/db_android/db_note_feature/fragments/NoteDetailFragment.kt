@@ -22,8 +22,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentNoteDetailBinding
 import co.deshbidesh.db_android.db_database.database.DBDatabase
-import co.deshbidesh.db_android.db_database.repository.DBImageRepository
-import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
+import co.deshbidesh.db_android.db_note_feature.repository.DBImageRepository
+import co.deshbidesh.db_android.db_note_feature.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.adapters.DBNoteDetailImageRecyclerAdapter
 import co.deshbidesh.db_android.db_note_feature.factories.DBNoteDetailViewModelFactory
 import co.deshbidesh.db_android.db_note_feature.note_utils.NotesImageUtils
@@ -32,12 +32,16 @@ import co.deshbidesh.db_android.shared.DBBaseFragment
 import co.deshbidesh.db_android.shared.DBHelper
 import co.deshbidesh.db_android.shared.hideKeyboard
 import co.deshbidesh.db_android.shared.utility.DBPermissionConstants
+import co.deshbidesh.db_android.shared.utility.FileUtils
+import co.deshbidesh.db_android.shared.utility.FileUtilsImpl
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.io.File
 import java.io.IOException
 
 
-class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.InterfaceDeleteImage {
+class NoteDetailFragment :
+    DBBaseFragment(),
+    DBNoteDetailImageRecyclerAdapter.InterfaceDeleteImage {
 
     private var binding: FragmentNoteDetailBinding? = null
 
@@ -82,6 +86,7 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
     // Current imageUri of camera picture
     private lateinit var currentPhotoUri: Uri
 
+    private val fileUtils: FileUtils by lazy { FileUtilsImpl(requireActivity()) }
 
     // Static fields
     companion object{
@@ -151,13 +156,19 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
                     when(result){
 
                         (newImagesList.isNotEmpty() && cameraImgList.isNotEmpty() && imagesToBeDeleted.isNotEmpty()) -> {
-                            NotesImageUtils.prepareFilePath(newImagesList, destFilePath, bitMapFileMap, requireContext(),requireActivity())
+                            NotesImageUtils.prepareFilePath(
+                                newImagesList,
+                                destFilePath,
+                                bitMapFileMap,
+                                requireContext(),
+                                fileUtils)
 
                             destFilePath.addAll(cameraImgList)
 
                             noteDetailViewModel.addImage(destFilePath) { newImgIdList ->  // add new images to database
 
-                                noteDetailViewModel.getImageIdByPath(imagesToBeDeleted) { imageIds ->
+                                noteDetailViewModel
+                                    .getImageIdByPath(imagesToBeDeleted) { imageIds ->
 
                                     if (imageIds.isNotEmpty()) {
 
@@ -177,7 +188,13 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
                         }
 
                         (newImagesList.isNotEmpty() && imagesToBeDeleted.isNotEmpty()) -> {
-                            NotesImageUtils.prepareFilePath(newImagesList, destFilePath, bitMapFileMap, requireContext(),requireActivity())
+
+                            NotesImageUtils.prepareFilePath(
+                                newImagesList,
+                                destFilePath,
+                                bitMapFileMap,
+                                requireContext(),
+                                fileUtils)
 
                             noteDetailViewModel.addImage(destFilePath) { newImgIdList ->  // add new images to database
 
@@ -224,7 +241,13 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
                         }
 
                         (newImagesList.isNotEmpty() && cameraImgList.isNotEmpty()) -> {
-                            NotesImageUtils.prepareFilePath(newImagesList, destFilePath, bitMapFileMap, requireContext(),requireActivity())
+
+                            NotesImageUtils.prepareFilePath(
+                                newImagesList,
+                                destFilePath,
+                                bitMapFileMap,
+                                requireContext(),
+                                fileUtils)
 
                             destFilePath.addAll(cameraImgList)
 
@@ -236,7 +259,14 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
                         }
 
                         (newImagesList.isNotEmpty()) -> {
-                            NotesImageUtils.prepareFilePath(newImagesList, destFilePath, bitMapFileMap, requireContext(),requireActivity())
+
+                            NotesImageUtils.prepareFilePath(
+                                newImagesList,
+                                destFilePath,
+                                bitMapFileMap,
+                                requireContext(),
+                                fileUtils
+                            )
 
                             noteDetailViewModel.addImage(destFilePath) { newImgIdList ->  // add new images to database
 
@@ -326,7 +356,11 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
         }
 
         // Keep reference of imageIDs
-        noteDetailViewModel.getNote().imageIds?.let { noteDetailViewModel.updatedImageIds.addAll(it) }
+        noteDetailViewModel
+            .getNote()
+            .imageIds?.let {
+                noteDetailViewModel.updatedImageIds.addAll(it)
+            }
     }
 
 
@@ -341,6 +375,7 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
 
     // Update note upon save button click
     private fun upDateNote(){
+
         noteDetailViewModel.title = binding?.noteDetailTitle?.text.toString()
 
         noteDetailViewModel.content = binding?.noteDetailContent?.text.toString()
@@ -379,7 +414,6 @@ class NoteDetailFragment : DBBaseFragment(), DBNoteDetailImageRecyclerAdapter.In
             showToast(message)
         }
     }
-
 
     // Delete entire note upon delete icon click
     private fun showDeleteDialog(context: Context) {

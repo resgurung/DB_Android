@@ -7,25 +7,34 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import co.deshbidesh.db_android.R
-import kotlinx.android.synthetic.main.fragment_first_screen.view.*
+import co.deshbidesh.db_android.databinding.FragmentFirstScreenBinding
 
 
 class FirstScreen : Fragment() {
+
+    private var binding: FragmentFirstScreenBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_first_screen, container, false)
+        binding = FragmentFirstScreenBinding.inflate(inflater, container, false)
 
         val viewPager = activity?.findViewById<ViewPager2>(R.id.onboarding_view_pager)
 
-        view.first_scene_next_button.setOnClickListener {
+
+        binding?.firstSceneNextButton?.setOnClickListener {
 
             viewPager?.currentItem = 1
         }
 
-        return view
+        return binding?.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        binding = null
     }
 }

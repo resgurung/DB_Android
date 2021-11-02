@@ -5,21 +5,23 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import co.deshbidesh.db_android.db_database.dao.DBNoteDAO
+import co.deshbidesh.db_android.db_note_feature.dao.DBNoteDAO
 import co.deshbidesh.db_android.db_database.database.database_converter.DBDateConverter
 import co.deshbidesh.db_android.db_note_feature.models.DBNote
 import co.deshbidesh.db_android.R
-import co.deshbidesh.db_android.db_database.dao.DBImageDAO
+import co.deshbidesh.db_android.db_note_feature.dao.DBImageDAO
 import co.deshbidesh.db_android.db_database.database.database_converter.DBImageIdListConverter
-import co.deshbidesh.db_android.db_news_feature.news.storage.dao.DBArticleCategoryDAO
-import co.deshbidesh.db_android.db_news_feature.news.storage.dao.DBArticleDAO
-import co.deshbidesh.db_android.db_news_feature.news.storage.dao.DBCategoryDAO
-import co.deshbidesh.db_android.db_news_feature.news.storage.dao.DBRemoteKeyDAO
-import co.deshbidesh.db_android.db_news_feature.news.storage.entity.CategoryDB
-import co.deshbidesh.db_android.db_news_feature.news.storage.entity.NewsItemDB
-import co.deshbidesh.db_android.db_news_feature.news.storage.entity.NewsRemoteKey
-import co.deshbidesh.db_android.db_news_feature.news.storage.relations.ArticleCategoryJoin
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.dao.DBArticleCategoryDAO
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.dao.DBArticleDAO
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.dao.DBCategoryDAO
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.dao.DBRemoteKeyDAO
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.entity.CategoryDB
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.entity.NewsItemDB
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.entity.NewsRemoteKey
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.relations.ArticleCategoryJoin
 import co.deshbidesh.db_android.db_note_feature.models.DBImage
+import co.deshbidesh.db_android.shared.utility.DBPreferenceHelper
+
 
 @Database(entities = [
                         DBNote::class,
@@ -63,7 +65,6 @@ abstract class DBDatabase: RoomDatabase() {
                 return tempINSTANCE
             }
 
-
             synchronized(this) {
 
                 val instance = Room.databaseBuilder(
@@ -77,5 +78,13 @@ abstract class DBDatabase: RoomDatabase() {
                 return instance
             }
         }
+    }
+
+    fun lastUpdated(): Long {
+        return DBPreferenceHelper.getStoredLong(R.string.Database_update.toString(), -1)//System.currentTimeMillis()
+    }
+
+    fun writeUpdateTime() {
+        DBPreferenceHelper.storeLong(R.string.Database_update.toString(), System.currentTimeMillis())
     }
 }

@@ -1,10 +1,9 @@
 package co.deshbidesh.db_android.db_note_feature.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.deshbidesh.db_android.db_database.repository.DBImageRepository
-import co.deshbidesh.db_android.db_database.repository.DBNoteRepository
+import co.deshbidesh.db_android.db_note_feature.repository.DBImageRepository
+import co.deshbidesh.db_android.db_note_feature.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.models.DBImage
 import co.deshbidesh.db_android.db_note_feature.models.DBNote
 import co.deshbidesh.db_android.db_note_feature.models.DBNoteLanguage
@@ -15,10 +14,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class DBNoteAddViewModel (
+class DBNoteAddViewModel(
     private val noteRepository: DBNoteRepository,
-    private val imageRepository: DBImageRepository,
-    private val utility: DBHelper
+    private val imageRepository: DBImageRepository
 ): ViewModel() {
 
     lateinit var title: String
@@ -30,7 +28,7 @@ class DBNoteAddViewModel (
         val note = DBNote(
             0,
             title,
-            utility.generateDescriptionFromContent(content),
+            DBHelper.generateDescriptionFromContent(content),
             content,
             null,
             Date(),

@@ -143,7 +143,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textAllCaps="false"
-                        android:drawableTop="@drawable/ic_arrow_right_alt"
+                        android:drawableTop="@drawable/ic_baseline_arrow_right_alt_32"
                         android:textColor="@android:color/white"
                         android:text="Next"
                         style="?attr/borderlessButtonStyle"/>

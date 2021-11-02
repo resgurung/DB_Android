@@ -8,14 +8,15 @@ import androidx.room.withTransaction
 import co.deshbidesh.db_android.db_database.database.DBDatabase
 import co.deshbidesh.db_android.db_network.db_services.DBNewsQuery
 import co.deshbidesh.db_android.db_network.db_services.DBNewsService
-import co.deshbidesh.db_android.db_news_feature.news.models.DBNewsResponse
-import co.deshbidesh.db_android.db_news_feature.news.storage.entity.CategoryDB
-import co.deshbidesh.db_android.db_news_feature.news.storage.entity.NewsItemDB
-import co.deshbidesh.db_android.db_news_feature.news.storage.entity.NewsRemoteKey
-import co.deshbidesh.db_android.db_news_feature.news.storage.relations.ArticleCategoryJoin
-import co.deshbidesh.db_android.db_news_feature.news.storage.relations.ArticleWithCategories
+import co.deshbidesh.db_android.db_news_feature.news.domain.models.DBNewsResponse
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.entity.CategoryDB
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.entity.NewsItemDB
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.entity.NewsRemoteKey
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.relations.ArticleCategoryJoin
+import co.deshbidesh.db_android.db_news_feature.news.domain.storage.relations.ArticleWithCategories
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 @ExperimentalPagingApi
 class DBNewsArticleMediator(
@@ -25,6 +26,22 @@ class DBNewsArticleMediator(
     private val initialPage:    Int = 1
 ): RemoteMediator<Int, ArticleWithCategories>() {
 
+    override suspend fun initialize(): InitializeAction {
+        val cacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
+        return if (System.currentTimeMillis() - database.lastUpdated() >= cacheTimeout)
+        {
+            // Cached data is up-to-date, so there is no need to re-fetch
+            // from the network.
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            // Need to refresh cached data from network; returning
+            // LAUNCH_INITIAL_REFRESH here will also block RemoteMediator's
+            // APPEND and PREPEND from running until REFRESH succeeds.
+                database.writeUpdateTime()
+
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
+    }
 
     override suspend fun load(
         loadType: LoadType,
@@ -105,7 +122,11 @@ class DBNewsArticleMediator(
         return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { item ->
                 // Get the remote keys of the last item retrieved
-                database.remoteKeyDAO().getRemoteKey(item.article.n_id)
+                database.withTransaction {
+
+                    database.remoteKeyDAO().getRemoteKey(item.article.n_id)
+                }
+
             }
     }
 
@@ -115,7 +136,11 @@ class DBNewsArticleMediator(
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
             ?.let { item ->
                 // Get the remote keys of the first items retrieved
-                database.remoteKeyDAO().getRemoteKey(item.article.n_id)
+                database.withTransaction {
+
+                    database.remoteKeyDAO().getRemoteKey(item.article.n_id)
+                }
+
             }
     }
 
@@ -126,14 +151,17 @@ class DBNewsArticleMediator(
         // Get the item closest to the anchor position
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.let { item ->
-                database.remoteKeyDAO().getRemoteKey(item.article.n_id)
+                database.withTransaction {
+                    database.remoteKeyDAO().getRemoteKey(item.article.n_id)
+                }
+
             }
         }
     }
 
     companion object {
 
-        suspend fun insertToDB(
+        fun insertToDB(
             db: DBDatabase,
             newsResponse: DBNewsResponse,
             prev: Int?,

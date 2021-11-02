@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 
 
-
 object DBPreferenceHelper {
 
     private const val NAME = "DeshBidesh"
@@ -85,5 +84,4 @@ object DBPreferenceHelper {
     }
 
     fun getStoredString(key: String, defValue: String): String? = preferences.getString(key, defValue)
-
 }

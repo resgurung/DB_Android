@@ -6,30 +6,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
 import co.deshbidesh.db_android.R
+import co.deshbidesh.db_android.databinding.FragmentSecondScreenBinding
 import co.deshbidesh.db_android.main.MainActivity
-import kotlinx.android.synthetic.main.fragment_second_screen.view.*
 
 
 class SecondScreen : Fragment() {
+
+    private var binding: FragmentSecondScreenBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_second_screen, container, false)
+        binding = FragmentSecondScreenBinding.inflate(inflater, container, false)
 
-        view.second_scene_next_button.setOnClickListener {
+        binding?.secondSceneNextButton?.setOnClickListener {
 
             activity?.let{
+
                 val intent = Intent (it, MainActivity::class.java)
+
                 it.startActivity(intent)
             }
         }
 
-        return view
+        return binding?.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        binding = null
     }
 }

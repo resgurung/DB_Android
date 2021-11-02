@@ -2,6 +2,8 @@
     <string name="app_name">DeshBidesh</string>
     <string name="DatabaseName">DeshBidesh_DB</string>
 
+    <string name="Database_update">DatabaseUpdateTime</string>
+
     <string name="save_button">Save</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -35,7 +37,11 @@
     <string name="search_deshbidesh_news">Search</string>
     <string name="retry">retry</string>
     <string name="no_results">no_results</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="admob_id">ca-app-pub-5045003235700565~9090083114</string>
+    <string name="home_screen_banner_id">ca-app-pub-5045003235700565/4713862018</string>
+    <string name="news_detail_screen_banner_id">ca-app-pub-5045003235700565/6442710802</string>
+    <string name="news_list_screen_native_id">ca-app-pub-5045003235700565/7985719151</string>
+    <string name="news_list_screen_banner_id">ca-app-pub-5045003235700565/4525620754</string>
 
 </resources>

@@ -10,9 +10,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object DBRetrofitInstance {
 
-    private val client = OkHttpClient.Builder().apply {
-        addInterceptor(DBInterceptor())
-    }.build()
+    private val client = OkHttpClient.Builder()
+        //.apply { addInterceptor(DBInterceptor()) }
+        .build()
 
     // Singleton
     private val dbRetrofit by lazy {
