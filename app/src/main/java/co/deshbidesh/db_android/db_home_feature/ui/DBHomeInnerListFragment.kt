@@ -49,7 +49,7 @@ class DBHomeInnerListFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeViewModel.allFeaturedArticles.observe(viewLifecycleOwner, Observer { articleWithCategory ->
+        homeViewModel.allFeaturedArticles.observe(viewLifecycleOwner, { articleWithCategory ->
 
             val list = articleWithCategory.map {
 

@@ -8,18 +8,23 @@ import co.deshbidesh.db_android.db_note_feature.models.DBNote
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteDetailViewModel
 import co.deshbidesh.db_android.shared.DBHelper
 
-class DBNoteDetailViewModelFactory(
-    private val noteRepository: DBNoteRepository,
-    private val imageRepository: DBImageRepository,
-    private val utility: DBHelper,
-    private val note: DBNote
-): ViewModelProvider.Factory {
+object DBNoteDetailViewModelFactory: ViewModelProvider.Factory {
+
+    private lateinit var noteRepository: DBNoteRepository
+
+    private lateinit var imageRepository: DBImageRepository
+
+    fun inject(noteRepository: DBNoteRepository, imageRepository: DBImageRepository) {
+        DBNoteDetailViewModelFactory.noteRepository = noteRepository
+        DBNoteDetailViewModelFactory.imageRepository = imageRepository
+    }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
         if (modelClass.isAssignableFrom(DBNoteDetailViewModel::class.java)) {
 
-            return DBNoteDetailViewModel(noteRepository, imageRepository, note) as T
+            @Suppress("UNCHECKED_CAST")
+            return DBNoteDetailViewModel(noteRepository, imageRepository) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class")

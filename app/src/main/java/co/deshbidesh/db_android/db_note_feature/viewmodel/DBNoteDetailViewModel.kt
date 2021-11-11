@@ -1,191 +1,156 @@
 package co.deshbidesh.db_android.db_note_feature.viewmodel
 
+import android.graphics.Bitmap
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.deshbidesh.db_android.db_note_feature.repository.DBImageRepository
-import co.deshbidesh.db_android.db_note_feature.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.models.DBImage
 import co.deshbidesh.db_android.db_note_feature.models.DBNote
+import co.deshbidesh.db_android.db_note_feature.models.DBNoteLanguage
+import co.deshbidesh.db_android.db_note_feature.models.DBNoteUIImage
+import co.deshbidesh.db_android.db_note_feature.repository.DBImageRepository
+import co.deshbidesh.db_android.db_note_feature.repository.DBNoteRepository
 import co.deshbidesh.db_android.shared.DBHelper
+import co.deshbidesh.db_android.shared.utility.FileUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
+import java.util.*
+
 
 class DBNoteDetailViewModel(
     private val noteRepository: DBNoteRepository,
-    private val imageRepository: DBImageRepository,
-    private val note: DBNote
+    private val imageRepository: DBImageRepository
 ): ViewModel() {
 
-    lateinit var title: String
+    lateinit var fileUtils: FileUtils
 
-    lateinit var content: String
+    var currentPair: Pair<Bitmap?, File?>? = null
 
-    var updatedImageIds: ArrayList<String> = arrayListOf()
+    private var _images: MutableLiveData<List<DBImage>> = MutableLiveData()
 
+    val images: LiveData<List<DBImage>>
+        get() = _images
 
-    fun getNote(): DBNote {
-
-        return note
-    }
-
-    fun getSingleImageByImageId(imageId: Int): DBImage?{
-        var dbImage: DBImage? = null
-        viewModelScope.launch(Dispatchers.IO) {
-
-            dbImage = imageRepository.getSingleImageByImageId(imageId)
-        }
-        return dbImage
-    }
-
-
-    fun getImageListByNoteId(listener: (imgList: List<DBImage>) -> Unit) {
-
-        val noteId: Int = note.id
+    fun getNote(id: Long, listener: (DBNote) -> Unit) {
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            val imageList = imageRepository.getImageListByNoteId(noteId)
+            listener(noteRepository.singleNote(id))
+        }
+    }
 
-            listener(imageList)
+    fun getImagesFromDatabase(id: Int) {
+        viewModelScope.launch (Dispatchers.IO){
+            val dbImages = imageRepository.getImageListByNoteId(id)
+            _images.postValue(dbImages)
         }
     }
 
 
-    fun deleteNote(listener: (note: DBNote) -> Unit) {
+    fun addNote(
+        title: String,
+        content: String,
+        listener: (Long?) -> Unit) {
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            noteRepository.delete(note)
+            val note = DBNote(
+                0,
+                title,
+                DBHelper.generateDescriptionFromContent(content),
+                content,
+                null,
+                Date(),
+                Date(),
+                DBNoteLanguage.ENGLISH
+            )
 
-            listener(note)
+            val noteId = noteRepository.addNote(note)
+
+            listener(noteId)
         }
     }
 
-    fun getImageIdListByNoteId(listener: (idList: String?) -> Unit){
+    fun updateNote(note: DBNote, listener: (Boolean) -> Unit) {
 
-        var imageIdList: String?
-
-        viewModelScope.launch(Dispatchers.IO) {
-             imageIdList = noteRepository.getImageIdListByNoteId(note.id)
-
-             listener(imageIdList)
-        }
-    }
-
-
-    fun getImageIdByPath(imagePathList: ArrayList<String> , listener: (ids: ArrayList<String> ) -> Unit){
-
-        viewModelScope.launch(Dispatchers.IO) {
-
-            val imgIds: ArrayList<String> = arrayListOf()
-
-            for(path in imagePathList){
-
-                val id = imageRepository.getImageIdByPath(path)
-
-                imgIds.add(id.toString())
-            }
-
-            listener(imgIds)
-        }
-    }
-
-
-    fun deleteSingleImageById(imgIds: ArrayList<String>, listener: () -> Unit){
-
-        viewModelScope.launch(Dispatchers.IO) {
-
-            for (id in imgIds){
-
-                imageRepository.deleteSingleImageById(id.toInt())
-
-            }
-
-            listener()
-        }
-    }
-
-    fun deleteImages(listener: () -> Unit){
-
-        if(note.imageIds != null){
-
-            val noteId: Int = note.id
-
-            viewModelScope.launch(Dispatchers.IO) {
-
-                imageRepository.deleteImagesByNoteId(noteId)
-
-                listener()
-            }
-        }
-    }
-
-    fun updateNote(listener: () -> Unit) {
-
-        note.title = title
-
-        note.content = content
-
-        note.description = DBHelper.generateDescriptionFromContent(content)
-
-        //println("imgUpdated2 $updatedImageIds")
-
-        if(updatedImageIds.isNotEmpty()){
-
-            note.imageIds = updatedImageIds
-        }else{
-            note.imageIds = null
-        }
+        note.description = DBHelper.generateDescriptionFromContent(note.content)
 
         viewModelScope.launch(Dispatchers.IO) {
 
             noteRepository.updateNote(note)
+
+            listener(true)
+        }
+    }
+
+    fun addImage(noteId: Int, path: String, listener: () -> Unit) {
+
+        if (noteId != 0) {
+
+            viewModelScope.launch (Dispatchers.IO){
+
+                val dbImage = DBImage(
+                    0,
+                    path,
+                    noteId
+                )
+
+                imageRepository.addImage(dbImage)
+
+                listener()
+            }
+        } else {
             listener()
         }
+
     }
 
-    fun addImage(paths: List<String>, listener: (list: ArrayList<String>) -> Unit) {
+    fun deleteImage(imgObj: DBNoteUIImage?, listener: (Boolean) -> Unit){
 
-        var imageIdList: ArrayList<String> = arrayListOf()
+        imgObj?.let {
 
-        viewModelScope.launch (Dispatchers.IO){
+            viewModelScope.launch(Dispatchers.IO) {
 
-            if (paths.isNotEmpty()) {
-
-                for (path in paths) {
-
-                    val dbImage = DBImage(
-                        0,
-                        path,
-                        note.id
-                    )
-
-                    val id = imageRepository.addImage(dbImage)
-
-                    imageIdList.add(id.toString())
-                }
+                // remove the file object from the gallery
+                fileUtils.deleteFile(it.imagePath)
+                // remove the file row from the db
+                imageRepository.deleteSingleImageById(it.id)
+                // all went goo return true
+                listener(true)
             }
-
-            listener(imageIdList)
-        }
-    }
-
-
-
-    fun isSame(): Boolean {
-
-        return this.note.content == content && this.note.title == title
-    }
-
-
-    fun isTextEmpty(): Boolean {
-
-        if (title.isEmpty() || content.isEmpty()) {
-
-            return true
+        } ?: run {
+            listener(false)
         }
 
-        return false
+    }
+
+    fun clearCurrentPair() {
+        // second is file on the cache dir, better to delete it by ourself rather
+        // wait for system to clear
+        if (currentPair?.second?.exists() == true) {
+            currentPair?.second?.delete()
+        }
+        // nullify currentPair
+        currentPair = null // this is bit map
+    }
+
+    fun deleteNote(note: DBNote, listener: (Boolean) -> Unit) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+
+            // retrieve all images reference
+            val imageList = imageRepository.getImageListByNoteId(note.id)
+            // remove all image from gallery
+            imageList.map { fileUtils.deleteFile(it.imgPath) }
+            // delete all images reference from database
+            imageRepository.deleteImagesByNoteId(note.id)
+            // delete note
+            noteRepository.delete(note)
+
+            listener(true)
+        }
     }
 
 }

@@ -31,8 +31,8 @@ class DBNoteAddImageRecyclerAdapter: RecyclerView.Adapter<DBNoteAddImageRecycler
         holder.bind(Uri.parse(imagePathList[position]))
 
         holder.itemView.setOnClickListener {
-            val action = NoteAddFragmentDirections.actionNoteAddFragmentToFullscreenImageFragment(imagePathList[position])
-            it.findNavController().navigate(action)
+//            val action = NoteAddFragmentDirections.actionNoteAddFragmentToFullscreenImageFragment(imagePathList[position])
+//            it.findNavController().navigate(action)
         }
     }
 

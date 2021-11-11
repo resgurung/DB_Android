@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentDbDocScanSelectionBinding
 import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.SharedViewModel
+import co.deshbidesh.db_android.shared.DBHelper
 import co.deshbidesh.db_android.shared.extensions.hasPermission
 import co.deshbidesh.db_android.shared.extensions.showAlert
 import co.deshbidesh.db_android.shared.utility.DBPermissionConstants
@@ -30,9 +31,6 @@ class DBDocScanSelectionFragment : Fragment() {
 
         const val TAG = "DScanSelectionFragment"
 
-        val cameraPermissions = arrayOf(DBPermissionConstants.CameraPermission)
-
-        val externalStoragePermissions = arrayOf(DBPermissionConstants.ReadExternalStorage)
     }
 
     private val loader = object: BaseLoaderCallback(context) {
@@ -237,14 +235,14 @@ class DBDocScanSelectionFragment : Fragment() {
 
     private fun askExternalStorage() {
 
-        if (activity?.hasPermission(*externalStoragePermissions) == true) {
+        if (activity?.hasPermission(*DBHelper.externalStoragePermissions) == true) {
 
             openMediaGallery(DBPermissionConstants.readExternalStoragePermissionCode)
 
         } else {
 
             requestPermissions(
-                    externalStoragePermissions,
+                DBHelper.externalStoragePermissions,
                     DBPermissionConstants.readExternalStoragePermissionCode
             )
         }
@@ -252,14 +250,14 @@ class DBDocScanSelectionFragment : Fragment() {
 
     private fun askCameraPermission() {
 
-        if (activity?.hasPermission(*cameraPermissions) == true) {
+        if (activity?.hasPermission(*DBHelper.cameraPermissions) == true) {
 
             navigateTo(SharedViewModel.Route.CAMERA_FRAGMENT)
 
         } else {
 
             requestPermissions(
-                    cameraPermissions,
+                DBHelper.cameraPermissions,
                     DBPermissionConstants.cameraPermissionCode
             )
         }

@@ -27,10 +27,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="My Note"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
-                android:id="@+id/note_detail_toolbar_title" />
+                android:id="@+id/note_detail_toolbar_title"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -60,7 +62,7 @@
                     android:inputType="textPersonName"
                     android:padding="10dp"
                     android:textColor="#000"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <View
@@ -79,7 +81,7 @@
                     android:inputType="textMultiLine"
                     android:padding="14dp"
                     android:textColor="#000"
-                    android:textSize="20sp" />
+                    android:textSize="14sp" />
 
                 <View
                     android:layout_width="match_parent"

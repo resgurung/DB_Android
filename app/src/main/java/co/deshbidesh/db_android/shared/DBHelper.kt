@@ -5,6 +5,7 @@ import android.webkit.WebView
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import co.deshbidesh.db_android.shared.extensions.isDarkThemeOn
+import co.deshbidesh.db_android.shared.utility.DBPermissionConstants
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import java.time.OffsetDateTime
@@ -13,6 +14,11 @@ import java.time.format.DateTimeFormatter
 class DBHelper {
 
     companion object {
+
+        val cameraPermissions = arrayOf(DBPermissionConstants.CameraPermission)
+
+        val externalStoragePermissions = arrayOf(DBPermissionConstants.ReadExternalStorage)
+
 
         // helper fun to generate description from content
         fun generateDescriptionFromContent(content: String): String {

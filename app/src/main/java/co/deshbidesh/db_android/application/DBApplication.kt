@@ -6,6 +6,9 @@ import co.deshbidesh.db_android.db_home_feature.domain.DBHomeRepository
 import co.deshbidesh.db_android.db_home_feature.viewmodels.HomeViewModelFactory
 import co.deshbidesh.db_android.db_network.domain.DBNewsRepositoryImp
 import co.deshbidesh.db_android.db_news_feature.news.presentation.viewmodel.DBNewsArticleViewModelFactory
+import co.deshbidesh.db_android.db_note_feature.factories.DBNoteDetailViewModelFactory
+import co.deshbidesh.db_android.db_note_feature.repository.DBImageRepository
+import co.deshbidesh.db_android.db_note_feature.repository.DBNoteRepository
 import co.deshbidesh.db_android.shared.utility.DBPreferenceHelper
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
@@ -44,5 +47,10 @@ class DBApplication: Application() {
 
         // news view model factory injection
         DBNewsArticleViewModelFactory.inject(DBNewsRepositoryImp(database))
+
+        DBNoteDetailViewModelFactory.inject(
+            DBNoteRepository(database.noteDAO()),
+            DBImageRepository(database.imageDAO())
+        )
     }
 }

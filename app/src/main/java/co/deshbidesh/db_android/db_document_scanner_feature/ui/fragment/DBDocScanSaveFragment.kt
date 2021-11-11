@@ -9,32 +9,23 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentDbDocScanSaveBinding
-import co.deshbidesh.db_android.db_database.database.DBDatabase
-import co.deshbidesh.db_android.db_note_feature.repository.DBImageRepository
-import co.deshbidesh.db_android.db_note_feature.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_document_scanner_feature.model.DBDocScanSaveObject
 import co.deshbidesh.db_android.db_document_scanner_feature.viewmodel.SharedViewModel
-import co.deshbidesh.db_android.db_note_feature.factories.DBNoteAddViewModelFactory
+import co.deshbidesh.db_android.db_note_feature.factories.DBNoteDetailViewModelFactory
 import co.deshbidesh.db_android.db_note_feature.note_utils.NotesImageUtils
-import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteAddViewModel
-import co.deshbidesh.db_android.shared.DBHelper
+import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteDetailViewModel
 import co.deshbidesh.db_android.shared.extensions.hasPermission
 import co.deshbidesh.db_android.shared.extensions.showAlert
 import co.deshbidesh.db_android.shared.hideKeyboard
 import co.deshbidesh.db_android.shared.utility.DBPermissionConstants
 import co.deshbidesh.db_android.shared.utility.FileUtils
 import co.deshbidesh.db_android.shared.utility.FileUtilsImpl
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class DBDocScanSaveFragment : Fragment() {
@@ -50,17 +41,15 @@ class DBDocScanSaveFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    val args: DBDocScanSaveFragmentArgs by navArgs()
-
-    private lateinit var addViewModel: DBNoteAddViewModel
-
-    private lateinit var addViewModelFactory: DBNoteAddViewModelFactory
+    private val args: DBDocScanSaveFragmentArgs by navArgs()
 
     private lateinit var saveImageObject: DBDocScanSaveObject
 
     private val fileUtils: FileUtils by lazy { FileUtilsImpl(requireActivity()) }
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
+
+    private val sharedNoteDetailViewModel: DBNoteDetailViewModel by activityViewModels { DBNoteDetailViewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,20 +77,6 @@ class DBDocScanSaveFragment : Fragment() {
             }
         }
 
-        addViewModelFactory = DBNoteAddViewModelFactory(
-                DBNoteRepository(
-                        DBDatabase.getDatabase(requireContext()).noteDAO()
-                ),
-                DBImageRepository(
-                        DBDatabase.getDatabase(requireContext()).imageDAO()
-                ),
-                DBHelper())
-
-        addViewModel = ViewModelProvider(
-                this,
-                addViewModelFactory).get(DBNoteAddViewModel::class.java
-        )
-
         args.dbSaveObject?.let {
 
             saveImageObject = it
@@ -125,60 +100,36 @@ class DBDocScanSaveFragment : Fragment() {
 
     private fun saveNote(){
 
-        addViewModel.title = binding.dbDocScanSaveFragmentEditText.text.toString()
+        val title = binding.dbDocScanSaveFragmentEditText.text.toString()
 
-        addViewModel.content = binding.dbDocScanSaveFragmentMultiLineEditText.text.toString()
+        val content = binding.dbDocScanSaveFragmentMultiLineEditText.text.toString()
 
-        if (!addViewModel.isTextEmpty()) {
+        if (title.isNotBlank()) {
 
-            addViewModel.addNote { id -> // thread 1, addNote returns NoteId
+            sharedNoteDetailViewModel.addNote(title, content) { optionalId ->
 
-                if (id != null) {
+                optionalId?.let { id ->
 
-                    val path = saveImageToFile(saveImageObject.bitmap)
+                    sharedNoteDetailViewModel.getNote(id) { note ->
 
-                    var arraylist = ArrayList<String>()
+                        val path = saveImageToFile(saveImageObject.bitmap)
 
-                    arraylist.add(path)
+                        sharedNoteDetailViewModel.addImage(note.id, path) {
 
-                    addViewModel.addImage(arraylist, id) { imageList -> //thread 2, addImages returns imageIdList
+                            activity?.let{
 
-                        if (imageList.isNotEmpty()) {
-
-                            addViewModel.getNote(id.toLong()) { currNote -> // thread 3, getNote again, set the imageIds
-
-                                currNote.imageIds = imageList
-
-                                addViewModel.updateNote(currNote) { // thread 4, finally update Note with imageIds
-
-                                    showToast("Successful, note saved.")
-
-                                    activity?.let{
-
-                                        it.finish()
-                                    }
-                                }
+                                it.finish()
                             }
-
-                        } else {
-
-                            showToast("Image List is empty")
                         }
                     }
-
-                } else {
-
-                    showToast("Note was not saved. Please try again")
                 }
             }
 
             hideKeyboard()
 
         } else {
-
-            showToast("Fields cannot be empty")
+            showToast("Please enter title.")
         }
-
     }
 
     private fun showToast(message: String) {
@@ -204,23 +155,13 @@ class DBDocScanSaveFragment : Fragment() {
                 ) + ".jpg"
         )
 
-        NotesImageUtils.writeImageToExternalStorage(file, bitmap)
+        fileUtils.writeImageToExternalStorage(file, bitmap)
 
         fileUtils.refreshGallery(file)
 
         return file.path
     }
 
-//    private fun writeImagesToExternalStorage(file: File, bitmap: Bitmap) {
-//
-//        val outputStream: OutputStream = FileOutputStream(file)
-//
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream) // 90 is optimal
-//
-//        outputStream.flush()
-//
-//        outputStream.close()
-//    }
 
     override fun onRequestPermissionsResult(
             requestCode: Int,

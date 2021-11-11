@@ -1,23 +1,19 @@
 package co.deshbidesh.db_android.db_note_feature.fragments
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import co.deshbidesh.db_android.R
-import co.deshbidesh.db_android.application.DBApplication
 import co.deshbidesh.db_android.databinding.FragmentNoteListBinding
 import co.deshbidesh.db_android.db_database.database.DBDatabase
-import co.deshbidesh.db_android.db_note_feature.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.adapters.DBNoteListPagingDataAdapter
 import co.deshbidesh.db_android.db_note_feature.factories.DBNoteListViewModelFactory
+import co.deshbidesh.db_android.db_note_feature.repository.DBNoteRepository
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteListViewModel
 import co.deshbidesh.db_android.shared.DBBaseFragment
 import co.deshbidesh.db_android.shared.decorators.EqualSpaceItemDecorator

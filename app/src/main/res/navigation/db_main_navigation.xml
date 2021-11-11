@@ -65,8 +65,8 @@
             android:name="noteDetail"
             app:argType="co.deshbidesh.db_android.db_note_feature.models.DBNote" />
         <action
-            android:id="@+id/action_noteDetailFragment_to_fullscreenImageFragment"
-            app:destination="@id/fullscreenImageFragment" />
+            android:id="@+id/action_noteDetailFragment_to_DBNoteImageFragment"
+            app:destination="@id/DBNoteImageFragment" />
     </fragment>
 
     <fragment
@@ -80,19 +80,14 @@
             app:popUpTo="@id/noteListFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_noteAddFragment_to_fullscreenImageFragment"
-            app:destination="@id/fullscreenImageFragment" />
+            android:id="@+id/action_noteAddFragment_to_noteDetailFragment"
+            app:destination="@id/noteDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/noteListFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
-    <fragment
-        android:id="@+id/fullscreenImageFragment"
-        android:name="co.deshbidesh.db_android.db_note_feature.fragments.FullscreenImageFragment"
-        android:label="fragment_fullscreen_image"
-        tools:layout="@layout/fragment_fullscreen_image" >
-        <argument
-            android:name="imagePath"
-            app:argType="string" />
-    </fragment>
     <fragment
         android:id="@+id/disclaimerViewFragment"
         android:name="co.deshbidesh.db_android.db_settings_feature.ui.DisclaimerViewFragment"
@@ -151,6 +146,22 @@
         <argument
             android:name="news"
             app:argType="co.deshbidesh.db_android.db_news_feature.news.domain.models.DBNewsResponseItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/DBNoteImageFragment"
+        android:name="co.deshbidesh.db_android.db_note_feature.fragments.DBNoteImageFragment"
+        android:label="fragment_db_note_image"
+        tools:layout="@layout/fragment_db_note_image" >
+        <action
+            android:id="@+id/action_DBNoteImageFragment_to_noteDetailFragment"
+            app:destination="@id/noteDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="settings"
+            app:argType="co.deshbidesh.db_android.db_note_feature.models.DBNoteUIImage"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
 </navigation>

@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
-import co.deshbidesh.db_android.db_document_scanner_feature.ui.fragment.DBDocScanSaveFragment
 import co.deshbidesh.db_android.shared.utility.FileUtils
 import java.io.File
 import java.io.FileOutputStream
@@ -17,11 +16,101 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
+
 class NotesImageUtils {
 
     companion object{
 
         const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
+
+        const val IMAGE_QUALITY = 90
+
+        const val EXTENSION = ".jpg"
+
+        ///////////////////////////
+        @JvmStatic
+        fun preparePathForImage(
+            path: String,
+            fileUtils: FileUtils,
+            context: Context
+        ): Pair<Bitmap?, File?> {
+
+            val imgUri: Uri = Uri.parse(path)
+
+            var inStream: InputStream? = context.contentResolver.openInputStream(imgUri)
+
+            val selectedImg: Bitmap = BitmapFactory.decodeStream(inStream)
+
+            val dir = fileUtils.createDirectoryIfNotExist()
+
+            val file = fileUtils.makeFile(
+                dir,
+                SimpleDateFormat(
+                    NotesImageUtils.FILENAME_FORMAT,
+                    Locale.UK
+                ).format(
+                    System.currentTimeMillis()
+                ) + EXTENSION
+            )
+
+            inStream?.close() // idempotent
+
+            return Pair(selectedImg, file)
+        }
+
+        @JvmStatic
+        fun preparePathForTempImage(
+            uri: Uri,
+            context: Context
+        ): Pair<Bitmap?, File?> {
+
+            val inStream: InputStream? = context.contentResolver.openInputStream(uri)
+
+            val selectedImg: Bitmap = BitmapFactory.decodeStream(inStream)
+
+            val file = createTempFiles(context)
+
+            inStream?.close() // idempotent
+
+            return Pair(selectedImg, file)
+        }
+
+        @JvmStatic
+        fun writeImageToExternalStorage(file: File, bitmap: Bitmap) {
+
+            val outputStream: OutputStream = FileOutputStream(file)
+
+            bitmap.compress(
+                Bitmap.CompressFormat.JPEG,
+                IMAGE_QUALITY,
+                outputStream) // 90 is optimal
+
+            outputStream.flush()
+
+            outputStream.close()
+        }
+
+        /*
+        Creates a temp files in the internal cache.
+        Although android may clear the cache when it need the space,
+        for good house keeping remove the cache after we have finish with it.
+         */
+        @JvmStatic
+        fun createTempFiles(context: Context): File {
+
+            val outputDir = context.cacheDir // context being the Activity pointer
+
+            val format = SimpleDateFormat(
+                FILENAME_FORMAT,
+                Locale.UK
+            ).format(
+                System.currentTimeMillis()
+            )
+
+            return File.createTempFile(format, EXTENSION, outputDir)
+        }
+
+        ////////////////////////////////////
 
         @JvmStatic
         fun prepareFilePath(imageList: ArrayList<String>,
@@ -90,20 +179,6 @@ class NotesImageUtils {
                 outputStream = null
         }
 
-        @JvmStatic
-        fun writeImageToExternalStorage(file: File, bitmap: Bitmap) {
-
-            val outputStream: OutputStream = FileOutputStream(file)
-
-            bitmap.compress(
-                Bitmap.CompressFormat.JPEG,
-                90,
-                outputStream) // 90 is optimal
-
-            outputStream.flush()
-
-            outputStream.close()
-        }
 
         @JvmStatic
         fun createImageFile(activity: Activity, cameraImgList:ArrayList<String>)
