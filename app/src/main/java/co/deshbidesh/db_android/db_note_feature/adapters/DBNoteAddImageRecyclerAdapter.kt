@@ -3,10 +3,8 @@ package co.deshbidesh.db_android.db_note_feature.adapters
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import co.deshbidesh.db_android.databinding.NoteAddImgRowItemBinding
-import co.deshbidesh.db_android.db_note_feature.fragments.NoteAddFragmentDirections
 
 
 class DBNoteAddImageRecyclerAdapter: RecyclerView.Adapter<DBNoteAddImageRecyclerAdapter.DBNoteAddImageViewHolder>() {

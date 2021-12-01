@@ -33,16 +33,16 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/home_adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/home_screen_banner_id"
-            android:layout_margin="4dp">
-        </com.google.android.gms.ads.AdView>
+<!--        <com.google.android.gms.ads.AdView-->
+<!--            xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+<!--            android:id="@+id/home_adView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            ads:adSize="BANNER"-->
+<!--            ads:adUnitId="@string/home_screen_banner_id"-->
+<!--            android:layout_margin="4dp">-->
+<!--        </com.google.android.gms.ads.AdView>-->
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"

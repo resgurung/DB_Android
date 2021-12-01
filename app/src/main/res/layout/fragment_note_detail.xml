@@ -5,10 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        tools:context=".db_note_feature.fragments.NoteDetailFragment"
+        tools:context=".db_note_feature.ui.NoteDetailFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_color_light"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
@@ -26,13 +25,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="My Note"
+                android:text=""
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:id="@+id/note_detail_toolbar_title"
                 android:maxLines="1"
                 android:ellipsize="end"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/note_detail_toolbar_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text=""/>
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -58,12 +64,11 @@
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:hint="Title"
-                    android:textColorHint="@color/light_greyish"
-                    android:inputType="textPersonName"
+                    android:inputType="textMultiLine"
                     android:padding="10dp"
-                    android:textColor="#000"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:maxLength="128"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -80,8 +85,8 @@
                     android:textColorHint="@color/light_greyish"
                     android:inputType="textMultiLine"
                     android:padding="14dp"
-                    android:textColor="#000"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:maxLength="600"/>
 
                 <View
                     android:layout_width="match_parent"

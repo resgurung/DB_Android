@@ -75,7 +75,7 @@ class DBNewsDetailFragment : Fragment() {
 
         DBHelper.webSettingForDarkMode(requireContext(), binding.postWebView)
 
-        DBHelper.requestAdmobBanner(binding.newsDetailAdView)
+//        DBHelper.requestAdmobBanner(binding.newsDetailAdView)
 
     }
 

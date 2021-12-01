@@ -20,7 +20,7 @@ import co.deshbidesh.db_android.db_note_feature.note_utils.NotesImageUtils
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteDetailViewModel
 import co.deshbidesh.db_android.shared.extensions.hasPermission
 import co.deshbidesh.db_android.shared.extensions.showAlert
-import co.deshbidesh.db_android.shared.hideKeyboard
+import co.deshbidesh.db_android.shared.extensions.hideKeyboard
 import co.deshbidesh.db_android.shared.utility.DBPermissionConstants
 import co.deshbidesh.db_android.shared.utility.FileUtils
 import co.deshbidesh.db_android.shared.utility.FileUtilsImpl

@@ -8,8 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/background_color_light"
-        tools:context=".db_note_feature.fragments.NoteDetailFragment">
+        tools:context=".db_note_feature.ui.NoteDetailFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/note_add_toolbar"
@@ -28,9 +27,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Add Note"
-                android:textSize="22sp"
-                android:textStyle="bold"/>
+                android:text="Create"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/note_add_toolbar_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="नेपाली"/>
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -57,12 +65,11 @@
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:hint="Title"
-                    android:textColorHint="@color/light_greyish"
-                    android:inputType="textPersonName"
+                    android:inputType="textMultiLine"
                     android:padding="10dp"
-                    android:textColor="#000"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:maxLength="128"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -76,11 +83,10 @@
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:hint="Content"
-                    android:textColorHint="@color/light_greyish"
                     android:inputType="textMultiLine"
                     android:padding="14dp"
-                    android:textColor="#000"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:maxLength="600"/>
 
                 <View
                     android:layout_width="match_parent"

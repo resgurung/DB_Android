@@ -7,10 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import co.deshbidesh.db_android.R
-import co.deshbidesh.db_android.db_note_feature.fragments.NoteDetailFragmentDirections
 
 class DBNoteDetailImageRecyclerAdapter(iDeleteImage: InterfaceDeleteImage)
     : RecyclerView.Adapter<DBNoteDetailImageRecyclerAdapter.DBNoteDetailImageViewHolder>() {

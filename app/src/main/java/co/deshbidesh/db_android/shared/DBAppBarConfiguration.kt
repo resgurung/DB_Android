@@ -9,9 +9,9 @@ object DBAppBarConfiguration {
 
         return AppBarConfiguration(setOf(
             R.id.homeFragment,
-            R.id.calendarFragment,
-            R.id.dictionaryFragment,
-            R.id.DBSettingsFragment
+            //R.id.calendarFragment,
+            //R.id.dictionaryFragment,
+            R.id.settingsFragment
         ))
     }
 }

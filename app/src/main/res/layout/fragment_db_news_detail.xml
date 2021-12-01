@@ -189,17 +189,17 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/news_detail_adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="8dp"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/news_detail_screen_banner_id"
-            ads:layout_constraintBottom_toBottomOf="@+id/coordinatorLayout"
-            ads:layout_constraintEnd_toEndOf="parent"
-            ads:layout_constraintStart_toStartOf="parent"/>
+<!--        <com.google.android.gms.ads.AdView-->
+<!--            android:id="@+id/news_detail_adView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            ads:adSize="BANNER"-->
+<!--            ads:adUnitId="@string/news_detail_screen_banner_id"-->
+<!--            ads:layout_constraintBottom_toBottomOf="@+id/coordinatorLayout"-->
+<!--            ads:layout_constraintEnd_toEndOf="parent"-->
+<!--            ads:layout_constraintStart_toStartOf="parent"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

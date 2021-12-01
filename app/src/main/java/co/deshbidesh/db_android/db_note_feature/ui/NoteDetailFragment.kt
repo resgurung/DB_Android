@@ -1,4 +1,4 @@
-package co.deshbidesh.db_android.db_note_feature.fragments
+package co.deshbidesh.db_android.db_note_feature.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -24,8 +24,9 @@ import co.deshbidesh.db_android.db_note_feature.models.DBImage
 import co.deshbidesh.db_android.db_note_feature.models.DBNoteUIImage
 import co.deshbidesh.db_android.db_note_feature.note_utils.NotesImageUtils
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteDetailViewModel
+import co.deshbidesh.db_android.main.MainActivity
 import co.deshbidesh.db_android.shared.DBBaseFragment
-import co.deshbidesh.db_android.shared.hideKeyboard
+import co.deshbidesh.db_android.shared.extensions.hideKeyboard
 import co.deshbidesh.db_android.shared.utility.DBPermissionConstants
 import co.deshbidesh.db_android.shared.utility.FileUtils
 import co.deshbidesh.db_android.shared.utility.FileUtilsImpl
@@ -54,6 +55,7 @@ class NoteDetailFragment :
 
     private val sharedNoteDetailViewModel: DBNoteDetailViewModel by activityViewModels { DBNoteDetailViewModelFactory }
 
+    private var keyboardHolderActivity: MainActivity? = null
     // Static fields
     companion object{
 
@@ -79,12 +81,25 @@ class NoteDetailFragment :
 
         setupToolbar()
 
+        setupSwitch()
+
         setupBottomNav()
 
         setupListview()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        keyboardHolderActivity = null
+
+        _binding = null
+    }
+
     private fun setupInitial() {
+
+        // reference for main activity
+        keyboardHolderActivity = activity as MainActivity
 
         sharedNoteDetailViewModel.fileUtils = fileUtils
 
@@ -121,7 +136,7 @@ class NoteDetailFragment :
 
     private fun setupToolbar() {
         // set the title of the page
-        binding.noteDetailToolbarTitle.text = args.noteDetail.title
+        //binding.noteDetailToolbarTitle.text = args.noteDetail.title
 
         toolbar = binding.noteDetailToolbar
 
@@ -129,7 +144,9 @@ class NoteDetailFragment :
 
         toolbar.setNavigationOnClickListener {
 
-            requireActivity().onBackPressed()
+            hideAnyKeyboard()
+
+            findNavController().popBackStack()
         }
 
         // Bind toolbar menu options
@@ -144,6 +161,9 @@ class NoteDetailFragment :
                         finalizeSaveNote("Note Deleted.")
 
                         activity?.runOnUiThread {
+
+                            hideAnyKeyboard()
+
                             requireActivity().onBackPressed()
                         }
                     }
@@ -161,6 +181,47 @@ class NoteDetailFragment :
                 else -> false
             }
         }
+    }
+
+    private fun setupSwitch() {
+
+        binding.noteDetailToolbarSwitch.isChecked = false
+
+        keyboardHolderActivity?.hideCustomKeyboard()
+
+        binding.noteDetailToolbarSwitch.setOnCheckedChangeListener { _ , isChecked ->
+
+            keyboardHolderActivity?.showNepaliKeyboard = isChecked
+
+            if (isChecked) {
+
+                if (keyboardHolderActivity?.systemKeyboard == true) {
+
+                    keyboardHolderActivity?.handleKeyboard()
+                }
+
+                binding.noteDetailTitle.hint = " शीर्षक..."
+
+                binding.noteDetailContent.hint = " प+्+र=प्र, च+्+च=च्च, र+्+प=र्प "
+            } else {
+
+                if (keyboardHolderActivity?.isCustomKeyboardVisible() == true) {
+
+                    keyboardHolderActivity?.showSystemKeyboard()
+                }
+
+                keyboardHolderActivity?.hideCustomKeyboard()
+            }
+
+            binding.noteDetailTitle.hint = " title..."
+
+            binding.noteDetailContent.hint = " content "
+
+        }
+
+        keyboardHolderActivity?.registerEditText(binding.noteDetailTitle)
+
+        keyboardHolderActivity?.registerEditText(binding.noteDetailContent)
     }
 
     private fun setupBottomNav() {
@@ -204,7 +265,6 @@ class NoteDetailFragment :
             ) { finished ->
 
                 if (finished) {
-                    binding.noteDetailToolbarTitle.text = binding.noteDetailTitle.text.toString()
                     finalizeSaveNote("Note Updated")
                 }
             }
@@ -215,6 +275,8 @@ class NoteDetailFragment :
         activity?.runOnUiThread {
 
             hideKeyboard()
+
+            keyboardHolderActivity?.hideCustomKeyboard()
 
             showToast(message)
         }
@@ -317,8 +379,8 @@ class NoteDetailFragment :
     }
 
     private fun hasTextEditBeenEdited(): Boolean {
-        return args.noteDetail.title == binding.noteDetailTitle.text.toString()
-                || args.noteDetail.content == binding.noteDetailContent.text.toString()
+        return args.noteDetail.title != binding.noteDetailTitle.text.toString()
+                || args.noteDetail.content != binding.noteDetailContent.text.toString()
     }
 
     override fun remove(obj: DBImage) {
@@ -330,5 +392,14 @@ class NoteDetailFragment :
         )
 
         showFullScreenFragment(newImageObj)
+    }
+
+    private fun hideAnyKeyboard() {
+
+        keyboardHolderActivity?.showNepaliKeyboard = false
+
+        keyboardHolderActivity?.hideCustomKeyboard()
+
+        keyboardHolderActivity?.hideSystemKeyboard()
     }
 }

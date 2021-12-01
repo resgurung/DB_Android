@@ -16,6 +16,7 @@ import co.deshbidesh.db_android.db_news_feature.news.presentation.ui.adapter.DBN
 import co.deshbidesh.db_android.db_news_feature.news.presentation.ui.adapter.DBNewsLoadStateAdapter
 import co.deshbidesh.db_android.db_news_feature.news.presentation.viewmodel.DBNewsArticleViewModel
 import co.deshbidesh.db_android.db_news_feature.news.presentation.viewmodel.DBNewsArticleViewModelFactory
+import co.deshbidesh.db_android.main.MainActivity
 import co.deshbidesh.db_android.shared.DBBaseFragment
 import com.google.android.gms.ads.AdRequest
 import kotlinx.coroutines.CoroutineScope
@@ -104,11 +105,11 @@ class DBNewsListFragment : DBBaseFragment(), CoroutineScope {
             }
         }
 
-        val adMobRequest = AdRequest
-            .Builder()
-            .build()
-
-        binding.newsListBannerAdView.loadAd(adMobRequest)
+//        val adMobRequest = AdRequest
+//            .Builder()
+//            .build()
+//
+//        binding.newsListBannerAdView.loadAd(adMobRequest)
     }
 
     override fun onStart() {

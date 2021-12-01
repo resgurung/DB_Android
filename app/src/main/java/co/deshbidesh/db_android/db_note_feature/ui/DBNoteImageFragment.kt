@@ -1,4 +1,4 @@
-package co.deshbidesh.db_android.db_note_feature.fragments
+package co.deshbidesh.db_android.db_note_feature.ui
 
 
 import android.net.Uri

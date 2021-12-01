@@ -49,7 +49,7 @@ class DBApplication: Application() {
         DBNewsArticleViewModelFactory.inject(DBNewsRepositoryImp(database))
 
         DBNoteDetailViewModelFactory.inject(
-            DBNoteRepository(database.noteDAO()),
+            DBNoteRepository(database),
             DBImageRepository(database.imageDAO())
         )
     }

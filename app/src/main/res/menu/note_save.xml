@@ -6,5 +6,5 @@
         android:id="@+id/save_note_db"
         android:title="Save"
         android:icon="@drawable/save_note_vec"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 </menu>

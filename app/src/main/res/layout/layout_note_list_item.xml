@@ -5,10 +5,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="5dp"
-        app:cardCornerRadius="10dp"
+        app:cardElevation="3dp"
+        app:cardCornerRadius="4dp"
+        android:layout_margin="4dp"
         app:cardPreventCornerOverlap="false"
-        app:cardBackgroundColor="#9FA8DA"
         android:id="@+id/note_list_row_layout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,17 +31,41 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/note_list_item_title"
                     android:text="Note title"
-                    android:textColor="#000"
                     android:textSize="19sp" />
 
-                <TextView
+                <!-- adding 1A before color gives it transparent 10%
+                 *0 is 50% transparent and 40 is 25%
+                 -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#1A8C8B8B"
+                    android:layout_marginTop="4dp"/>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/note_list_item_description"
-                    android:text="Note description"
-                    android:textSize="15sp"
-                    android:layout_marginTop="10dp" />
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/note_list_item_updated_date"
+                        android:text="Note updated"
+                        android:gravity="start"
+                        android:layout_weight="1"
+                        android:maxLines="1"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/note_list_item_created_date"
+                        android:text="Note created"
+                        android:gravity="end"
+                        android:layout_weight="1"
+                        android:maxLines="1"/>
+                </LinearLayout>
 
             </LinearLayout>
 

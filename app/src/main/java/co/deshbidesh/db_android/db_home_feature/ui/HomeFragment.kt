@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import androidx.navigation.ui.NavigationUI
 import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentHomeBinding
 import co.deshbidesh.db_android.main.DBDocScanActivity
+import co.deshbidesh.db_android.main.MainActivity
 import co.deshbidesh.db_android.shared.DBAppBarConfiguration
 import co.deshbidesh.db_android.shared.DBBaseFragment
 import com.google.android.gms.ads.AdRequest
@@ -66,12 +68,6 @@ class HomeFragment : DBBaseFragment() {
         navController = NavHostFragment.findNavController(this);
 
         NavigationUI.setupWithNavController(toolBar, navController, DBAppBarConfiguration.configuration())
-
-        val adMobRequest = AdRequest
-            .Builder()
-            .build()
-
-        binding.homeAdView.loadAd(adMobRequest)
     }
 
     override fun onDestroy() {

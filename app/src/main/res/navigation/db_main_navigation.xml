@@ -27,12 +27,12 @@
             app:destination="@id/noteListFragment" />
         <action
             android:id="@+id/action_homeFragment_to_DBNewsListFragment"
-            app:destination="@id/DBNewsListFragment" />
+            app:destination="@id/newsListFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/noteListFragment"
-        android:name="co.deshbidesh.db_android.db_note_feature.fragments.NoteListFragment"
+        android:name="co.deshbidesh.db_android.db_note_feature.ui.NoteListFragment"
         android:label="fragment_note_list"
         tools:layout="@layout/fragment_note_list">
         <action
@@ -49,11 +49,14 @@
         <deepLink
             android:id="@+id/db_note_feature_list_deepLink"
             app:uri="app://db_note_feature/list" />
+        <action
+            android:id="@+id/action_noteListFragment_to_DBNoteMonthFragment"
+            app:destination="@id/noteMonthFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/noteDetailFragment"
-        android:name="co.deshbidesh.db_android.db_note_feature.fragments.NoteDetailFragment"
+        android:name="co.deshbidesh.db_android.db_note_feature.ui.NoteDetailFragment"
         android:label="fragment_note_detail"
         tools:layout="@layout/fragment_note_detail" >
         <action
@@ -66,12 +69,12 @@
             app:argType="co.deshbidesh.db_android.db_note_feature.models.DBNote" />
         <action
             android:id="@+id/action_noteDetailFragment_to_DBNoteImageFragment"
-            app:destination="@id/DBNoteImageFragment" />
+            app:destination="@id/noteImageFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/noteAddFragment"
-        android:name="co.deshbidesh.db_android.db_note_feature.fragments.NoteAddFragment"
+        android:name="co.deshbidesh.db_android.db_note_feature.ui.NoteAddFragment"
         android:label="fragment_note_add"
         tools:layout="@layout/fragment_note_add">
         <action
@@ -95,7 +98,7 @@
         tools:layout="@layout/fragment_disclaimer_view" >
         <action
             android:id="@+id/action_disclaimerViewFragment_to_DBSettingsFragment"
-            app:destination="@id/DBSettingsFragment" />
+            app:destination="@id/settingsFragment" />
         <argument
             android:name="disclaimer"
             app:argType="string" />
@@ -107,13 +110,13 @@
         tools:layout="@layout/fragment_privacy_view" >
         <action
             android:id="@+id/action_privacyViewFragment_to_DBSettingsFragment"
-            app:destination="@id/DBSettingsFragment" />
+            app:destination="@id/settingsFragment" />
         <argument
             android:name="privacy"
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/DBSettingsFragment"
+        android:id="@+id/settingsFragment"
         android:name="co.deshbidesh.db_android.db_settings_feature.ui.DBSettingsFragment"
         android:label="DBSettingsFragment">
         <action
@@ -124,7 +127,7 @@
             app:destination="@id/privacyViewFragment" />
     </fragment>
     <fragment
-        android:id="@+id/DBNewsListFragment"
+        android:id="@+id/newsListFragment"
         android:name="co.deshbidesh.db_android.db_news_feature.news.presentation.ui.fragments.DBNewsListFragment"
         android:label="DBNewsListFragment"
         tools:layout="@layout/fragment_db_news_list">
@@ -142,14 +145,14 @@
         tools:layout="@layout/fragment_db_news_detail">
         <action
             android:id="@+id/action_newsDetailFragment_to_DBNewsListFragment"
-            app:destination="@id/DBNewsListFragment" />
+            app:destination="@id/newsListFragment" />
         <argument
             android:name="news"
             app:argType="co.deshbidesh.db_android.db_news_feature.news.domain.models.DBNewsResponseItem" />
     </fragment>
     <fragment
-        android:id="@+id/DBNoteImageFragment"
-        android:name="co.deshbidesh.db_android.db_note_feature.fragments.DBNoteImageFragment"
+        android:id="@+id/noteImageFragment"
+        android:name="co.deshbidesh.db_android.db_note_feature.ui.DBNoteImageFragment"
         android:label="fragment_db_note_image"
         tools:layout="@layout/fragment_db_note_image" >
         <action
@@ -162,6 +165,25 @@
             app:argType="co.deshbidesh.db_android.db_note_feature.models.DBNoteUIImage"
             app:nullable="true"
             android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/noteMonthFragment"
+        android:name="co.deshbidesh.db_android.db_note_feature.ui.DBNoteMonthFragment"
+        android:label="DBNoteMonthFragment"
+        tools:layout="@layout/fragment_db_note_month">
+        <action
+            android:id="@+id/action_DBNoteMonthFragment_to_noteDetailFragment"
+            app:destination="@id/noteDetailFragment" />
+        <argument
+            android:name="year"
+            app:argType="integer" />
+        <argument
+            android:name="month"
+            app:argType="integer" />
+        <argument
+            android:name="notes"
+            app:argType="co.deshbidesh.db_android.db_note_feature.models.DBNote[]"
+            app:nullable="true" />
     </fragment>
 
 </navigation>

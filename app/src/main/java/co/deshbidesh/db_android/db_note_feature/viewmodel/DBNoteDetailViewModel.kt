@@ -77,6 +77,8 @@ class DBNoteDetailViewModel(
 
         note.description = DBHelper.generateDescriptionFromContent(note.content)
 
+        note.updatedDate = Date()
+
         viewModelScope.launch(Dispatchers.IO) {
 
             noteRepository.updateNote(note)

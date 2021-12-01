@@ -1,4 +1,4 @@
-package co.deshbidesh.db_android.shared
+package co.deshbidesh.db_android.shared.extensions
 
 import android.app.Activity
 import android.content.Context

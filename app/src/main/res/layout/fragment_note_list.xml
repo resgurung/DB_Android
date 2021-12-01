@@ -4,11 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        tools:context=".db_note_feature.fragments.NoteListFragment"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        tools:context=".db_note_feature.ui.NoteListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_color_light"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
@@ -19,7 +18,6 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:navigationIcon="@drawable/ic_arrow_back_ios"
-            app:layout_constraintBottom_toTopOf="@+id/note_list_recycleview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -31,37 +29,87 @@
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
-                android:id="@+id/toolbar_title" />
+                android:id="@+id/note_list_toolbar_title" />
 
         </androidx.appcompat.widget.Toolbar>
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/note_list_recycleview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_anchor="@id/note_list_toolbar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
             app:layout_anchorGravity="bottom"
-            android:paddingTop="5dp"
-            android:layout_gravity="bottom" />
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/note_list_toolbar" />
+
+        <ExpandableListView
+            android:id="@+id/expendableList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            app:layout_anchorGravity="bottom"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:divider="@android:color/background_light"
+            android:dividerHeight="0.5dp"
+            app:layout_constraintTop_toBottomOf="@+id/note_list_toolbar"/>
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/note_list_fab"
+            android:id="@+id/note_list_add_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="72dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
             android:clickable="true"
-            android:src="@drawable/ic_add"
-            app:layout_anchor="@id/note_list_bottom_appbar"/>
+            android:src="@android:drawable/ic_input_add"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/note_list_cross_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:clickable="true"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <!--
+        app:layout_anchor="@id/note_list_bottom_appbar"
+        -->
+
+
+        <!--
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/note_list_bottom_appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:backgroundTint="@color/colorPrimary" />
+        -->
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <ProgressBar
+            android:id="@+id/note_lisy_progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/note_list_recycleview" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
