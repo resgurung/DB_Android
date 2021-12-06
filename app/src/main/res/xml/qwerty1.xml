@@ -1,0 +1,181 @@
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:horizontalGap="0px"
+    android:verticalGap="0px"
+    android:keyHeight="40dp">
+
+    <!-- 1st -->
+    <Row>
+        <Key android:codes="2407" android:keyWidth="10%p" android:keyLabel="&#x0967;" android:keyEdgeFlags="left"/> <!-- १ -->
+        <Key android:codes="2408" android:keyWidth="10%p" android:keyLabel="&#x0968;"/> <!-- २ -->
+        <Key android:codes="2409" android:keyWidth="10%p" android:keyLabel="&#x0969;"/> <!-- ३ -->
+        <Key android:codes="2410" android:keyWidth="10%p" android:keyLabel="&#x096A;"/> <!-- ४ -->
+        <Key android:codes="2411" android:keyWidth="10%p" android:keyLabel="&#x096B;"/> <!-- ५ -->
+        <Key android:codes="2412" android:keyWidth="10%p" android:keyLabel="&#x096C;"/> <!-- ६ -->
+        <Key android:codes="2413" android:keyWidth="10%p" android:keyLabel="&#x096D;"/> <!-- ७ -->
+        <Key android:codes="2414" android:keyWidth="10%p" android:keyLabel="&#x096E;"/> <!-- ८ -->
+        <Key android:codes="2415" android:keyWidth="10%p" android:keyLabel="&#x096F;"/> <!-- ९ -->
+        <Key android:codes="2406" android:keyWidth="10%p" android:keyLabel="&#x0966;" android:keyEdgeFlags="right"/> <!-- ० -->
+    </Row>
+
+    <!-- 2nd -->
+    <Row>
+        <Key android:codes="2384" android:keyWidth="9.09%p" android:keyLabel="&#x0950;" android:keyEdgeFlags="left"/> <!-- ॐ -->
+        <Key android:codes="2306" android:keyWidth="9.09%p" android:keyLabel="&#x0902;" /> <!-- ं -->
+        <Key android:codes="2310" android:keyWidth="9.09%p" android:keyLabel="&#x0906;"/> <!-- आ -->
+        <Key android:codes="2323" android:keyWidth="9.09%p" android:keyLabel="&#x0913;"/> <!-- ओ -->
+        <Key android:codes="2324" android:keyWidth="9.09%p" android:keyLabel="&#x0914;"/> <!-- औ -->
+        <Key android:codes="2311" android:keyWidth="9.09%p" android:keyLabel="&#x0907;"/> <!-- इ -->
+        <Key android:codes="2312" android:keyWidth="9.09%p" android:keyLabel="&#x0908;"/> <!-- ई -->
+        <Key android:codes="2319" android:keyWidth="9.09%p" android:keyLabel="&#x090F;"/> <!-- ए -->
+        <Key android:codes="2320" android:keyWidth="9.09%p" android:keyLabel="&#x0910;"/> <!-- ऎ -->
+        <Key android:codes="2400" android:keyWidth="9.09%p" android:keyLabel="&#x0960;"/>  <!-- ॠ -->
+        <Key android:codes="2305" android:keyWidth="9.09%p" android:keyLabel="&#x0901;" android:keyEdgeFlags="right"/> <!-- ँ -->
+    </Row>
+
+    <!-- 3rd -->
+    <Row>
+        <!-- review android code -->
+        <Key android:codes="2314" android:keyWidth="10%p" android:keyLabel="‌&#x090A;" android:keyEdgeFlags="left"/> <!-- ऊ -->
+        <Key android:codes="-15" android:keyWidth="10%p" android:keyLabel="&#2325;&#2381;&#2359;"/> <!-- क्ष -->
+        <Key android:codes="-16" android:keyWidth="10%p" android:keyLabel="&#2340;&#2381;&#2352;"/> <!-- त्र -->
+        <Key android:codes="-17" android:keyWidth="10%p" android:keyLabel="&#2332;&#2381;&#2334;"/> <!-- ज्ञ  -->
+        <!-- end -->
+        <Key android:codes="2315" android:keyWidth="10%p" android:keyLabel="&#x090B;"/> <!-- ऋ -->
+        <Key android:codes="2316" android:keyWidth="10%p" android:keyLabel="&#x090C;"/> <!-- ऌ -->
+
+        <Key android:codes="2402" android:keyWidth="10%p" android:keyLabel="&#x0962;" /><!-- ॢ -->
+        <Key android:codes="2403" android:keyWidth="10%p" android:keyLabel="&#x0963;" /><!-- ॣ -->
+        <Key android:codes="2390" android:keyWidth="10%p" android:keyLabel="&#x0956;" /> <!-- ॖ -->
+        <Key android:codes="2391" android:keyWidth="10%p" android:keyLabel="&#x0957;" android:keyEdgeFlags="right"/> <!-- ॗ -->
+    </Row>
+
+    <!-- 4th -->
+    <Row>
+        <Key android:codes="2362" android:keyWidth="10%p" android:keyLabel="&#x093A;" android:keyEdgeFlags="left"/> <!-- ऺ -->
+        <Key android:codes="2363" android:keyWidth="10%p" android:keyLabel="&#x093B;" /> <!-- ऻ -->
+        <Key android:codes="2307" android:keyWidth="10%p" android:keyLabel="&#x0903;"/> <!-- ः -->
+        <Key android:codes="2405" android:keyWidth="10%p" android:keyLabel="&#x0965;"/> <!-- ॥ -->
+        <Key android:codes="2306" android:keyWidth="10%p" android:keyLabel="&#x0902;"/> <!-- ं -->
+        <!-- review android: code -->
+        <Key android:codes="2406" android:keyWidth="10%p" android:keyLabel="&#x0971;"/> <!-- ॱ -->
+        <Key android:codes="2418" android:keyWidth="10%p" android:keyLabel="&#x097D;"/> <!-- ॽ -->
+        <Key android:codes="2365" android:keyWidth="10%p" android:keyLabel="&#x093D;"/> <!-- ऽ -->
+        <Key android:codes="2389" android:keyWidth="10%p" android:keyLabel="&#x0955;"/> <!--  ॕ  -->
+        <Key android:codes="-5"   android:keyWidth="10%p" android:keyLabel="&#x232b;" android:isRepeatable="true"  android:keyEdgeFlags="right"/>
+        <!-- end -->
+    </Row>
+
+    <!-- bottom row -->
+    <Row android:rowEdgeFlags="bottom">
+        <Key android:codes="-8" android:keyWidth="16%p" android:keyLabel="कखग" android:keyEdgeFlags="left"/>
+        <Key android:codes="2313" android:keyWidth="9%p" android:keyLabel="‌&#x0909;"/> <!-- उ -->
+        <Key android:codes="2364" android:keyWidth="9%p" android:keyLabel="&#x093C;"/> <!-- ़ -->
+        <Key android:codes="32" android:keyLabel="" android:keyWidth="32%p" android:isRepeatable="true"/> <!-- [___] -->
+        <Key android:codes="2405" android:keyWidth="9%p" android:keyLabel="&#x0965;"/> <!-- ॥ -->
+        <Key android:codes="2304" android:keyWidth="9%p" android:keyLabel="&#x0900;" /> <!-- ऀ -->
+        <Key android:codes="10" android:keyLabel="&#9166;" android:keyWidth="16%p" android:keyEdgeFlags="right"/> <!-- <-| -->
+    </Row>
+
+</Keyboard>
+
+<!--
+    0   "KEYCODE_0"
+    1   "KEYCODE_SOFT_LEFT"
+    2   "KEYCODE_SOFT_RIGHT"
+    3   "KEYCODE_HOME"
+    4   "KEYCODE_BACK"
+    5   "KEYCODE_CALL"
+    6   "KEYCODE_ENDCALL"
+    7   "KEYCODE_0"
+    8   "KEYCODE_1"
+    9   "KEYCODE_2"
+    10   "KEYCODE_3"
+    11   "KEYCODE_4"
+    12  "KEYCODE_5"
+    13   "KEYCODE_6"
+    14   "KEYCODE_7"
+    15   "KEYCODE_8"
+    16   "KEYCODE_9"
+    17   "KEYCODE_STAR"
+    18   "KEYCODE_POUND"
+    19   "KEYCODE_DPAD_UP"
+    20   "KEYCODE_DPAD_DOWN"
+    21   "KEYCODE_DPAD_LEFT"
+    22   "KEYCODE_DPAD_RIGHT"
+    23   "KEYCODE_DPAD_CENTER"
+    24   "KEYCODE_VOLUME_UP"
+    25   "KEYCODE_VOLUME_DOWN"
+    26  "KEYCODE_POWER"
+    27   "KEYCODE_CAMERA"
+    28   "KEYCODE_CLEAR"
+    29   "KEYCODE_A"
+    30   "KEYCODE_B"
+    31   "KEYCODE_C"
+    32   "KEYCODE_D"
+    33   "KEYCODE_E"
+    34   "KEYCODE_F"
+    35   "KEYCODE_G"
+    36   "KEYCODE_H"
+    37   "KEYCODE_I"
+    38   "KEYCODE_J"
+    39   "KEYCODE_K"
+    40   "KEYCODE_L"
+    41   "KEYCODE_M"
+    42   "KEYCODE_N"
+    43   "KEYCODE_O"
+    44   "KEYCODE_P"
+    45   "KEYCODE_Q"
+    46   "KEYCODE_R"
+    47   "KEYCODE_S"
+    48   "KEYCODE_T"
+    49   "KEYCODE_U"
+    50   "KEYCODE_V"
+    51   "KEYCODE_W"
+    52   "KEYCODE_X"
+    53   "KEYCODE_Y"
+    54   "KEYCODE_Z"
+    55   "KEYCODE_COMMA"
+    56   "KEYCODE_PERIOD"
+    57   "KEYCODE_ALT_LEFT"
+    58   "KEYCODE_ALT_RIGHT"
+    59   "KEYCODE_SHIFT_LEFT"
+    60   "KEYCODE_SHIFT_RIGHT"
+    61   "KEYCODE_TAB"
+    62   "KEYCODE_SPACE"
+    63   "KEYCODE_SYM"
+    64   "KEYCODE_EXPLORER"
+    65   "KEYCODE_ENVELOPE"
+    66   "KEYCODE_ENTER"
+    67   "KEYCODE_DEL"
+    68   "KEYCODE_GRAVE"
+    69   "KEYCODE_MINUS"
+    70   "KEYCODE_EQUALS"
+    71   "KEYCODE_LEFT_BRACKET"
+    72   "KEYCODE_RIGHT_BRACKET"
+    73   "KEYCODE_BACKSLASH"
+    74   "KEYCODE_SEMICOLON"
+    75   "KEYCODE_APOSTROPHE"
+    76   "KEYCODE_SLASH"
+    77   "KEYCODE_AT"
+    78   "KEYCODE_NUM"
+    79   "KEYCODE_HEADSETHOOK"
+    80   "KEYCODE_FOCUS"
+    81   "KEYCODE_PLUS"
+    82   "KEYCODE_MENU"
+    83   "KEYCODE_NOTIFICATION"
+    84  "KEYCODE_SEARCH"
+    85   "KEYCODE_MEDIA_PLAY_PAUSE"
+    86   "KEYCODE_MEDIA_STOP"
+    87   "KEYCODE_MEDIA_NEXT"
+    88   "KEYCODE_MEDIA_PREVIOUS"
+    89   "KEYCODE_MEDIA_REWIND"
+    90   "KEYCODE_MEDIA_FAST_FORWARD"
+    91   "KEYCODE_MUTE"
+    92   "KEYCODE_PAGE_UP"
+    93   "KEYCODE_PAGE_DOWN"
+    94   "KEYCODE_PICTSYMBOLS"
+
+    122   "KEYCODE_MOVE_HOME"
+    123   "KEYCODE_MOVE_END"
+
+-->

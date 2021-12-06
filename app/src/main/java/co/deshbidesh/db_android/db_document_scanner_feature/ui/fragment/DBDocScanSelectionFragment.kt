@@ -83,6 +83,8 @@ class DBDocScanSelectionFragment : Fragment() {
 
         binding.docScanSelectionFragmentGalleryButton.setOnClickListener { askExternalStorage() }
 
+        binding.docSelectionCloseButton.setOnClickListener { activity?.finish() }
+
         sharedViewModel.setRoute(SharedViewModel.Route.SELECTION_FRAGMENT)
     }
 

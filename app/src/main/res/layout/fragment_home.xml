@@ -5,188 +5,244 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".db_home_feature.ui.HomeFragment">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/home_fragment_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.35"
-            android:layout_margin="4dp">
-
-            <fragment
-                android:id="@+id/inner_home_fragment"
-                android:name="co.deshbidesh.db_android.db_home_feature.ui.DBHomeInnerListFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-<!--        <com.google.android.gms.ads.AdView-->
-<!--            xmlns:ads="http://schemas.android.com/apk/res-auto"-->
-<!--            android:id="@+id/home_adView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            ads:adSize="BANNER"-->
-<!--            ads:adUnitId="@string/home_screen_banner_id"-->
-<!--            android:layout_margin="4dp">-->
-<!--        </com.google.android.gms.ads.AdView>-->
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.07"
-            android:layout_margin="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_margin="4dp">
-
-                <TextView
-                    android:id="@+id/home_news_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:layout_weight="1"
-                    android:text="News" />
-
-                <ImageButton
-                    android:id="@+id/home_news_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_arrow_forward_24"/>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.07"
-            android:layout_margin="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_margin="4dp">
-
-                <TextView
-                    android:id="@+id/home_utility_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:layout_weight="1"
-                    android:text="Utility"/>
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.30"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".db_home_feature.ui.HomeFragment">
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/home_fragment_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/home_note_card"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".5"
-                android:layout_margin="8dp"
-                card_view:cardCornerRadius="8dp"
-                card_view:cardElevation="5dp">
+                android:id="@+id/home_image_swiper_card"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_margin="4dp">
 
-                <LinearLayout
+                <fragment
+                    android:id="@+id/inner_home_fragment"
+                    android:name="co.deshbidesh.db_android.db_home_feature.ui.DBHomeInnerListFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/calendar_textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Notes"
-                        android:maxLines="1"
-                        android:layout_margin="4dp"
-                        android:textSize="20sp"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/browser_actions_divider_color" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_note" />
-
-                </LinearLayout>
-
+                    android:layout_height="match_parent" />
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!--        <com.google.android.gms.ads.AdView-->
+            <!--            xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+            <!--            android:id="@+id/home_adView"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_gravity="center"-->
+            <!--            ads:adSize="BANNER"-->
+            <!--            ads:adUnitId="@string/home_screen_banner_id"-->
+            <!--            android:layout_margin="4dp">-->
+            <!--        </com.google.android.gms.ads.AdView>-->
+
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/home_doc_scanner_card"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".5"
-                android:layout_margin="8dp"
-                card_view:cardCornerRadius="8dp"
-                card_view:cardElevation="5dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp">
 
                     <TextView
+                        android:id="@+id/home_news_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:text="News" />
+
+                    <ImageButton
+                        android:id="@+id/home_news_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Doc Scanner"
-                        android:maxLines="1"
-                        android:layout_margin="4dp"
-                        android:textSize="20sp"/>
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_arrow_forward_24"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/browser_actions_divider_color" />
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp">
+
+                    <TextView
+                        android:id="@+id/home_utility_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
                         android:layout_weight="1"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_doc_scan" />
+                        android:text="Utility"/>
 
                 </LinearLayout>
-
             </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/home_calendar_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:layout_margin="8dp"
+                    card_view:cardCornerRadius="8dp"
+                    card_view:cardElevation="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/home_calendar_textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="BS Calendar"
+                            android:maxLines="1"
+                            android:layout_margin="4dp"
+                            android:textSize="20sp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/browser_actions_divider_color" />
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="130dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/calendar_icon" />
+
+                    </LinearLayout>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/home_doc_scanner_card"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:layout_margin="8dp"
+                    card_view:cardCornerRadius="8dp"
+                    card_view:cardElevation="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Doc Scanner"
+                            android:maxLines="1"
+                            android:layout_margin="4dp"
+                            android:textSize="20sp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/browser_actions_divider_color" />
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="130dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_doc_scan" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/home_note_card"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:layout_margin="8dp"
+                    card_view:cardCornerRadius="8dp"
+                    card_view:cardElevation="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/home_note_textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Notes"
+                            android:maxLines="1"
+                            android:layout_margin="4dp"
+                            android:textSize="20sp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/browser_actions_divider_color" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_note" />
+
+                    </LinearLayout>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"/>
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
 </layout>

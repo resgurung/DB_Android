@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         tools:context=".db_home_feature.ui.DBHomeInnerListFragment">
 
-        <com.denzcoskun.imageslider.ImageSlider
+        <co.deshbidesh.db_android.db_imageslider.ImageSlider
             android:id="@+id/image_slider"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

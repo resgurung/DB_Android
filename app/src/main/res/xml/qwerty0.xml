@@ -1,0 +1,86 @@
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:horizontalGap="0px"
+    android:verticalGap="0px"
+    android:keyHeight="40dp">
+
+    <!--
+
+    unicode: 
+	- https://jrgraphix.net/r/Unicode/0900-097F
+	- http://www.aa.tufs.ac.jp/~kmach/gicas/ASTI/conj_e.htm
+	- https://en.wikipedia.org/wiki/Nepali_language
+    -->
+    <!-- 1st -->
+    <Row>
+        <Key android:codes="2381" android:keyWidth="10.0%p" android:keyLabel="&#x094D;" android:keyEdgeFlags="left"/> <!--  ू  -->
+        <Key android:codes="2366" android:keyWidth="8.18%p" android:keyLabel="&#x093E;"/> <!--  ा  -->
+        <Key android:codes="2367" android:keyWidth="8.18%p" android:keyLabel="&#x093F;"/> <!--  ि  -->
+        <Key android:codes="2368" android:keyWidth="8.18%p" android:keyLabel="&#x0940;"/> <!--  ी  -->
+        <Key android:codes="2369" android:keyWidth="8.18%p" android:keyLabel="&#x0941;"/> <!--  ु  -->
+        <Key android:codes="2370" android:keyWidth="8.18%p" android:keyLabel="&#x0942;"/> <!--  ू  -->
+        <Key android:codes="2371" android:keyWidth="8.18%p" android:keyLabel="&#x0943;"/> <!--  ृ  -->
+        <Key android:codes="2372" android:keyWidth="8.18%p" android:keyLabel="&#x0944;"/> <!--  ॄ  -->
+        <Key android:codes="2375" android:keyWidth="8.18%p" android:keyLabel="&#x0947;"/> <!--  े  -->
+        <Key android:codes="2376" android:keyWidth="8.18%p" android:keyLabel="&#x0948;"/> <!--  ै  -->
+        <Key android:codes="2379" android:keyWidth="8.18%p" android:keyLabel="&#x094B;"/> <!--  ो  -->
+        <Key android:codes="2380" android:keyWidth="8.18%p" android:keyLabel="&#x094C;" android:keyEdgeFlags="right"/> <!--  ौ  -->
+    </Row>
+
+    <!-- 2nd -->
+    <Row>
+        <Key android:codes="2334" android:keyWidth="8.33%p" android:keyLabel="&#x091E;" android:keyEdgeFlags="left"/> <!--  ञ  -->
+        <Key android:codes="2328" android:keyWidth="8.33%p" android:keyLabel="&#x0918;"/> <!--  घ  -->
+        <Key android:codes="2329" android:keyWidth="8.33%p" android:keyLabel="&#x0919;"/> <!--  ङ  -->
+        <Key android:codes="2333" android:keyWidth="8.33%p" android:keyLabel="&#x091D;"/> <!--  झ  -->
+        <Key android:codes="2331" android:keyWidth="8.33%p" android:keyLabel="&#x091B;"/> <!--  छ  -->
+        <Key android:codes="2309" android:keyWidth="8.33%p" android:keyLabel="&#x0905;"/> <!--  अ  -->
+        <Key android:codes="2326" android:keyWidth="8.33%p"  android:keyLabel="&#x0916;"/> <!-- ख -->
+        <Key android:codes="2335" android:keyWidth="8.33%p" android:keyLabel="&#x091F;"/> <!--  ट  -->
+        <Key android:codes="2336" android:keyWidth="8.33%p" android:keyLabel="&#x0920;"/> <!--  ठ  -->
+        <Key android:codes="2337" android:keyWidth="8.33%p" android:keyLabel="&#x0921;"/> <!--  ड  -->
+        <Key android:codes="2338" android:keyWidth="8.33%p" android:keyLabel="&#x0922;"/> <!--  ढ  -->
+        <Key android:codes="2339" android:keyWidth="8.33%p" android:keyLabel="&#x0923;" android:keyEdgeFlags="right"/> <!--  ण  -->
+    </Row>
+
+    <!-- 3rd -->
+    <Row>
+        <Key android:codes="2343" android:keyWidth="9.1%p" android:keyLabel="&#x0927;" android:keyEdgeFlags="left"/> <!--  ध  -->
+        <Key android:codes="2349" android:keyWidth="9.1%p" android:keyLabel="&#x092D;"/> <!-- भ -->
+        <Key android:codes="2338" android:keyWidth="9.1%p" android:keyLabel="&#x0922;"/> <!-- ढ -->
+        <Key android:codes="2354" android:keyWidth="9.1%p" android:keyLabel="&#x0932;"/> <!-- ल -->
+        <Key android:codes="2340" android:keyWidth="9.1%p" android:keyLabel="&#x0924;"/> <!-- त -->
+        <Key android:codes="2341" android:keyWidth="9.1%p" android:keyLabel="&#x0925;"/> <!-- थ -->
+        <Key android:codes="2327" android:keyWidth="9.1%p" android:keyLabel="&#x0917;"/> <!-- ग -->
+        <Key android:codes="2359" android:keyWidth="9.1%p" android:keyLabel="&#x0937;"/> <!-- ष -->
+        <Key android:codes="2351" android:keyWidth="9.1%p" android:keyLabel="&#x092F;"/> <!-- य -->
+        <Key android:codes="2347" android:keyWidth="9.1%p" android:keyLabel="&#x092B;"/> <!-- फ -->
+        <Key android:codes="2352" android:keyWidth="9.1%p" android:keyLabel="&#x0930;" android:keyEdgeFlags="right"/> <!-- र -->
+    </Row>
+
+    <!-- 4rd -->
+    <Row>
+        <Key android:codes="2348" android:keyWidth="8.4%p" android:keyLabel="&#x092C;" android:keyEdgeFlags="left"/> <!-- ब -->
+        <Key android:codes="2325" android:keyWidth="8.4%p" android:keyLabel="&#x0915;"/> <!-- क -->
+        <Key android:codes="2350" android:keyWidth="8.4%p" android:keyLabel="&#x092E;"/> <!-- म -->
+        <Key android:codes="2344" android:keyWidth="8.4%p" android:keyLabel="&#x0928;"/> <!-- न -->
+        <Key android:codes="2332" android:keyWidth="8.4%p" android:keyLabel="&#x091C;"/> <!-- ज -->
+        <Key android:codes="2357" android:keyWidth="8.4%p" android:keyLabel="&#x0935;"/> <!-- व -->
+        <Key android:codes="2346" android:keyWidth="8.4%p" android:keyLabel="&#x092A;"/> <!-- प -->
+        <Key android:codes="2360" android:keyWidth="8.4%p" android:keyLabel="&#x0938;"/> <!-- स -->
+        <Key android:codes="2358" android:keyWidth="8.4%p" android:keyLabel="&#x0936;"/> <!-- श -->
+        <Key android:codes="2361" android:keyWidth="8.4%p" android:keyLabel="&#x0939;"/> <!-- ह -->
+        <Key android:codes="-5"  android:keyLabel="&#x232b;"  android:keyWidth="16%p" android:isRepeatable="true"  android:keyEdgeFlags="right"/>
+    </Row>
+
+    <!-- bottom row -->
+    <Row android:rowEdgeFlags="bottom">
+        <Key android:codes="-7" android:keyWidth="16%p" android:keyLabel="१२३" android:keyEdgeFlags="left"/>
+        <Key android:codes="2313" android:keyWidth="9%p" android:keyLabel="‌&#x0909;"/> <!-- उ -->
+        <Key android:codes="2364" android:keyWidth="9%p" android:keyLabel="&#x093C;"/> <!-- ़ -->
+        <Key android:codes="32" android:keyLabel="" android:keyWidth="32%p" android:isRepeatable="true"/> <!-- [___] -->
+        <Key android:codes="2404" android:keyWidth="9%p" android:keyLabel="&#x0964;"/> <!-- | -->
+        <Key android:codes="2330" android:keyWidth="9%p" android:keyLabel="‌&#x091A;"/> <!-- च -->
+        <Key android:codes="10" android:keyLabel="&#9166;" android:keyWidth="16%p" android:keyEdgeFlags="right"/> <!-- <-| -->
+    </Row>
+
+</Keyboard>

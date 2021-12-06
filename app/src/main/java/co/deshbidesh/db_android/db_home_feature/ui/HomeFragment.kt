@@ -50,10 +50,21 @@ class HomeFragment : DBBaseFragment() {
             findNavController().navigate(R.id.action_homeFragment_to_DBNewsListFragment)
         }
 
+//        binding.homeImageSwiperCard.setOnClickListener {
+//
+//            findNavController().navigate(R.id.action_homeFragment_to_DBNewsListFragment)
+//        }
+
         binding.homeNoteCard.setOnClickListener {
 
             findNavController().navigate(R.id.action_homeFragment_to_noteListFragment)
         }
+
+        binding.homeCalendarCard.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_calendarFragment)
+        }
+
+
 
         binding.homeDocScannerCard.setOnClickListener {
 

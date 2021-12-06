@@ -15,12 +15,17 @@ import co.deshbidesh.db_android.R
 import co.deshbidesh.db_android.databinding.FragmentDbHomeInnerListBinding
 import co.deshbidesh.db_android.db_home_feature.viewmodels.HomeViewModel
 import co.deshbidesh.db_android.db_home_feature.viewmodels.HomeViewModelFactory
-import com.denzcoskun.imageslider.constants.ScaleTypes
-import com.denzcoskun.imageslider.models.SlideModel
+import co.deshbidesh.db_android.db_imageslider.constants.ScaleTypes
+import co.deshbidesh.db_android.db_imageslider.interfaces.ItemClickListener
+import co.deshbidesh.db_android.db_imageslider.models.SlideModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlin.coroutines.CoroutineContext
+import co.deshbidesh.db_android.db_imageslider.interfaces.ItemChangeListener
+
+
+
 
 
 @ExperimentalPagingApi
@@ -61,9 +66,27 @@ class DBHomeInnerListFragment : Fragment(), CoroutineScope {
             showSlider()
         })
 
-        binding.imageSlider.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_DBNewsListFragment)
-        }
+//        binding.imageSlider.setOnClickListener {
+//            findNavController().navigate(R.id.action_homeFragment_to_DBNewsListFragment)
+//        }
+
+        binding.imageSlider.setItemClickListener(object : ItemClickListener {
+            override fun onItemSelected(position: Int) {
+
+                activity?.runOnUiThread {
+
+                    findNavController().navigate(R.id.action_homeFragment_to_DBNewsListFragment)
+                }
+            }
+        })
+
+        /// item changed
+//        binding.imageSlider.setItemChangeListener(object : ItemChangeListener {
+//            override fun onItemChanged(position: Int) {
+//                Log.e("myTag", "slide--> $position")
+//            }
+//        })
+
     }
 
     override fun onDestroy() {

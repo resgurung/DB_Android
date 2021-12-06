@@ -44,4 +44,6 @@
     <string name="news_list_screen_native_id">ca-app-pub-5045003235700565/7985719151</string>
     <string name="news_list_screen_banner_id">ca-app-pub-5045003235700565/4525620754</string>
 
+    <string name="left">LEFT</string>
+
 </resources>

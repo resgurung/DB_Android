@@ -101,6 +101,8 @@ dependencies {
     // Skip this if you don't want to use integration libraries or configure Glide.
     kapt "com.github.bumptech.glide:compiler:$glide_version"
 
+    //image caching
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     //  -- Room components --
     def room_version = "2.3.0-alpha03"
@@ -158,15 +160,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
-
-
+    
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:28.2.0')
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
-
-    // Github library (Image Slider)
-    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
 
     // admob
     implementation 'com.google.android.gms:play-services-ads:20.4.0'
@@ -174,6 +172,9 @@ dependencies {
     /////////// local module
     // OpenCV
     implementation project(path: ':opencv450')
+
+    // bikram sambat
+    implementation project(':MeroCalendar')
 
     // native admob template
     implementation project(':nativetemplates')

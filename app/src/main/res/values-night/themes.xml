@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.DeshBidesh" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <!-- Dark application theme. -->
+    <!-- change for all the dark them -->
+    <style name="Theme.DeshBidesh" parent="Base.Theme.DeshBidesh">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#3C3A3A</item>
-        <item name="colorPrimaryVariant">#3C3A3A</item>
-        <item name="colorOnPrimary">@color/light_blue_900</item>
+        <item name="colorPrimary">@color/colorAccentDark</item>
+        <item name="colorPrimaryVariant">@color/colorAccentDark</item>
+        <item name="colorOnPrimary">#003FDC</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#2262E4</item>
-        <item name="colorSecondaryVariant">@color/colorAccent</item>
+        <item name="colorSecondary">#FFFFFF</item>
+        <item name="colorSecondaryVariant">#574747</item>
         <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+
+        <item name="bottomNavigationStyle">@style/BottomNavigationViewStyle</item>
+    </style>
+
+    <!-- Bottom navigation dark style -->
+    <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="android:background">@color/colorAccentDark</item>
+        <item name="itemTextColor">@color/bottom_nav_item_dark_color</item>
+        <item name="itemIconTint">@color/bottom_nav_item_dark_color</item>
+    </style>
+
+    <style name="AlertPopupButtonLightTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorButtonNormal">@color/black</item>
     </style>
 
     <style name="ThemeOverlay.DB_Android.FullscreenContainer" parent="">

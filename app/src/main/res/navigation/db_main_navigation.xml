@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_homeFragment_to_DBNewsListFragment"
             app:destination="@id/newsListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
     </fragment>
 
     <fragment

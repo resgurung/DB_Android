@@ -50,7 +50,8 @@ class DBHelper {
         // date formatter for news published at date from string ISO_OFFSET_DATE_TIME to dd/MM/yyyy HH:mma
         fun formatDateForNews(publishedAt: String): String {
 
-            val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mma")
+            //dd/MM/yyyy HH:mma
+            val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
 
             val dateTime = OffsetDateTime.parse(publishedAt)
 

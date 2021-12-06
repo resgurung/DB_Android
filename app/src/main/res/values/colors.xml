@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#3700B3</color>
 
     <color name="colorAccent">#4DD0E1</color>
+    <color name="colorAccentDark">#3C3A3A</color>
+
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
     <color name="light_blue_A200">#FF40C4FF</color>
@@ -34,5 +36,11 @@
     <!-- Circle -->
     <color name="polygonViewCircleStrokeColor">#ff59a9ff</color>
     <color name="polygonViewCircleBackground">#90e5f8ff</color>
+
+    <!-- Image Slider-->
+    <color name="light_font">#FBFBFB</color>
+    <color name="grey_font">#ff9e9e9e</color>
+    <color name="text_shadow">#7F000000</color>
+    <color name="text_shadow_white">#FFFFFF</color>
 
 </resources>
