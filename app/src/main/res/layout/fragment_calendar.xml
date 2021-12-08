@@ -16,7 +16,17 @@
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            app:navigationIcon="@drawable/ic_arrow_back_ios"/>
+            app:navigationIcon="@drawable/ic_arrow_back_ios">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calendar"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:id="@+id/toolbar_title" />
+        </androidx.appcompat.widget.Toolbar>
 
         <com.puskal.merocalendar.MeroCalendarView
             android:layout_width="match_parent"

@@ -18,9 +18,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
 
-enum class DBNoteUIiState {
-    SEARCHVIEW, RECYCLERVIEW, EXPANDABLEVIEW
-}
+
 
 class DBNoteListViewModel(
     private val repository: DBNoteRepository

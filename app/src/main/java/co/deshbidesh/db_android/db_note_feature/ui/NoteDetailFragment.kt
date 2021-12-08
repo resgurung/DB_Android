@@ -162,6 +162,8 @@ class NoteDetailFragment :
 
                         activity?.runOnUiThread {
 
+                            sharedNoteDetailViewModel.isEdited = true
+
                             hideAnyKeyboard()
 
                             requireActivity().onBackPressed()
@@ -259,6 +261,8 @@ class NoteDetailFragment :
             note.content = binding.noteDetailContent.text.toString()
 
             note.title = binding.noteDetailTitle.text.toString()
+
+            sharedNoteDetailViewModel.isEdited = true
 
             sharedNoteDetailViewModel.updateNote(
                 note

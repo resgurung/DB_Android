@@ -161,6 +161,8 @@ class NoteAddFragment : DBBaseFragment() {
 
             hideAnyKeyboard()
 
+            sharedNoteDetailViewModel.isEdited = true
+
             val action = NoteAddFragmentDirections.actionNoteAddFragmentToNoteDetailFragment(note)
 
             findNavController().navigate(action)

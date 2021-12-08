@@ -65,7 +65,7 @@ class DBExpandableListAdapter internal constructor(
         val expandedListTextView = convertView!!.findViewById<TextView>(R.id.note_list_date_expandable_item_title)
         val rightImageView = convertView!!.findViewById<ImageView>(R.id.note_list_date_item_right_image)
         rightImageView.isVisible = true
-        expandedListTextView.text = "  - ${DBCalenderMonth.months[monthCount.dateInt]} - No of Notes: ${monthCount.count}"//expandedListText
+        expandedListTextView.text = "  - ${DBCalenderMonth.months[monthCount.dateInt - 1]} - No of Notes: ${monthCount.count}"//expandedListText
         return convertView
     }
 
@@ -87,5 +87,9 @@ class DBExpandableListAdapter internal constructor(
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
         return true
+    }
+
+    fun notifyDataChanged() {
+        this.notifyDataSetChanged()
     }
 }

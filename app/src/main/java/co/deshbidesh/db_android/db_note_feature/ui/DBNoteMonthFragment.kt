@@ -74,7 +74,7 @@ class DBNoteMonthFragment : DBBaseFragment(), DBNoteMonthAdapter.DBNoteInterface
 
         toolbar = binding.noteListMonthToolbar
 
-        binding.noteListMonthToolbarTitle.text = "${args.year} ${DBCalenderMonth.months[args.month]}"
+        binding.noteListMonthToolbarTitle.text = "${args.year} ${DBCalenderMonth.months[args.month - 1]}"
 
         toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()

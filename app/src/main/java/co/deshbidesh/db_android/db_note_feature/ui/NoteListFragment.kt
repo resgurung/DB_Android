@@ -29,8 +29,11 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import android.widget.ExpandableListView
 import android.widget.ExpandableListAdapter
+import androidx.fragment.app.activityViewModels
+import co.deshbidesh.db_android.db_note_feature.factories.DBNoteDetailViewModelFactory
 import co.deshbidesh.db_android.db_note_feature.infinite_list.*
 import co.deshbidesh.db_android.db_note_feature.models.DBNoteWrapper
+import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteDetailViewModel
 import co.deshbidesh.db_android.db_note_feature.viewmodel.DBNoteUIiState
 
 
@@ -51,9 +54,9 @@ class NoteListFragment :
 
     private lateinit var searchView: SearchView
 
-    private lateinit var listViewModel: DBNoteListViewModel
-
-    private lateinit var listViewModelFactory: DBNoteListViewModelFactory
+//    private lateinit var listViewModel: DBNoteListViewModel
+//
+//    private lateinit var listViewModelFactory: DBNoteListViewModelFactory
 
     private lateinit var infiniteAdapter: DBNoteInfiniteAdapter
 
@@ -64,6 +67,10 @@ class NoteListFragment :
     private var expandableListView: ExpandableListView? = null
 
     private var expandableListAdapter: ExpandableListAdapter? = null
+
+    private val listViewModel: DBNoteDetailViewModel by activityViewModels { DBNoteDetailViewModelFactory }
+
+    var listExpandedClick: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,8 +85,6 @@ class NoteListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // init viewModel
-        initViewModel()
         // setup toolbar
         setupToolbar()
         // setup rest of the view
@@ -94,18 +99,35 @@ class NoteListFragment :
         prepareDataForView()
     }
 
+//    override fun onResume() {
+//        super.onResume()
+//
+//        if (listViewModel.isEdited) {
+//
+//            listViewModel.isEdited = false
+//
+//            reloadData()
+//        }
+//    }
+
     override fun onDestroy() {
         super.onDestroy()
 
         _binding = null
+
+//        listViewModel.resetLoadModel(ColumnName.CREATED_DATE)
+//
+//        listViewModel.isEdited = false
+//
+//        listViewModel.resetExpandableModel()
     }
 
     private fun initViewModel() {
-        listViewModelFactory =
-            DBNoteListViewModelFactory(DBNoteRepository( DBDatabase.getDatabase(requireContext())))
-
-        listViewModel =
-            ViewModelProvider(this, listViewModelFactory).get(DBNoteListViewModel::class.java)
+//        listViewModelFactory =
+//            DBNoteListViewModelFactory(DBNoteRepository( DBDatabase.getDatabase(requireContext())))
+//
+//        listViewModel =
+//            ViewModelProvider(this, listViewModelFactory).get(DBNoteListViewModel::class.java)
     }
 
     /*
@@ -227,14 +249,24 @@ class NoteListFragment :
             }
             DBNoteUIiState.RECYCLERVIEW -> {
 
-                listViewModel.prepareDataForAdapter(
-                    true,
-                    listViewModel.loadMoreModel.originalList,
-                    executorService
-                ) {
+                if (listViewModel.isEdited) {
 
-                    updateRecycleView(it)
+                    listViewModel.isEdited = false
+
+                    reloadData()
+
+                } else {
+
+                    listViewModel.prepareDataForAdapter(
+                        true,
+                        listViewModel.loadMoreModel.originalList,
+                        executorService
+                    ) {
+
+                        updateRecycleView(it)
+                    }
                 }
+
             }
             DBNoteUIiState.EXPANDABLEVIEW -> {
 
@@ -319,6 +351,7 @@ class NoteListFragment :
             listViewModel.loadExpandableModel.monthHashMap.replace(year, months)
 
         }
+        val data = listViewModel.loadExpandableModel
 
         updateExpandableListView()
     }
@@ -691,5 +724,10 @@ class NoteListFragment :
         val scrollPosition = list.size
 
         infiniteAdapter.notifyItemRemoved(scrollPosition)
+    }
+
+    private fun reloadData() {
+
+        defaultState(ColumnName.CREATED_DATE, false)
     }
 }

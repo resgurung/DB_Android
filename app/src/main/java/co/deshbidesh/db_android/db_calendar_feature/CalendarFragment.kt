@@ -62,12 +62,12 @@ class CalendarFragment : DBBaseFragment() {
 
             when(item.itemId) {
 
-                R.id.calendar_menu_today -> {
-
-                    menuTodayPressed()
-
-                    true
-                }
+//                R.id.calendar_menu_today -> {
+//
+//                    menuTodayPressed()
+//
+//                    true
+//                }
                 else -> false
             }
 
