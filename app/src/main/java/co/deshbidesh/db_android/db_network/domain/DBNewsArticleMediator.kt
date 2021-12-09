@@ -28,18 +28,25 @@ class DBNewsArticleMediator(
 
     override suspend fun initialize(): InitializeAction {
         val cacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
+//        val millis = System.currentTimeMillis()
+//        val last = database.lastUpdated()
+//        val check = System.currentTimeMillis() - database.lastUpdated() >= cacheTimeout
+//        val check1 = System.currentTimeMillis() - database.lastUpdated() >= 0
         return if (System.currentTimeMillis() - database.lastUpdated() >= cacheTimeout)
         {
             // Cached data is up-to-date, so there is no need to re-fetch
             // from the network.
-            InitializeAction.SKIP_INITIAL_REFRESH
+
+                // write to database the timestamp
+            database.writeUpdateTime()
+            // refresh the data
+            InitializeAction.LAUNCH_INITIAL_REFRESH
         } else {
             // Need to refresh cached data from network; returning
             // LAUNCH_INITIAL_REFRESH here will also block RemoteMediator's
             // APPEND and PREPEND from running until REFRESH succeeds.
-                database.writeUpdateTime()
 
-            InitializeAction.LAUNCH_INITIAL_REFRESH
+            InitializeAction.SKIP_INITIAL_REFRESH
         }
     }
 
@@ -80,12 +87,11 @@ class DBNewsArticleMediator(
 
         try {
 
-            println("Sending request ........")
             val response = service.getArticles(
                 paged = page,
                 postPerPage = state.config.pageSize
             )
-            println("Receive response success: ${response.isSuccessful} ........")
+
             val endOfPaginationReached = response.body()?.isEmpty() ?: true
 
             database.withTransaction {
@@ -101,10 +107,9 @@ class DBNewsArticleMediator(
                 val nextKey = if (endOfPaginationReached) null else page + 1
 
                 response.body()?.let {
-                    println(" Writing to database start ......")
+
                     insertToDB(database, it, prevKey, nextKey)
 
-                    println(" Writing to database finish ......")
                 }
 
             }

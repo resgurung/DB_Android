@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import co.deshbidesh.db_android.databinding.FragmentOnboardingViewPagerBinding
 import co.deshbidesh.db_android.db_onboarding_feature.adapters.DBOnboardingViewPagerAdapter
 import co.deshbidesh.db_android.db_onboarding_feature.screens.FirstScreen
+import co.deshbidesh.db_android.db_onboarding_feature.screens.FourthScreen
 import co.deshbidesh.db_android.db_onboarding_feature.screens.SecondScreen
+import co.deshbidesh.db_android.db_onboarding_feature.screens.ThirdScreen
 
 
 class OnboardingViewPager : Fragment() {
@@ -24,9 +26,9 @@ class OnboardingViewPager : Fragment() {
 
         val fragmentList = arrayListOf(
             FirstScreen(),
-            SecondScreen()
-            //ThirdScreen(),
-            //FourthScreen()
+            SecondScreen(),
+            ThirdScreen(),
+            FourthScreen()
         )
 
         val adapter = DBOnboardingViewPagerAdapter(

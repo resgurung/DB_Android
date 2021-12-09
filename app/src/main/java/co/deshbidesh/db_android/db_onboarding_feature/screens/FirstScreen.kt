@@ -23,7 +23,6 @@ class FirstScreen : Fragment() {
 
         val viewPager = activity?.findViewById<ViewPager2>(R.id.onboarding_view_pager)
 
-
         binding?.firstSceneNextButton?.setOnClickListener {
 
             viewPager?.currentItem = 1

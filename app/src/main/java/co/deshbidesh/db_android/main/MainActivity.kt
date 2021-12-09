@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         customKeyboard = DBCustomKeyboard(this, keyboardView, R.xml.qwerty0)
 
-        adView = findViewById(R.id.home_adView)
+        adView = findViewById(R.id.main_adView)
 
         val adMobRequest = AdRequest
             .Builder()

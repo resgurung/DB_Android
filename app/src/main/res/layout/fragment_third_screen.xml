@@ -8,13 +8,11 @@
         android:layout_height="match_parent"
         tools:context=".db_onboarding_feature.screens.ThirdScreen">
 
-
-        <TextView
-            android:id="@+id/third_scene_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Notes"
-            android:textSize="24sp"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/base_calendar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

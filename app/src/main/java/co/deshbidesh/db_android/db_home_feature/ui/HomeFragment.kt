@@ -18,6 +18,7 @@ import co.deshbidesh.db_android.main.MainActivity
 import co.deshbidesh.db_android.shared.DBAppBarConfiguration
 import co.deshbidesh.db_android.shared.DBBaseFragment
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 
 
 class HomeFragment : DBBaseFragment() {
@@ -29,6 +30,8 @@ class HomeFragment : DBBaseFragment() {
     private var _binding: FragmentHomeBinding? = null
 
     private val binding get() = _binding!!
+
+    lateinit var adView: AdView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,15 +48,12 @@ class HomeFragment : DBBaseFragment() {
 
         toolBar = view.findViewById(R.id.home_fragment_toolbar)
 
-        binding.homeNewsButton.setOnClickListener {
+        adView = view.findViewById(R.id.home_adView)
+
+        binding.homeArticleCard.setOnClickListener {
 
             findNavController().navigate(R.id.action_homeFragment_to_DBNewsListFragment)
         }
-
-//        binding.homeImageSwiperCard.setOnClickListener {
-//
-//            findNavController().navigate(R.id.action_homeFragment_to_DBNewsListFragment)
-//        }
 
         binding.homeNoteCard.setOnClickListener {
 
@@ -63,8 +63,6 @@ class HomeFragment : DBBaseFragment() {
         binding.homeCalendarCard.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_calendarFragment)
         }
-
-
 
         binding.homeDocScannerCard.setOnClickListener {
 
@@ -79,6 +77,12 @@ class HomeFragment : DBBaseFragment() {
         navController = NavHostFragment.findNavController(this);
 
         NavigationUI.setupWithNavController(toolBar, navController, DBAppBarConfiguration.configuration())
+
+        val adMobRequest = AdRequest
+            .Builder()
+            .build()
+
+        adView.loadAd(adMobRequest)
     }
 
     override fun onDestroy() {

@@ -22,8 +22,6 @@ class DBNewsArticleViewModel(val repository: DBNewsRepository) : ViewModel() {
 
     var homeInnerImageSliderFragmentShown: Boolean = false
 
-
-
     private val _latestNews: SharedFlow<PagingData<ArticleWithCategories>> = repository
         .getArticles()
         .flowOn(Dispatchers.IO)

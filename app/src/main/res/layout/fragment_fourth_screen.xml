@@ -9,12 +9,11 @@
         tools:context=".db_onboarding_feature.screens.FourthScreen">
 
 
-        <TextView
-            android:id="@+id/fourth_scene_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Text Scanner"
-            android:textSize="24sp"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/base_note"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
