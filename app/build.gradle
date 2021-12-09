@@ -20,8 +20,8 @@ android {
         applicationId "co.deshbidesh.db_android"
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 5
-        versionName "2.0.0"
+        versionCode 6
+        versionName "2.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

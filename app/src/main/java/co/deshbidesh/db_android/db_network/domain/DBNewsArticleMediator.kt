@@ -28,10 +28,6 @@ class DBNewsArticleMediator(
 
     override suspend fun initialize(): InitializeAction {
         val cacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
-//        val millis = System.currentTimeMillis()
-//        val last = database.lastUpdated()
-//        val check = System.currentTimeMillis() - database.lastUpdated() >= cacheTimeout
-//        val check1 = System.currentTimeMillis() - database.lastUpdated() >= 0
         return if (System.currentTimeMillis() - database.lastUpdated() >= cacheTimeout)
         {
             // Cached data is up-to-date, so there is no need to re-fetch
